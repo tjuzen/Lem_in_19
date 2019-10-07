@@ -6,13 +6,13 @@
 #    By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/29 20:16:09 by tjuzen            #+#    #+#              #
-#    Updated: 2018/11/09 16:55:52 by tjuzen           ###   ########.fr        #
+#    Updated: 2019/10/07 16:58:44 by tjuzen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=libftprintf.a
+NAME=libft.a
 
-SRCS=src/ft_atoi.c src/ft_atoi.c src/ft_isalpha.c src/ft_isprint.c src/ft_memchr.c src/ft_memmove.c src/ft_putstr.c\
+SRCS=src/ft_isalpha.c src/ft_isalpha.c src/ft_isprint.c src/ft_memchr.c src/ft_memmove.c src/ft_putstr.c\
 	 src/ft_strcmp.c src/ft_strncmp.c src/ft_strstr.c src/ft_bzero.c src/ft_isascii.c src/ft_memalloc.c\
 	 src/ft_memcmp.c src/ft_memset.c src/ft_strcat.c src/ft_strcpy.c src/ft_strlen.c src/ft_strncpy.c\
 	 src/ft_tolower.c src/ft_isalnum.c src/ft_isdigit.c src/ft_memccpy.c src/ft_memcpy.c\
@@ -32,7 +32,7 @@ SRCS=src/ft_atoi.c src/ft_atoi.c src/ft_isalpha.c src/ft_isprint.c src/ft_memchr
 	 src/ft_printf/printf.c src/ft_printf/tools.c src/ft_printf/tools_2.c \
 	 src/ft_printf/atoi_itoa.c src/ft_printf/display_float2.c src/get_next_line.c
 
-O=ft_atoi.o ft_bzero.o ft_isascii.o ft_memalloc.o ft_memcmp.o ft_memset.o\
+O=ft_bzero.o ft_isascii.o ft_memalloc.o ft_memcmp.o ft_memset.o\
   ft_strcat.o ft_strcpy.o ft_strlen.o ft_strncpy.o ft_tolower.o ft_isalnum.o\
   ft_isdigit.o ft_memccpy.o ft_memcpy.o ft_putchar.o ft_strchr.o ft_strdup.o\
   ft_strncat.o ft_strrchr.o ft_toupper.o ft_isalpha.o ft_isprint.o ft_memchr.o\

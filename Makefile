@@ -6,14 +6,14 @@
 #    By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 16:28:36 by tjuzen            #+#    #+#              #
-#    Updated: 2019/10/07 16:30:36 by tjuzen           ###   ########.fr        #
+#    Updated: 2019/10/07 16:59:24 by tjuzen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 CC = gcc
 #FLAGS = -fsanitize=address
-LIBFT = $(LIBDIR)libftprintf.a
+LIBFT = $(LIBDIR)libft.a
 SRCDIR = ./src/
 OBJDIR = ./obj/
 LIBDIR = ./libft/

@@ -27,6 +27,7 @@ struct			s_list_lemin
 	int y;
 	t_list_lemin	*next;
 };
+
 /*
 ** MAIN.C
 */

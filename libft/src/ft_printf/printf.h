@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   printf.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tjuzen <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/13 15:47:21 by tjuzen            #+#    #+#             */
-/*   Updated: 2018/12/13 16:10:06 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/12 20:03:33 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRINTF_H
 # define PRINTF_H
 # include "../../includes/libft.h"
-
 
 typedef struct	s_arg
 {

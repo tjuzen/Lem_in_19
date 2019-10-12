@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lem_in.c                                           :+:      :+:    :+:   */
+/*   ft_freetab_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/12 20:30:07 by tjuzen           ###   ########.fr       */
+/*   Created: 2018/10/09 11:32:43 by tjuzen            #+#    #+#             */
+/*   Updated: 2019/10/12 19:48:22 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem_in.h"
+#include "../includes/libft.h"
 
-void init_arg(t_lemin *arg)
+void ft_freetab_str(char **element)
 {
-	arg->ants = -1;
-	arg->wrong_line = 0;
-}
+	int i;
 
-int main()
-{
-	t_lemin			arg;
-	t_list_lemin	*mylist;
-
-	init_arg(&arg);
-	mylist = read_file(&arg);
-	print_delete(mylist, &arg);
-	return (0);
+	i = -1;
+	if (!element)
+		return ;
+	while (element[++i])
+		free(element[i]);
+	free(element);
 }

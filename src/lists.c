@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/12 20:33:33 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/12 21:15:32 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,24 @@ t_list_lemin	*add_room(t_list_lemin *mylist, char *str, char state, t_lemin *arg
 	char **splitted;
 
 	if (!(splitted = ft_strsplit(str, ' ')))
-		exit(EXIT_FAILURE);
+	{
+		arg->malloc_error = 1;
+		return (NULL);
+	}
 	if (!(tmp = ft_memalloc(sizeof(t_list_lemin))))
-		exit(EXIT_FAILURE);
+	{
+		arg->malloc_error = 1;
+		ft_freetab_str(splitted);
+		return (NULL);
+	}
 	tmp->state = state;
 	if (!(tmp->room = ft_strdup(splitted[0])))
-			exit(EXIT_FAILURE);
+	{
+		arg->malloc_error = 1;
+		ft_freetab_str(splitted);
+		print_delete(tmp, arg);
+		return (NULL);
+	}
 	tmp->next = mylist;
 	ft_freetab_str(splitted);
 	return (tmp);
@@ -53,7 +65,6 @@ void		print_delete(t_list_lemin *mylist, t_lemin *arg)
 {
 	t_list_lemin	*tmp;
 
-	mylist = reverse_list(mylist);
 	tmp = mylist;
 	ft_printf("\nNubers of ants = %i\n\n", arg->ants);
 	while (tmp != NULL)

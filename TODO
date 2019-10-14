@@ -11,3 +11,5 @@
 # **************************************************************************** #
 
 
+- Verifier que notre parsing est bon jusqu'ici (commentaires?, ...)
+- Trouver une meilleure facon pour stocker nos infos

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 11:15:33 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/12 19:48:36 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/14 16:15:12 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ int        		nextline(char *str, char **line);
 int        		newline(char *str, char **line);
 void    		charctox(char *str, char c, char x);
 void 			ft_freetab_str(char **element);
+int 			retfreetab_str(char **element, int ret);
 
 #endif

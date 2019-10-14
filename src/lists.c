@@ -6,16 +6,17 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/12 21:15:32 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/14 16:55:14 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_list_lemin	*add_room(t_list_lemin *mylist, char *str, char state, t_lemin *arg)
+t_list_lemin	*add_room(t_list_lemin *mylist, char *str,
+	char status, t_lemin *arg)
 {
-	t_list_lemin		*tmp;
-	char **splitted;
+	t_list_lemin	*tmp;
+	char			**splitted;
 
 	if (!(splitted = ft_strsplit(str, ' ')))
 	{
@@ -28,7 +29,7 @@ t_list_lemin	*add_room(t_list_lemin *mylist, char *str, char state, t_lemin *arg
 		ft_freetab_str(splitted);
 		return (NULL);
 	}
-	tmp->state = state;
+	tmp->status = status;
 	if (!(tmp->room = ft_strdup(splitted[0])))
 	{
 		arg->malloc_error = 1;
@@ -61,15 +62,32 @@ t_list_lemin	*reverse_list(t_list_lemin *mylist)
 	return (mylist);
 }
 
-void		print_delete(t_list_lemin *mylist, t_lemin *arg)
+void			delete(t_list_lemin *mylist, t_lemin *arg)
 {
 	t_list_lemin	*tmp;
 
 	tmp = mylist;
-	ft_printf("\nNubers of ants = %i\n\n", arg->ants);
+	while (tmp != NULL)
+		tmp = tmp->next;
+	while (mylist)
+	{
+		tmp = mylist->next;
+		ft_strdel(&mylist->room);
+		free(mylist);
+		mylist = tmp;
+	}
+}
+
+void			print_delete(t_list_lemin *mylist, t_lemin *arg)
+{
+	t_list_lemin	*tmp;
+
+	tmp = mylist;
+	ft_printf("Nubers of ants = %i\n\n", arg->ants);
 	while (tmp != NULL)
 	{
-		ft_printf("Room : %s\nState : %i\n\n", tmp->room, tmp->state);
+		ft_printf("Room     :   %s\nStatus   :   %c\n\n",
+		tmp->room, tmp->status);
 		tmp = tmp->next;
 	}
 	while (mylist)

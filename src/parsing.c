@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/14 16:54:16 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/16 19:46:15 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_list_lemin *get_infos(char *line, t_list_lemin *mylist, t_lemin *arg)
 	return (mylist);
 }
 
-t_list_lemin *read_file(t_lemin *arg)
+t_list_lemin *read_file(t_lemin *arg, t_data_map *map)
 {
 	char			*line;
 	t_list_lemin	*mylist;

@@ -13,6 +13,28 @@
 # define DEFAULT_COLOR "\033[0;m"
 
 /*
+**	Définition de ma Data_Map
+*/
+
+typedef struct s_node	t_node;
+
+struct			s_node
+{
+	char	*room;
+	char	*link;
+	char	status;
+	t_node	*next;
+};
+
+typedef struct s_data_map	t_data_map;
+
+struct s_data_map
+{
+	long long	size;
+	t_node		**list;
+};
+
+/*
 ** Définition de ma structure
 */
 
@@ -24,6 +46,30 @@ typedef	struct	s_lemin
 	int start;
 	int end;
 }				t_lemin;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 ** Définition de ma liste
@@ -62,7 +108,7 @@ void			delete(t_list_lemin *mylist, t_lemin *arg);
 */
 
 t_list_lemin	*get_infos(char *line, t_list_lemin *mylist, t_lemin *arg);
-t_list_lemin	*read_file(t_lemin *arg);
+t_list_lemin	*read_file(t_lemin *arg, t_data_map *map);
 
 /*
 ** PARSING_TOOLS.C

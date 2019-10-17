@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 16:08:37 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/17 17:52:43 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 {
 	t_node			*new;
-	t_node			*tmp;
 	char			**splitted;
 
 	if (!(splitted = ft_strsplit(str, ' ')))
@@ -33,6 +32,7 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	{
 		arg->malloc_error = 1;
 		ft_freetab_str(splitted);
+		free(new);
 		return (NULL);
 	}
 	new->key = hashCode(new->room);
@@ -41,10 +41,12 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		map->list[new->key % map->size] = new;
 	else
 	{
-		tmp = map->list[tmp->key % map->size]->hash_next;
-		map->list[tmp->key % map->size]->hash_next = new;
-		new->hash_next = tmp;
+	// 	tmp = map->list[tmp->key % map->size]->hash_next;
+	// 	map->list[tmp->key % map->size]->hash_next = new;
+		map->list[new->key % map->size]->count_hash++;
+		arg->count_hash++;
 	}
+	printf("count_hash->MAP: %d\n", map->list[new->key % map->size]->count_hash);
 	ft_freetab_str(splitted);
 	return (map);
 }

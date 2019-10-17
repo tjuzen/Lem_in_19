@@ -23,6 +23,7 @@ struct			s_node
 	char			*room;
 	unsigned long	key;
 	char			status;
+	int				count_hash;
 	t_node			*hash_next;
 };
 
@@ -30,7 +31,7 @@ typedef struct s_data_map	t_data_map;
 
 struct s_data_map
 {
-	long long	size;
+	unsigned long	size;
 	t_node		**list;
 };
 
@@ -43,6 +44,7 @@ typedef	struct	s_lemin
 	int	ants;
 	int wrong_line;
 	int malloc_error;
+	int count_hash;
 	int start;
 	int end;
 }				t_lemin;
@@ -92,5 +94,7 @@ int 			is_comment(char *line, t_lemin *arg);
 
 
 unsigned long hashCode(char *room);
+void free_map(t_data_map* map);
+void free_node(t_node* node);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 16:10:05 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/17 18:08:06 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *value)
 	return (NULL);
 }
 
-t_data_map *createMap(unsigned long long size)
+t_data_map *createMap(unsigned long size)
 {
    t_data_map	*map;
    t_data_map	*tmp;
@@ -44,17 +44,10 @@ t_data_map *createMap(unsigned long long size)
    if (!(map = (t_data_map*)ft_memalloc(sizeof(t_data_map))))
    	return (NULL);
    map->size = size;
+
    if (!(map->list = (t_node**)ft_memalloc(sizeof(t_node*)*size)))
    {
-	   // tmp = map;
-	   // while (tmp != NULL)
-		//    tmp = tmp->hash_next;
-	   // while (map)
-	   // {
-		//    tmp = map->hash_next;
-		//    free(map);
-		//    map = tmp;
-	   // }
+       free(map);
 	   return (NULL);
    }
    return (map);
@@ -65,15 +58,16 @@ int				main(void)
 	t_lemin			arg;
 	t_data_map		*map;
 
+	init_arg(&arg);
 	if (!(map = createMap(10000000)))
 		return (exit_free(&arg, map));
-	init_arg(&arg);
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
 	// mylist = reverse_list(mylist);
 	// print_delete(mylist, &arg);
 	// insert(map,hashCode("A"),"A");
+    printf("count_hash->ARG: %d\n", arg.count_hash);
 	// printf("%c\n",lookup(map, hashCode("5"), "5"));
 	return (0);
 }

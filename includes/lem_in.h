@@ -20,10 +20,10 @@ typedef struct s_node	t_node;
 
 struct			s_node
 {
-	char	*room;
-	char	*link;
-	char	status;
-	t_node	*next;
+	char			*room;
+	unsigned long	key;
+	char			status;
+	t_node			*next;
 };
 
 typedef struct s_data_map	t_data_map;
@@ -47,76 +47,40 @@ typedef	struct	s_lemin
 	int end;
 }				t_lemin;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-** Définition de ma liste
-*/
-
-typedef struct s_list_lemin	t_list_lemin;
-
-struct			s_list_lemin
-{
-	char	*room;
-	char	status;
-	t_list_lemin	*next;
-};
-
 /*
 ** STUPID_TOOLS.C
 */
 
-t_list_lemin	*lstreturn_mallocerr(int value, t_lemin *arg);
+t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg);
 int				intreturn_mallocerr(int value, t_lemin *arg);
 void			init_arg(t_lemin *arg);
-int 			exit_free(t_lemin *arg, t_list_lemin *mylist);
-t_list_lemin	*return_delete(t_list_lemin *mylist, char *line);
+int 			exit_free(t_lemin *arg, t_data_map *map);
+t_data_map	*return_delete(t_data_map *map, char *line);
 
 /*
 ** LISTS.C
 */
 
-t_list_lemin	*reverse_list(t_list_lemin *mylist);
-t_list_lemin	*add_room(t_list_lemin *mylist, char *str, char state, t_lemin *arg);
-void			print_delete(t_list_lemin *mylist, t_lemin *arg);
-void			delete(t_list_lemin *mylist, t_lemin *arg);
+t_data_map	*reverse_list(t_data_map *map);
+t_data_map	*add_room(t_data_map *map, char *str, char state, t_lemin *arg);
+void			print_delete(t_data_map *map, t_lemin *arg);
+void			delete(t_data_map *map, t_lemin *arg);
 
 /*
 ** PARSING.C
 */
 
-t_list_lemin	*get_infos(char *line, t_list_lemin *mylist, t_lemin *arg);
-t_list_lemin	*read_file(t_lemin *arg, t_data_map *map);
+t_data_map 		*get_infos(char *line, t_data_map *map, t_lemin *arg);
+t_data_map 		*read_file(t_lemin *arg, t_data_map *map);
 
 /*
 ** PARSING_TOOLS.C
 */
 
 int 			get_number_of_ants(t_lemin *arg);
-t_list_lemin	*start(t_lemin *arg, t_list_lemin *mylist);
-t_list_lemin 	*end(t_lemin *arg, t_list_lemin *mylist);
+t_data_map	*start(t_data_map *map, char *str, char status, t_lemin *arg);
+t_data_map 	*end(t_lemin *arg, t_data_map *map);
+void insert(t_data_map *map ,unsigned long pos, char *value, t_node	*tmp);
 
 /*
 ** VALID_LINE.C
@@ -126,5 +90,7 @@ int 			is_room(char *line, t_lemin *arg);
 int 			is_comment(char *line, t_lemin *arg);
 
 
+
+unsigned long 	hashCode(t_data_map *map, char *cp);
 
 #endif

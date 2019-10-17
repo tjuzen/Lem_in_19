@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/16 14:53:02 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/17 15:12:03 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,48 +25,55 @@ int get_number_of_ants(t_lemin *arg)
 	return (arg->ants == 0 ? -1 : 1);
 }
 
-t_list_lemin *start(t_lemin *arg, t_list_lemin *mylist)
+t_data_map	*start(t_data_map *map, char *str, char status, t_lemin *arg)
 {
-	char	*line;
+	t_node			*tmp;
+	char			**splitted;
 
-	get_next_line(0, &line);
-	if (!(line))
-		return (lstreturn_mallocerr(1, arg));
-	if (is_room(line, arg) == 1)
+	if (!(splitted = ft_strsplit(str, ' ')))
 	{
-		if (arg->start != 0)
-		{
-			arg->wrong_line = 1;
-			ft_strdel(&line);
-			return (mylist);
-		}
-		mylist = add_room(mylist, line, 'I', arg);
-		arg->start++;
+		arg->malloc_error = 1;
+		return (NULL);
 	}
-	else
-		arg->malloc_error = 2;
-	return (return_delete(mylist, line));
-}
-
-t_list_lemin *end(t_lemin *arg, t_list_lemin *mylist)
-{
-	char	*line;
-
-	get_next_line(0, &line);
-	if (!(line))
-		return (lstreturn_mallocerr(1, arg));
-	if (is_room(line, arg) == 1)
+	if (!(tmp = ft_memalloc(sizeof(t_node))))
 	{
-		if (arg->end != 0)
-		{
-			arg->wrong_line = 1;
-			ft_strdel(&line);
-			return (mylist);
-		}
-		mylist = add_room(mylist, line, 'O', arg);
-		arg->end++;
+		arg->malloc_error = 1;
+		ft_freetab_str(splitted);
+		return (NULL);
 	}
-	else
-		arg->malloc_error = 2;
-	return (return_delete(mylist, line));
+	if (!(tmp->room = ft_strdup(splitted[0])))
+	{
+		arg->malloc_error = 1;
+		ft_freetab_str(splitted);
+		// print_delete(tmp, arg);
+		return (NULL);
+	}
+	tmp->key = hashCode(map, tmp->room);
+	tmp->status = status;
+	insert(map, hashCode(map, tmp->room), tmp->room, tmp);
+	ft_freetab_str(splitted);
+	return (map);
 }
+//
+// t_data_map *end(t_lemin *arg, t_data_map *map)
+// {
+// 	char	*line;
+//
+// 	get_next_line(0, &line);
+// 	if (!(line))
+// 		return (lstreturn_mallocerr(1, arg));
+// 	if (is_room(line, arg) == 1)
+// 	{
+// 		if (arg->end != 0)
+// 		{
+// 			arg->wrong_line = 1;
+// 			ft_strdel(&line);
+// 			return (mylist);
+// 		}
+// 		mylist = add_room(mylist, line, 'O', arg);
+// 		arg->end++;
+// 	}
+// 	else
+// 		arg->malloc_error = 2;
+// 	return (return_delete(mylist, line));
+// }

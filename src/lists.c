@@ -6,20 +6,15 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 14:30:19 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/17 16:08:37 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void insert(t_data_map *map ,unsigned long pos, char *value, t_node	*tmp)
-{
-	t_node *list = map->list[pos];
-	map->list[pos] = tmp;
-}
-
 t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 {
+	t_node			*new;
 	t_node			*tmp;
 	char			**splitted;
 
@@ -28,39 +23,45 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		arg->malloc_error = 1;
 		return (NULL);
 	}
-	if (!(tmp = ft_memalloc(sizeof(t_node))))
+	if (!(new = ft_memalloc(sizeof(t_node))))
 	{
 		arg->malloc_error = 1;
 		ft_freetab_str(splitted);
 		return (NULL);
 	}
-	if (!(tmp->room = ft_strdup(splitted[0])))
+	if (!(new->room = ft_strdup(splitted[0])))
 	{
 		arg->malloc_error = 1;
 		ft_freetab_str(splitted);
-		// print_delete(tmp, arg);
 		return (NULL);
 	}
-	tmp->key = hashCode(map, tmp->room);
-	tmp->status = status;
-	insert(map, hashCode(map, tmp->room), tmp->room, tmp);
+	new->key = hashCode(new->room);
+	new->status = status;
+	if (map->list[new->key % map->size] == NULL)
+		map->list[new->key % map->size] = new;
+	else
+	{
+		tmp = map->list[tmp->key % map->size]->hash_next;
+		map->list[tmp->key % map->size]->hash_next = new;
+		new->hash_next = tmp;
+	}
 	ft_freetab_str(splitted);
 	return (map);
 }
 
-// void			delete(t_list_lemin *mylist, t_lemin *arg)
+// void			delete(t_data_map *map, t_lemin *arg)
 // {
-// 	t_list_lemin	*tmp;
+// 	t_data_map	*tmp;
 //
-// 	tmp = mylist;
+// 	tmp = map;
 // 	while (tmp != NULL)
-// 		tmp = tmp->next;
+// 		tmp = tmp->hash_next;
 // 	while (mylist)
 // 	{
-// 		tmp = mylist->next;
-// 		ft_strdel(&mylist->room);
-// 		free(mylist);
-// 		mylist = tmp;
+// 		tmp = map->hash_next;
+// 		ft_strdel(&map->room);
+// 		free(map);
+// 		map = tmp;
 // 	}
 // }
 //
@@ -74,11 +75,11 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 // 	{
 // 		ft_printf("Room     :   %s\nStatus   :   %c\n\n",
 // 		tmp->room, tmp->status);
-// 		tmp = tmp->next;
+// 		tmp = tmp->hash_next;
 // 	}
 // 	while (mylist)
 // 	{
-// 		tmp = mylist->next;
+// 		tmp = mylist->hash_next;
 // 		ft_strdel(&mylist->room);
 // 		free(mylist);
 // 		mylist = tmp;

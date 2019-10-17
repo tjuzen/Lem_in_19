@@ -23,7 +23,7 @@ struct			s_node
 	char			*room;
 	unsigned long	key;
 	char			status;
-	t_node			*next;
+	t_node			*hash_next;
 };
 
 typedef struct s_data_map	t_data_map;
@@ -91,6 +91,6 @@ int 			is_comment(char *line, t_lemin *arg);
 
 
 
-unsigned long 	hashCode(t_data_map *map, char *cp);
+unsigned long hashCode(char *room);
 
 #endif

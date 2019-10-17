@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 15:12:03 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/17 15:42:20 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ t_data_map	*start(t_data_map *map, char *str, char status, t_lemin *arg)
 		// print_delete(tmp, arg);
 		return (NULL);
 	}
-	tmp->key = hashCode(map, tmp->room);
+	tmp->key = hashCode(tmp->room);
 	tmp->status = status;
-	insert(map, hashCode(map, tmp->room), tmp->room, tmp);
-	ft_freetab_str(splitted);
+	t_node *list = map->list[hashCode(tmp->room)];
+	map->list[hashCode(tmp->room)] = tmp;	ft_freetab_str(splitted);
 	return (map);
 }
 //

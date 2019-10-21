@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/21 14:56:28 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/21 16:27:39 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int				main(void)
 	t_data_map		*map;
 
 	init_arg(&arg);
-	if (!(map = createMap(10000000)))
+	if (!(map = createMap(10000)))
 		return (exit_free(&arg, map));
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)

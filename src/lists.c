@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/21 14:46:39 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/21 19:45:05 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,20 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		map->list[new->key % map->size] = new;
 	else
 	{
-		map->list[new->key % map->size]->hash_next = new;
+		if (map->list[new->key % map->size]->hash_next == NULL)
+			map->list[new->key % map->size]->hash_next = new;
+		else if (map->list[new->key % map->size]->hash_next->hash_next == NULL)
+			map->list[new->key % map->size]->hash_next->hash_next = new;
+		else if (map->list[new->key % map->size]->hash_next->hash_next->hash_next == NULL)
+			map->list[new->key % map->size]->hash_next->hash_next->hash_next = new;
+		else if (map->list[new->key % map->size]->hash_next->hash_next->hash_next->hash_next == NULL)
+			map->list[new->key % map->size]->hash_next->hash_next->hash_next->hash_next = new;
+		else if (map->list[new->key % map->size]->hash_next->hash_next->hash_next->hash_next->hash_next == NULL)
+			map->list[new->key % map->size]->hash_next->hash_next->hash_next->hash_next->hash_next = new;
 		map->list[new->key % map->size]->count_hash++;
 		arg->count_hash++;
+		printf("count_hash->%s: %d pos = %lu key = %lu \n", new->room, map->list[new->key % map->size]->count_hash, new->key % map->size, new->key);
 	}
-	printf("count_hash->%s: %d\n", new->room, map->list[new->key % map->size]->count_hash);
 	ft_freetab_str(splitted);
 	return (map);
 }

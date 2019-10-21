@@ -22,6 +22,7 @@ struct			s_node
 {
 	char			*room;
 	unsigned long	key;
+	unsigned long	pos;
 	char			status;
 	int				count_hash;
 	t_node			*hash_next;

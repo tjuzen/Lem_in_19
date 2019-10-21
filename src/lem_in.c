@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 18:08:06 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:56:28 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ unsigned long hashCode(char *room)
 t_node	*lookup(t_data_map *map, unsigned long key, char *value)
 {
 	t_node *tmp;
-
 	tmp = map->list[key % map->size];
 	while(tmp)
 	{
@@ -44,7 +43,6 @@ t_data_map *createMap(unsigned long size)
    if (!(map = (t_data_map*)ft_memalloc(sizeof(t_data_map))))
    	return (NULL);
    map->size = size;
-
    if (!(map->list = (t_node**)ft_memalloc(sizeof(t_node*)*size)))
    {
        free(map);
@@ -64,10 +62,6 @@ int				main(void)
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-	// mylist = reverse_list(mylist);
-	// print_delete(mylist, &arg);
-	// insert(map,hashCode("A"),"A");
-    printf("count_hash->ARG: %d\n", arg.count_hash);
-	// printf("%c\n",lookup(map, hashCode("5"), "5"));
+	free_map(map);
 	return (0);
 }

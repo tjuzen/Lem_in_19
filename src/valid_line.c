@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/14 16:37:47 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/21 14:32:58 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		is_comment(char *line, t_lemin *arg)
 {
 	if (ft_strlen(line) < 2)
 		return (-1);
-	if (line[0] == '#' && line[1] == '#')
+	if (line[0] == '#' && line[1] != '#')
 		return (1);
 	return (-1);
 }

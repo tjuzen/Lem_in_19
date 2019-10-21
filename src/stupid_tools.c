@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 18:14:21 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:26:29 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,24 +68,13 @@ int				exit_free(t_lemin *arg, t_data_map	*map)
 	if (arg->malloc_error == -1)
 	{
 		ft_putendl("error get_next_line!");
-		// free(map);
 		free_map(map);
-		// delete(map, arg);
 	}
 	if (arg->malloc_error == 1)
-	{
 		ft_putendl("error malloc room!");
-		// delete(map, arg);
-	}
 	if (arg->malloc_error == 2)
-	{
 		ft_putendl("Wrong start or end!");
-		// delete(map, arg);
-	}
 	if (arg->malloc_error == 3)
-	{
 		ft_putendl("invalid file!");
-		// delete(map, arg);
-	}
 	return (-1);
 }

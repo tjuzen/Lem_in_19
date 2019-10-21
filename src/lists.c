@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 17:52:43 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:46:39 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,49 +41,11 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		map->list[new->key % map->size] = new;
 	else
 	{
-	// 	tmp = map->list[tmp->key % map->size]->hash_next;
-	// 	map->list[tmp->key % map->size]->hash_next = new;
+		map->list[new->key % map->size]->hash_next = new;
 		map->list[new->key % map->size]->count_hash++;
 		arg->count_hash++;
 	}
-	printf("count_hash->MAP: %d\n", map->list[new->key % map->size]->count_hash);
+	printf("count_hash->%s: %d\n", new->room, map->list[new->key % map->size]->count_hash);
 	ft_freetab_str(splitted);
 	return (map);
 }
-
-// void			delete(t_data_map *map, t_lemin *arg)
-// {
-// 	t_data_map	*tmp;
-//
-// 	tmp = map;
-// 	while (tmp != NULL)
-// 		tmp = tmp->hash_next;
-// 	while (mylist)
-// 	{
-// 		tmp = map->hash_next;
-// 		ft_strdel(&map->room);
-// 		free(map);
-// 		map = tmp;
-// 	}
-// }
-//
-// void			print_delete(t_list_lemin *mylist, t_lemin *arg)
-// {
-// 	t_list_lemin	*tmp;
-//
-// 	tmp = mylist;
-// 	ft_printf("Nubers of ants = %i\n\n", arg->ants);
-// 	while (tmp != NULL)
-// 	{
-// 		ft_printf("Room     :   %s\nStatus   :   %c\n\n",
-// 		tmp->room, tmp->status);
-// 		tmp = tmp->hash_next;
-// 	}
-// 	while (mylist)
-// 	{
-// 		tmp = mylist->hash_next;
-// 		ft_strdel(&mylist->room);
-// 		free(mylist);
-// 		mylist = tmp;
-// 	}
-// }

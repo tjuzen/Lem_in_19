@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/17 18:05:43 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/10/21 14:27:53 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 {
 	if (ft_strcmp(line, "##start") == 0)
 	{
-		// get_next_line(0, &line);
-		// if (!line)
-		// {
-		line = NULL;
+		get_next_line(0, &line);
+		if (!line)
+		{
 			arg->malloc_error = -1;
 			return (map);
-		// }
+		}
 		map = add_room(map, line, 'I', arg);
+		ft_strdel(&line);
 		return (map);
 	}
 	if (ft_strcmp(line, "##end") == 0)
@@ -35,6 +35,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 			return (map);
 		}
 		map = add_room(map, line, 'O', arg);
+		ft_strdel(&line);
 		return (map);
 	}
 	if (is_room(line, arg) == 1)

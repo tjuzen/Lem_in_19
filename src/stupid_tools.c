@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/21 19:43:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/23 20:21:26 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,6 @@ t_data_map	*return_delete(t_data_map	*map, char *line)
 	ft_strdel(&line);
 	return (map);
 }
-
-//
-// // void			delete(t_list_lemin *mylist, t_lemin *arg)
-// // {
-// 	t_list_lemin	*tmp;
-//
-// 	tmp = mylist;
-// 	while (tmp != NULL)
-// 		tmp = tmp->next;
-// 	while (mylist)
-// 	{
-// 		tmp = mylist->next;
-// 		ft_strdel(&mylist->room);
-// 		free(mylist);
-// 		mylist = tmp;
-// 	}
-// // }
-// //
 
 void free_node(t_node* node)
 {

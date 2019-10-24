@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_print_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 14:38:53 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 14:05:43 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 14:05:32 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int			get_read(const int fd, char **line, char **tmp, char *buff)
 	return (0);
 }
 
-int					get_next_line(const int fd, char **line)
+int					get_print_line(const int fd, char **line)
 {
 	static char		*tmp[OPEN_MAX];
 	char			buff[BUFF_SIZE + 1];
@@ -101,11 +101,22 @@ int					get_next_line(const int fd, char **line)
 	if (tmp[fd])
 	{
 		if ((x = get_rest(fd, line, tmp)) != 0)
+		{
+			ft_putendl(*line);
 			return (x);
+		}
+
 	}
 	if ((x = get_read(fd, line, tmp, buff)) != 0)
+	{
+		ft_putendl(*line);
 		return (x);
+	}
 	if (line[0][0] == '\0')
+	{
+		ft_putendl(*line);
 		return (0);
+	}
+	ft_putendl(*line);
 	return (1);
 }

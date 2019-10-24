@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/21 14:31:39 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 14:08:51 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int get_number_of_ants(t_lemin *arg)
 		return (intreturn_mallocerr(1, arg));
 	if (arg->ants == -1)
 		arg->ants = ft_atoi(line);
+	ft_putendl(line);
 	ft_strdel(&line);
 	return (arg->ants == 0 ? -1 : 1);
 }

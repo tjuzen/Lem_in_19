@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 12:06:40 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 14:14:45 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 	if (ft_strcmp(line, "##start") == 0)
 	{
 		get_next_line(0, &line);
+		ft_putendl(line);
 		if (!line)
 		{
 			arg->malloc_error = -1;
@@ -30,6 +31,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 	if (ft_strcmp(line, "##end") == 0)
 	{
 		get_next_line(0, &line);
+		ft_putendl(line);
 		if (!line)
 		{
 			arg->malloc_error = -1;
@@ -43,12 +45,21 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 		return (map);
 	if (is_room(line, arg) == 1)
 	{
+		ft_putendl(line);
 		map = add_room(map, line, 'X', arg);
 		return (map);
 	}
 	if (is_link(line, map) == 1)
 	{
+		ft_putendl(line);
 		map = add_link(map, line);
+		return (map);
+	}
+	if (is_link(line, map) == -1)
+	{
+		printf("penis\n");
+		ft_putendl(line);
+		// map = add_link(map, line);
 		return (map);
 	}
 	arg->wrong_line = 1;

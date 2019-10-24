@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 14:08:01 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 15:41:12 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		map->list[new->key % map->size] = new;
 	else
 		map = add_collision(map, new, new->key);
+	printf("%lu\n", new->key);
 	// printf("Room %s Key %6lu Size %3lu Pos %3lu\n",new->room,  new->key, map->size, new->key % map->size);
-
+	ft_putendl(new->room);
 	ft_freetab_str(splitted);
 	return (map);
 }

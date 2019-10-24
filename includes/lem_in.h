@@ -33,6 +33,7 @@ struct			s_node
 	unsigned long	key;
 	unsigned long	pos;
 	char			status;
+	int				weight;
 	int				count_hash;
 	t_connect		*link;
 	t_node			*hash_next;

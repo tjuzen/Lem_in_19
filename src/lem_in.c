@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 16:39:16 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 19:50:50 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ int				main(void)
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
 	printf("\nis ok\n");
-	t_node *pute = lookup(map, hashCode("4"), "4");
+	t_node *pute = lookup(map, hashCode("2"), "2");
 	printf("Mon out %s\n", pute->link->out->link->next->out->room);
+    printf("Mon poids %d\n", pute->weight);
 	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->room);
 	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->link->in->link->out->link->in->link->out->room);
 	free_map(map);

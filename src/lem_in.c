@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 15:50:09 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 16:39:16 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 	{
 		if (tmp->key == key)
 		{
-			// printf("a %s b %s\n", room, tmp->room);
-			// if (ft_strcmp(room, tmp->link->in->room) != 0)
-			// {
-			// 	printf("!String is not equal but same key! : %s %s\n", room, tmp->room);
-			// 	return (NULL);
-			// }
-			printf("hihi %s\n", tmp->room);
+			if (ft_strcmp(room, tmp->room) != 0)
+			{
+				printf("!String is not equal but same key! : %s %s\n", room, tmp->room);
+				return (NULL);
+			}
+			// printf("hihi %s\n", tmp->room);
 			return (tmp);
 		}
 		tmp = tmp->hash_next;
@@ -73,9 +72,12 @@ int				main(void)
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-	free_map(map);
 	printf("\nis ok\n");
-	t_node *pute = lookup(map, hashCode("Kzn7"), "Kzn7");
-	printf("alo alo %s\n", pute->room);
+	t_node *pute = lookup(map, hashCode("4"), "4");
+	printf("Mon out %s\n", pute->link->out->link->next->out->room);
+	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->room);
+	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->link->in->link->out->link->in->link->out->room);
+	free_map(map);
+
 	return (0);
 }

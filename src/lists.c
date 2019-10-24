@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 19:53:20 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/10/24 22:07:30 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,46 +19,46 @@ t_data_map	*add_connection(t_data_map *map, t_connect *new, unsigned long key)
 	return (map);
 }
 
-t_data_map	*add_in(t_data_map *map, char *splitted0, char *splitted1)
+
+t_data_map	*add(t_data_map *map, char *splitted1, char *splitted0, t_lemin *arg)
 {
 	t_connect	*new;
+	t_linkstab	*newtab;
 
-	if (!(new = ft_memalloc(sizeof(t_connect))))
+	if (!(new = ft_memalloc(sizeof(t_connect))) || (!(newtab = ft_memalloc(sizeof(t_linkstab)))))
 	{
 		// ft_freetab_str(splitted);
 		return (NULL);
 	}
-	new->weight = 1;
-	new->in = lookup(map, hashCode(splitted0), splitted0);
-	new->out = lookup(map, hashCode(splitted1), splitted1);
-	if (map->list[hashCode(splitted0) % map->size]->link == NULL)
-		map->list[hashCode(splitted0) % map->size]->link = new;
+	// new->weight = 1;
+	// new->in = lookup(map, hashCode(splitted1), splitted1);
+	// new->out = lookup(map, hashCode(splitted0), splitted0);
+
+	newtab->weight = 1;
+	newtab->in = lookup(map, hashCode(splitted1), splitted1);
+	newtab->out = lookup(map, hashCode(splitted0), splitted0);
+
+	// if (map->list[hashCode(splitted1) % map->size]->link == NULL)
+	// 	map->list[hashCode(splitted1) % map->size]->link = new;
+	// else
+	// {
+	// 	new->next = map->list[hashCode(splitted1) % map->size]->link;
+	// 	map->list[hashCode(splitted1) % map->size]->link = new;
+	// }
+	if (map->links == NULL)
+		map->links = newtab;
 	else
-		map = add_connection(map, new, hashCode(splitted0));
-	return (map);
-}
-
-t_data_map	*add_out(t_data_map *map, char *splitted1, char *splitted0)
-{
-	t_connect	*new;
-
-	if (!(new = ft_memalloc(sizeof(t_connect))))
 	{
-		// ft_freetab_str(splitted);
-		return (NULL);
+		newtab->next = map->links;
+		map->links = newtab;
 	}
-	new->weight = 1;
-	new->in = lookup(map, hashCode(splitted1), splitted1);
-	new->out = lookup(map, hashCode(splitted0), splitted0);
-	printf("add out ajoute %s %s\n", splitted0, splitted1);
-	if (map->list[hashCode(splitted1) % map->size]->link == NULL)
-		map->list[hashCode(splitted1) % map->size]->link = new;
-	else
-		map = add_connection(map, new, hashCode(splitted1));
+		// map = add_connection(map, new, hashCode(splitted1));
+
+		// printf("ajoute in %s out %s\n", newtab->in->room, newtab->out->room);
 	return (map);
 }
 
-t_data_map	*add_link(t_data_map *map, char *line)
+t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg)
 {
 	char		**splitted;
 	unsigned long keya;
@@ -66,11 +66,14 @@ t_data_map	*add_link(t_data_map *map, char *line)
 
 	if (!(splitted = ft_strsplit(line, '-')))
 		return (NULL);
-	keya = hashCode(splitted[0]);
-	keyb = hashCode(splitted[1]);
+
+	// keya = hashCode(splitted[0]);
+	// keyb = hashCode(splitted[1]);
+	map = add(map, splitted[0], splitted[1], arg);
+
 	// printf("J'add in : ")
-	map = add_in(map, splitted[0], splitted[1]);
-	map = add_out(map, splitted[1], splitted[0]);
+	// map = add_in(map, splitted[0], splitted[1]);
+	arg->totalinks++;
 	ft_freetab_str(splitted);
 	return (map);
 }
@@ -108,13 +111,18 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	new->key = hashCode(new->room);
 	new->status = status;
 	if (status == 'I')
-		new->weight = 0;
+	{
+		new->weight= 0;
+		arg->first = new->room;
+	}
 	else
-		new->weight = INT_MAX;	
+		new->weight = INT_MAX;
 	if (map->list[new->key % map->size] == NULL)
 		map->list[new->key % map->size] = new;
 	else
 		map = add_collision(map, new, new->key);
+	arg->totalrooms++;
+
 	// printf("%lu\n", new->key);
 	// printf("Room %s Key %6lu Size %3lu Pos %3lu\n",new->room,  new->key, map->size, new->key % map->size);
 	ft_putendl(new->room);

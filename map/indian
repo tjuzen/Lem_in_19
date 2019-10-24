@@ -1,0 +1,18 @@
+10
+##start
+s 0 0
+t 0 0
+x 0 0
+##end
+z 0 0
+y 0 0
+s-t
+t-x
+x-t
+t-z
+z-x
+t-y
+y-z
+y-x
+s-y
+z-s

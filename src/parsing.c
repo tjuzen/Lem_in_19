@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 16:05:11 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 21:37:27 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 	if (is_link(line, map) == 1)
 	{
 		ft_putendl(line);
-		map = add_link(map, line);
+		map = add_link(map, line, arg);
 		return (map);
 	}
 	if (is_link(line, map) == -1)

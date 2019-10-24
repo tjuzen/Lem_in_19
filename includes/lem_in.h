@@ -20,11 +20,13 @@ typedef struct	s_node		t_node;
 typedef struct	s_data_map	t_data_map;
 typedef struct	s_connect	t_connect;
 typedef	struct	s_lemin		t_lemin;
+typedef	struct	s_linkstab	t_linkstab;
 
 struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
+	t_linkstab		*links;
 };
 
 struct			s_node
@@ -53,8 +55,18 @@ struct	s_lemin
 	int				wrong_line;
 	int				malloc_error;
 	int				count_hash;
-	int				start;
-	int				end;
+	unsigned long	totalrooms;
+	unsigned long	totalinks;
+	char			*first;
+};
+
+struct			s_linkstab
+{
+	t_node			*in;
+	t_node			*out;
+	t_node			*first;
+	int				weight;
+	t_linkstab		*next;
 };
 
 /*
@@ -105,7 +117,8 @@ void 			free_map(t_data_map* map);
 void 			free_node(t_node* node);
 t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
-t_data_map		*add_link(t_data_map *map, char *line);
+t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg);
 int				is_link(char *line, t_data_map *map);
+int				bellman_peugeot(t_data_map *map, t_lemin *arg);
 
 #endif

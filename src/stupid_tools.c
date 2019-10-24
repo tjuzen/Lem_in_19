@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 12:13:11 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 22:07:01 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void			init_arg(t_lemin *arg)
 	arg->wrong_line = 0;
 	arg->malloc_error = 0;
 	arg->count_hash = 0;
-	arg->start = 0;
-	arg->end = 0;
+	arg->totalrooms = 0;
+	arg->totalinks = 0;
 }
 
 t_data_map	*return_delete(t_data_map	*map, char *line)

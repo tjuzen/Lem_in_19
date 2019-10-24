@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/21 14:32:58 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 11:56:45 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,31 @@ int		is_room(char *line, t_lemin *arg)
 		if (ft_isdigit(splitted[2][i]) != 1)
 			return (retfreetab_str(splitted, -1));
 	return (retfreetab_str(splitted, 1));
+}
+
+int		is_link(char *line, t_data_map *map)
+{
+	char	**splitted;
+	int		i;
+
+	i = -1;
+	splitted = NULL;
+	if (!(splitted = ft_strsplit(line, '-')))
+		return (-1);
+	if (!(splitted[0] || (!(splitted[1]))))
+	{
+		ft_freetab_str(splitted);
+		printf("n'existe pas mais ici\n");
+		return (-1);
+	}
+
+	if (map->list[hashCode(splitted[0]) % map->size] == NULL || map->list[hashCode(splitted[1]) % map->size] == NULL)
+	{
+		printf("%s %s\n", splitted[0], splitted[1]);
+		ft_freetab_str(splitted);
+		printf("n'existe pas\n");
+		return (-1);
+	}
+	ft_freetab_str(splitted);
+	return (1);
 }

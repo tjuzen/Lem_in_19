@@ -16,7 +16,16 @@
 **	Définition de ma Data_Map
 */
 
-typedef struct s_node	t_node;
+typedef struct	s_node		t_node;
+typedef struct	s_data_map	t_data_map;
+typedef struct	s_connect	t_connect;
+typedef	struct	s_lemin		t_lemin;
+
+struct s_data_map
+{
+	unsigned long	size;
+	t_node			**list;
+};
 
 struct			s_node
 {
@@ -25,47 +34,43 @@ struct			s_node
 	unsigned long	pos;
 	char			status;
 	int				count_hash;
+	t_connect		*link;
 	t_node			*hash_next;
 };
 
-typedef struct s_data_map	t_data_map;
-
-struct s_data_map
+struct			s_connect
 {
-	unsigned long	size;
-	t_node		**list;
+	t_node			*in;
+	t_node			*out;
+	int				weight;
+	t_connect		*next;
 };
 
-/*
-** Définition de ma structure
-*/
-
-typedef	struct	s_lemin
+struct	s_lemin
 {
-	int	ants;
-	int wrong_line;
-	int malloc_error;
-	int count_hash;
-	int start;
-	int end;
-}				t_lemin;
+	int				ants;
+	int				wrong_line;
+	int				malloc_error;
+	int				count_hash;
+	int				start;
+	int				end;
+};
 
 /*
 ** STUPID_TOOLS.C
 */
 
-t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg);
+t_data_map		*lstreturn_mallocerr(int value, t_lemin *arg);
 int				intreturn_mallocerr(int value, t_lemin *arg);
 void			init_arg(t_lemin *arg);
 int 			exit_free(t_lemin *arg, t_data_map *map);
-t_data_map	*return_delete(t_data_map *map, char *line);
+t_data_map		*return_delete(t_data_map *map, char *line);
 
 /*
 ** LISTS.C
 */
 
-t_data_map	*reverse_list(t_data_map *map);
-t_data_map	*add_room(t_data_map *map, char *str, char state, t_lemin *arg);
+t_data_map		*add_room(t_data_map *map, char *str, char state, t_lemin *arg);
 void			print_delete(t_data_map *map, t_lemin *arg);
 void			delete(t_data_map *map, t_lemin *arg);
 
@@ -81,9 +86,9 @@ t_data_map 		*read_file(t_lemin *arg, t_data_map *map);
 */
 
 int 			get_number_of_ants(t_lemin *arg);
-t_data_map	*start(t_data_map *map, char *str, char status, t_lemin *arg);
-t_data_map 	*end(t_lemin *arg, t_data_map *map);
-void insert(t_data_map *map ,unsigned long pos, char *value, t_node	*tmp);
+t_data_map		*start(t_data_map *map, char *str, char status, t_lemin *arg);
+t_data_map 		*end(t_lemin *arg, t_data_map *map);
+void 			insert(t_data_map *map ,unsigned long pos, char *value, t_node	*tmp);
 
 /*
 ** VALID_LINE.C
@@ -94,9 +99,12 @@ int 			is_comment(char *line, t_lemin *arg);
 
 
 
-unsigned long hashCode(char *room);
-void free_map(t_data_map* map);
-void free_node(t_node* node);
-t_data_map	*add_collision(t_data_map *map, t_node *new);
+unsigned long 	hashCode(char *room);
+void 			free_map(t_data_map* map);
+void 			free_node(t_node* node);
+t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
+t_node			*lookup(t_data_map *map, unsigned long key, char *room);
+t_data_map		*add_link(t_data_map *map, char *line);
+int				is_link(char *line, t_data_map *map);
 
 #endif

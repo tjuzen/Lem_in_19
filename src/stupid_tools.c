@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/23 20:21:26 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/24 12:13:11 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,21 @@ t_data_map	*return_delete(t_data_map	*map, char *line)
 	return (map);
 }
 
+void free_link(t_connect *link)
+{
+	t_connect	*tmp;
+
+	tmp = link;
+	while (tmp != NULL)
+		tmp = tmp->next;
+	while (link)
+	{
+		tmp = link->next;
+		free(link);
+		link = tmp;
+	}
+}
+
 void free_node(t_node* node)
 {
 	t_node	*tmp;
@@ -50,6 +65,7 @@ void free_node(t_node* node)
 	while (node)
 	{
 		tmp = node->hash_next;
+		free_link(node->link);
 		ft_strdel(&node->room);
 		free(node);
 		node = tmp;
@@ -75,6 +91,7 @@ void free_map(t_data_map* map)
 
 int				exit_free(t_lemin *arg, t_data_map	*map)
 {
+	printf("J'exit free\n");
 	if (arg->malloc_error == -1)
 	{
 		ft_putendl("error get_next_line!");

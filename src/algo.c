@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 22:39:51 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/25 16:41:56 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,26 @@ void add_first_turn(t_data_map *map, t_lemin *arg)
 int bellman_peugeot(t_data_map *map, t_lemin *arg)
 {
 	t_linkstab *link;
-	t_linkstab *linkorigine;
+	int			one_room;
+	int			two_room;
 
 	link = map->links;
-	linkorigine = map->links;
-	while (link->next)
-	{
-		printf("Mon lien = %s %s\n", link->in->room, link->out->room);
-		link = link->next;
-	}
 	printf("Mon totalinks = %lu\n\n", arg->totalinks);
-
-
-	int count = arg->totalinks;
 	int countrooms = arg->totalrooms;
-	link = map->links;
 	while (countrooms - 1 > 0)
 	{
-		count = arg->totalinks;
+		link = map->links;
 		while (link->next)
 		{
-			printf("in avant %d out avant %d link avant %d\n", link->in->weight, link->out->weight, link->weight);
-			//
-			if (link->in->weight + link->weight < link->out->weight)
-				link->out->weight = link->weight;
-			printf("in apres %d out apres %d link apres %d\n\n", link->in->weight, link->out->weight, link->weight);
+			one_room = map->list[hashCode(link->in->room) % map->size]->weight;
+			two_room = map->list[hashCode(link->out->room) % map->size]->weight;
+			// printf("________room nb: %s |%010d| room nb: %s |%010d|\n", link->in->room, one_room, link->out->room, two_room);
+			// printf("________link_wei |%d|\n", link->weight);
+			if (one_room != INT_MAX - 10 && one_room + link->weight < two_room)
+				map->list[hashCode(link->out->room) % map->size]->weight = link->weight + one_room;
+			printf("________room nb: %s |%010d| room nb: %s |%010d|\n", link->in->room, map->list[hashCode(link->in->room) % map->size]->weight, link->out->room, map->list[hashCode(link->out->room) % map->size]->weight);
+			// printf("________link_wei |%d|\n", link->weight);
+
 
 			link = link->next;
 		}

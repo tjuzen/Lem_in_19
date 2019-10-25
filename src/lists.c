@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 22:07:30 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/10/25 15:44:48 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		arg->first = new->room;
 	}
 	else
-		new->weight = INT_MAX;
+		new->weight = INT_MAX - 10;
 	if (map->list[new->key % map->size] == NULL)
 		map->list[new->key % map->size] = new;
 	else

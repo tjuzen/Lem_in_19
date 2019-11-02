@@ -79,14 +79,10 @@ int				main(void)
 
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-	printf("\nis ok\n");
+
 	bellman_peugeot(map, &arg);
-	// t_node *pute = lookup(map, hashCode("2"), "2");
-	// printf("Mon out %s\n", pute->link->out->link->next->out->room);
-    // printf("Mon poids %d\n", pute->weight);
-	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->room);
-	// printf("alo alo %s\n", pute->link->out->link->out->link->out->link->out->link->out->link->in->link->out->link->in->link->out->room);
-	free_map(map);
+	
+	// free_map(map);
 
 	return (0);
 }

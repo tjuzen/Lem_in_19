@@ -12,6 +12,13 @@
 
 #include "../includes/lem_in.h"
 
+void 	print_path(t_data_map *map, t_lemin *arg, t_node *parent)
+{
+	if (parent->parent)
+		print_path(map, arg, parent->parent);
+	printf(" %s", parent->room);
+}
+
 void add_first_turn(t_data_map *map, t_lemin *arg)
 {
 	t_node *tmp;
@@ -26,31 +33,42 @@ void add_first_turn(t_data_map *map, t_lemin *arg)
 
 int bellman_peugeot(t_data_map *map, t_lemin *arg)
 {
-	t_linkstab *link;
-	int			one_room;
-	int			two_room;
+	t_linkstab	*link;
+	t_node		*room_a;
+	t_node		*room_b;
+	int			countrooms;
 
-	link = map->links;
-	printf("Mon totalinks = %lu\n\n", arg->totalinks);
-	int countrooms = arg->totalrooms;
-	while (countrooms - 1 > 0)
+	printf("\n");
+
+	countrooms = arg->totalrooms;
+	while (--countrooms > 0)
 	{
 		link = map->links;
 		while (link->next)
 		{
-			one_room = map->list[hashCode(link->in->room) % map->size]->weight;
-			two_room = map->list[hashCode(link->out->room) % map->size]->weight;
-			// printf("________room nb: %s |%010d| room nb: %s |%010d|\n", link->in->room, one_room, link->out->room, two_room);
-			// printf("________link_wei |%d|\n", link->weight);
-			if (one_room != INT_MAX - 10 && one_room + link->weight < two_room)
-				map->list[hashCode(link->out->room) % map->size]->weight = link->weight + one_room;
-			printf("________room nb: %s |%010d| room nb: %s |%010d|\n", link->in->room, map->list[hashCode(link->in->room) % map->size]->weight, link->out->room, map->list[hashCode(link->out->room) % map->size]->weight);
-			// printf("________link_wei |%d|\n", link->weight);
+			room_a = lookup(map, hashCode(link->in->room), link->in->room);
+			room_b = lookup(map, hashCode(link->out->room), link->out->room);
 
-
+			if (room_a->weight != INT_MAX - 10 && room_a->weight + link->weight < room_b->weight)
+			{
+				room_b->weight = link->weight + room_a->weight;
+				room_b->parent = room_a;
+			}
 			link = link->next;
 		}
-		countrooms--;
 	}
+
+	// while (map->easyList)
+	// {
+	// 	printf("Poids de %s : %i\n", map->easyList->room, map->easyList->weight);
+	// 	map->easyList = map->easyList->hash_next;
+	// }
+	// printf("\n");
+
+
+	printf("My path from src to dest is ");
+	print_path(map, arg, map->list[hashCode("F") % map->size]);
+	printf("\n");
+
 	return (1);
 }

@@ -117,10 +117,21 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	}
 	else
 		new->weight = INT_MAX - 10;
-	if (map->list[new->key % map->size] == NULL)
+	if (lookup(map, new->key, new->room) == NULL)
 		map->list[new->key % map->size] = new;
 	else
 		map = add_collision(map, new, new->key);
+
+
+	if (map->easyList == NULL)
+		map->easyList = new;
+	else
+	{
+		new->hash_next = map->easyList;
+		map->easyList = new;
+	}
+
+
 	arg->totalrooms++;
 
 	// printf("%lu\n", new->key);

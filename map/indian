@@ -1,18 +1,27 @@
 10
 ##start
 s 0 0
-t 0 0
-x 0 0
+a 0 0
+b 0 0
+c 0 0
+e 0 0
+f 0 0
+g 0 0
+h 0 0
+i 0 0
+j 0 0
 ##end
-z 0 0
-y 0 0
-s-t
-t-x
-x-t
-t-z
-z-x
-t-y
-y-z
-y-x
-s-y
-z-s
+d 0 0
+s-a
+s-b
+s-c
+a-e
+e-h
+h-d
+b-f
+f-i
+i-d
+c-g
+g-j
+j-d
+a-i

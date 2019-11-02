@@ -21,11 +21,14 @@ typedef struct	s_data_map	t_data_map;
 typedef struct	s_connect	t_connect;
 typedef	struct	s_lemin		t_lemin;
 typedef	struct	s_linkstab	t_linkstab;
+typedef	struct	s_easyNode	t_easyNode;
+
 
 struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
+	t_node			*easyList;
 	t_linkstab		*links;
 };
 
@@ -38,6 +41,7 @@ struct			s_node
 	int				weight;
 	int				count_hash;
 	t_connect		*link;
+	t_node 			*parent;
 	t_node			*hash_next;
 };
 

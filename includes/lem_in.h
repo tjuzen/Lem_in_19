@@ -45,14 +45,6 @@ struct			s_node
 	t_node			*hash_next;
 };
 
-struct			s_connect
-{
-	t_node			*in;
-	t_node			*out;
-	int				weight;
-	t_connect		*next;
-};
-
 struct	s_lemin
 {
 	int				ants;
@@ -61,7 +53,8 @@ struct	s_lemin
 	int				count_hash;
 	unsigned long	totalrooms;
 	unsigned long	totalinks;
-	char			*first;
+	t_node			*start;
+	t_node			*end;
 };
 
 struct			s_linkstab
@@ -124,5 +117,6 @@ t_node			*lookup(t_data_map *map, unsigned long key, char *room);
 t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg);
 int				is_link(char *line, t_data_map *map);
 int				bellman_peugeot(t_data_map *map, t_lemin *arg);
+int 			find_path(t_data_map *map, t_lemin *arg);
 
 #endif

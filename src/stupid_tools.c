@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 22:07:01 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/04 14:00:14 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,6 @@ t_data_map	*return_delete(t_data_map	*map, char *line)
 	return (map);
 }
 
-void free_link(t_connect *link)
-{
-	t_connect	*tmp;
-
-	tmp = link;
-	while (tmp != NULL)
-		tmp = tmp->next;
-	while (link)
-	{
-		tmp = link->next;
-		free(link);
-		link = tmp;
-	}
-}
 
 void free_node(t_node* node)
 {
@@ -65,7 +51,7 @@ void free_node(t_node* node)
 	while (node)
 	{
 		tmp = node->hash_next;
-		free_link(node->link);
+		// free_link(node->link);
 		ft_strdel(&node->room);
 		free(node);
 		node = tmp;
@@ -76,6 +62,7 @@ void free_map(t_data_map* map)
 {
 	unsigned long i;
 	t_node *tmp;
+	t_linkstab	*tmp2;
 
 	i = 0;
 	while (i < map->size)
@@ -84,6 +71,15 @@ void free_map(t_data_map* map)
 		if (tmp != NULL)
 			free_node(tmp);
 		i++;
+	}
+	tmp2 = map->links;
+	while (tmp2 != NULL)
+		tmp2 = tmp2->next;
+	while (map->links)
+	{
+		tmp2 = map->links->next;
+		free(map->links);
+		map->links = tmp2;
 	}
     free(map->list);
     free(map);

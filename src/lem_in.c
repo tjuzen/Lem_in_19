@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 21:20:54 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/04 13:18:51 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ unsigned long hashCode(char *room)
     unsigned long  hash = 0;
     while (*room)
         hash = (hash * 6 * 10) + *room++ - '0' + 't' + 'j' + 'u' + 'z' + 'e' + 'n';
-	// hash = (hash * 10) + *room++ - '0'; // donne bcp de fois la same key
 	return (hash);
 }
 
@@ -35,7 +34,6 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 				printf("!String is not equal but same key! : %s %s\n", room, tmp->room);
 				return (NULL);
 			}
-			// printf("hihi %s\n", tmp->room);
 			return (tmp);
 		}
 		tmp = tmp->hash_next;
@@ -76,13 +74,9 @@ int				main(void)
 	if (!(map = createMap(50000)))
 		return (exit_free(&arg, map));
 	map = read_file(&arg, map);
-
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-
-	bellman_peugeot(map, &arg);
-	
-	// free_map(map);
-
+	find_path(map, &arg);
+	free_map(map);
 	return (0);
 }

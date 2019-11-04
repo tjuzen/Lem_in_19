@@ -6,45 +6,26 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/25 15:44:48 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/04 13:58:01 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_data_map	*add_connection(t_data_map *map, t_connect *new, unsigned long key)
-{
-	new->next = map->list[key % map->size]->link;
-	map->list[key % map->size]->link = new;
-	return (map);
-}
-
-
 t_data_map	*add(t_data_map *map, char *splitted1, char *splitted0, t_lemin *arg)
 {
-	t_connect	*new;
 	t_linkstab	*newtab;
 
-	if (!(new = ft_memalloc(sizeof(t_connect))) || (!(newtab = ft_memalloc(sizeof(t_linkstab)))))
+	if (!(newtab = ft_memalloc(sizeof(t_linkstab))))
 	{
 		// ft_freetab_str(splitted);
 		return (NULL);
 	}
-	// new->weight = 1;
-	// new->in = lookup(map, hashCode(splitted1), splitted1);
-	// new->out = lookup(map, hashCode(splitted0), splitted0);
 
 	newtab->weight = 1;
 	newtab->in = lookup(map, hashCode(splitted1), splitted1);
 	newtab->out = lookup(map, hashCode(splitted0), splitted0);
 
-	// if (map->list[hashCode(splitted1) % map->size]->link == NULL)
-	// 	map->list[hashCode(splitted1) % map->size]->link = new;
-	// else
-	// {
-	// 	new->next = map->list[hashCode(splitted1) % map->size]->link;
-	// 	map->list[hashCode(splitted1) % map->size]->link = new;
-	// }
 	if (map->links == NULL)
 		map->links = newtab;
 	else
@@ -52,9 +33,6 @@ t_data_map	*add(t_data_map *map, char *splitted1, char *splitted0, t_lemin *arg)
 		newtab->next = map->links;
 		map->links = newtab;
 	}
-		// map = add_connection(map, new, hashCode(splitted1));
-
-		// printf("ajoute in %s out %s\n", newtab->in->room, newtab->out->room);
 	return (map);
 }
 
@@ -66,13 +44,7 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg)
 
 	if (!(splitted = ft_strsplit(line, '-')))
 		return (NULL);
-
-	// keya = hashCode(splitted[0]);
-	// keyb = hashCode(splitted[1]);
 	map = add(map, splitted[0], splitted[1], arg);
-
-	// printf("J'add in : ")
-	// map = add_in(map, splitted[0], splitted[1]);
 	arg->totalinks++;
 	ft_freetab_str(splitted);
 	return (map);
@@ -110,32 +82,33 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	}
 	new->key = hashCode(new->room);
 	new->status = status;
+
 	if (status == 'I')
 	{
 		new->weight= 0;
-		arg->first = new->room;
+		arg->start = new;
 	}
 	else
+	{
+		if (status == 'O')
+			arg->end = new;
 		new->weight = INT_MAX - 10;
-	if (lookup(map, new->key, new->room) == NULL)
+	}
+
+	if (map->list[new->key % map->size] == NULL)
 		map->list[new->key % map->size] = new;
 	else
 		map = add_collision(map, new, new->key);
 
-
-	if (map->easyList == NULL)
-		map->easyList = new;
-	else
-	{
-		new->hash_next = map->easyList;
-		map->easyList = new;
-	}
-
+	// if (map->easyList == NULL)
+	// 	map->easyList = new;
+	// else
+	// {
+	// 	new->hash_next = map->easyList;
+	// 	map->easyList = new;
+	// }
 
 	arg->totalrooms++;
-
-	// printf("%lu\n", new->key);
-	// printf("Room %s Key %6lu Size %3lu Pos %3lu\n",new->room,  new->key, map->size, new->key % map->size);
 	ft_putendl(new->room);
 	ft_freetab_str(splitted);
 	return (map);

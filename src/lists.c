@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 13:58:01 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/04 19:25:32 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,16 +82,18 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	}
 	new->key = hashCode(new->room);
 	new->status = status;
-
+	new->isactive = 0;
 	if (status == 'I')
 	{
 		new->weight= 0;
 		arg->start = new;
+		// new->isactive = 1;
 	}
 	else
 	{
 		if (status == 'O')
 			arg->end = new;
+		// new->isactive = 0;
 		new->weight = INT_MAX - 10;
 	}
 

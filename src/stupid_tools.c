@@ -6,16 +6,16 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 14:00:14 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/04 14:41:41 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg)
+t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map)
 {
 	arg->malloc_error = value;
-	return (NULL);
+	return (map);
 }
 
 int				intreturn_mallocerr(int value, t_lemin *arg)
@@ -51,7 +51,6 @@ void free_node(t_node* node)
 	while (node)
 	{
 		tmp = node->hash_next;
-		// free_link(node->link);
 		ft_strdel(&node->room);
 		free(node);
 		node = tmp;
@@ -87,14 +86,19 @@ void free_map(t_data_map* map)
 
 int				exit_free(t_lemin *arg, t_data_map	*map)
 {
-	printf("J'exit free\n");
 	if (arg->malloc_error == -1)
 	{
 		ft_putendl("error get_next_line!");
 		free_map(map);
 	}
 	if (arg->malloc_error == 1)
-		ft_putendl("error malloc room!");
+	{
+		ft_putendl("error malloc room! hihi");
+		free(map->list);
+		free(map->links);
+		free(map);
+		// free_map(map);
+	}
 	if (arg->malloc_error == 2)
 		ft_putendl("Wrong start or end!");
 	if (arg->malloc_error == 3)

@@ -18,7 +18,6 @@
 
 typedef struct	s_node		t_node;
 typedef struct	s_data_map	t_data_map;
-typedef struct	s_connect	t_connect;
 typedef	struct	s_lemin		t_lemin;
 typedef	struct	s_linkstab	t_linkstab;
 typedef	struct	s_easyNode	t_easyNode;
@@ -40,9 +39,9 @@ struct			s_node
 	char			status;
 	int				weight;
 	int				count_hash;
-	t_connect		*link;
 	t_node 			*parent;
 	t_node			*hash_next;
+	int				isactive;
 };
 
 struct	s_lemin
@@ -70,7 +69,7 @@ struct			s_linkstab
 ** STUPID_TOOLS.C
 */
 
-t_data_map		*lstreturn_mallocerr(int value, t_lemin *arg);
+t_data_map		*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map);
 int				intreturn_mallocerr(int value, t_lemin *arg);
 void			init_arg(t_lemin *arg);
 int 			exit_free(t_lemin *arg, t_data_map *map);
@@ -115,7 +114,7 @@ void 			free_node(t_node* node);
 t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
 t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg);
-int				is_link(char *line, t_data_map *map);
+int				is_link(char *line, t_data_map *map, t_lemin *arg);
 int				bellman_peugeot(t_data_map *map, t_lemin *arg);
 int 			find_path(t_data_map *map, t_lemin *arg);
 

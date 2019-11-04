@@ -7,8 +7,15 @@ D 1 1
 E 1 1
 ##end
 F 1 1
+G 0 0
+H 0 0
+I 0 0
 A-B
 B-C
 C-D
+C-G
+G-H
+H-I
+I-E
 D-E
 E-F

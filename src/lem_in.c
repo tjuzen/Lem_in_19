@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 13:18:51 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/04 15:58:47 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_data_map *createMap(unsigned long size)
    if (!(map->links = (t_linkstab*)ft_memalloc(sizeof(t_linkstab*)*size)))
    {
 	   free(map);
-	   //free(map->list);
+	   free(map->list);
 	  return (NULL);
    }
    return (map);
@@ -76,6 +76,7 @@ int				main(void)
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
+	// clean_rooms(map, &arg);
 	find_path(map, &arg);
 	free_map(map);
 	return (0);

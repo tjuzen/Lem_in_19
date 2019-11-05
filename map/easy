@@ -12,10 +12,15 @@ H 0 0
 I 0 0
 A-B
 B-C
+E-F
 C-D
 C-G
+F-A
+F-B
 G-H
 H-I
 I-E
+E-F
+B-A
 D-E
 E-F

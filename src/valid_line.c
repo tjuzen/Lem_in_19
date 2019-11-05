@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 14:53:11 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:42:00 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 {
 	char	**splitted;
 	int		i;
+	t_node	*room_a;
+	t_node	*room_b;
+
 
 	i = -1;
 	splitted = NULL;
@@ -55,14 +58,12 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 	if (!(splitted[0] || (!(splitted[1]))))
 	{
 		ft_freetab_str(splitted);
-		printf("n'existe pas mais ici\n");
 		return (-1);
 	}
-
-	if (map->list[hashCode(splitted[0]) % map->size] == NULL || map->list[hashCode(splitted[1]) % map->size] == NULL)
+	room_a = lookup(map, hashCode(splitted[0]), splitted[0]);
+	room_b = lookup(map, hashCode(splitted[1]), splitted[1]);
+	if (room_a == NULL || room_b == NULL)
 	{
-		arg->malloc_error = -1;
-		printf("%s %s n'existe pas\n", splitted[0], splitted[1]);
 		ft_freetab_str(splitted);
 		return (-1);
 	}

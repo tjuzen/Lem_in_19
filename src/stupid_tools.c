@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 14:41:41 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:23:25 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int				exit_free(t_lemin *arg, t_data_map	*map)
 		free(map->list);
 		free(map->links);
 		free(map);
-		// free_map(map);
 	}
 	if (arg->malloc_error == 2)
 		ft_putendl("Wrong start or end!");

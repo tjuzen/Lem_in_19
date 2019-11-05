@@ -62,6 +62,7 @@ struct			s_linkstab
 	t_node			*out;
 	t_node			*first;
 	int				weight;
+	int				directed;
 	t_linkstab		*next;
 };
 

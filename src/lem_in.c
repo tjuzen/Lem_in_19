@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 15:58:47 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:22:58 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ unsigned long hashCode(char *room)
 {
     unsigned long  hash = 0;
     while (*room)
-        hash = (hash * 6 * 10) + *room++ - '0' + 't' + 'j' + 'u' + 'z' + 'e' + 'n';
+        hash = (hash * 6 * 10) + *room++ - '0' +
+		't' + 'j' + 'u' + 'z' + 'e' + 'n' +
+		'b' + 's' + 'u' + 'a' + 'r' + 'e' + 'z';
 	return (hash);
 }
 
@@ -27,15 +29,8 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 	tmp = map->list[key % map->size];
 	while (tmp)
 	{
-		if (tmp->key == key)
-		{
-			if (ft_strcmp(room, tmp->room) != 0)
-			{
-				printf("!String is not equal but same key! : %s %s\n", room, tmp->room);
-				return (NULL);
-			}
-			return (tmp);
-		}
+		if (tmp->key == key && ft_strcmp(room, tmp->room) == 0)
+				return (tmp);
 		tmp = tmp->hash_next;
 	}
 	return (NULL);
@@ -76,7 +71,6 @@ int				main(void)
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-	// clean_rooms(map, &arg);
 	find_path(map, &arg);
 	free_map(map);
 	return (0);

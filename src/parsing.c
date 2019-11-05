@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/04 14:55:33 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/05 12:40:30 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 		return (map);
 	}
 	if (is_comment(line, arg) == 1)
-	{
-		// printf("is comment prout lol");
 		return (map);
-	}
 	if (is_room(line, arg) == 1)
 	{
 		map = add_room(map, line, 'X', arg);
@@ -69,7 +66,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 		map = add_link(map, line, arg);
 		return (map);
 	}
-	printf("Wrong line\n");
+	printf("\nWrong line\n");
 	arg->wrong_line = 1;
 	return (map);
 }

@@ -40,7 +40,10 @@ struct			s_node
 	int				weight;
 	int				count_hash;
 	t_node 			*parent;
+	t_node			*child;
 	t_node			*hash_next;
+	t_linkstab		*to;
+	t_linkstab		*from;
 	int				isactive;
 };
 
@@ -64,6 +67,8 @@ struct			s_linkstab
 	int				weight;
 	int				directed;
 	t_linkstab		*next;
+	t_linkstab		*nextfrom;
+	t_linkstab		*nexto;
 };
 
 /*

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/05 12:50:25 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/05 14:27:42 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,45 @@
 t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg)
 {
 	char			**splitted;
-	unsigned long	keya;
-	unsigned long	keyb;
-	t_linkstab		*newtab;
+	t_linkstab		*newlink;
 
 	if (!(splitted = ft_strsplit(line, '-')))
 	{
 		arg->malloc_error = 1;
 		return (map);
 	}
-	if (!(newtab = ft_memalloc(sizeof(t_linkstab))))
+	if (!(newlink = ft_memalloc(sizeof(t_linkstab))))
 	{
 		arg->malloc_error = 1;
 		ft_freetab_str(splitted);
 		return (map);
 	}
-	newtab->weight = 1;
-	newtab->directed = 1;
-	newtab->in = lookup(map, hashCode(splitted[0]), splitted[0]);
-	newtab->out = lookup(map, hashCode(splitted[1]), splitted[1]);
-	if (!(newtab->in || (!(newtab->out))))
+	newlink->weight = 1;
+	newlink->directed = 1;
+	newlink->in = lookup(map, hashCode(splitted[0]), splitted[0]);
+	newlink->out = lookup(map, hashCode(splitted[1]), splitted[1]);
+	if (!(newlink->in || (!(newlink->out))))
 		return (map);
-	if (map->links == NULL)
-		map->links = newtab;
+	if (!(newlink->in->from))
+		newlink->in->from = newlink;
 	else
 	{
-		newtab->next = map->links;
-		map->links = newtab;
+		newlink->nextfrom = newlink->in->from;
+		newlink->in->from = newlink;
+	}
+	if (!(newlink->out->to))
+		newlink->out->to = newlink;
+	else
+	{
+		newlink->nexto = newlink->out->to;
+		newlink->out->to = newlink;
+	}
+	if (map->links == NULL)
+		map->links = newlink;
+	else
+	{
+		newlink->next = map->links;
+		map->links = newlink;
 	}
 	arg->totalinks++;
 	ft_freetab_str(splitted);

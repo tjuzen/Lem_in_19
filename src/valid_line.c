@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/05 12:42:00 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/06 15:17:31 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ int		is_room(char *line, t_lemin *arg)
 	if (line[0] == '#' || line[0] == 'L')
 		return (-1);
 	if (!(splitted = ft_strsplit(line, ' ')))
-		return (intreturn_mallocerr(1, arg));
+		return (intreturn_mallocerr(-1, arg));
 	if (!(splitted[0]) || !(splitted[1]) || !(splitted[2]) || splitted[3])
+	{
+		printf("JE RENTRE\n");
 		return (retfreetab_str(splitted, -1));
+	}
 	while (splitted[1][++i])
 		if (ft_isdigit(splitted[1][i]) != 1)
 			return (retfreetab_str(splitted, -1));
@@ -57,11 +60,13 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 		return (-1);
 	if (!(splitted[0] || (!(splitted[1]))))
 	{
+		printf("FDP\n");
 		ft_freetab_str(splitted);
 		return (-1);
 	}
 	room_a = lookup(map, hashCode(splitted[0]), splitted[0]);
 	room_b = lookup(map, hashCode(splitted[1]), splitted[1]);
+	printf("FDP\n");
 	if (room_a == NULL || room_b == NULL)
 	{
 		ft_freetab_str(splitted);

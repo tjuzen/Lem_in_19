@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/05 17:06:39 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/06 15:17:50 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 unsigned long hashCode(char *room)
 {
     unsigned long  hash = 0;
+
+	if (!(room))
+		return (0);
     while (*room)
         hash = (hash * 6 * 10) + *room++ - '0' +
 		't' + 'j' + 'u' + 'z' + 'e' + 'n' +

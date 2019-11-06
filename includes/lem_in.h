@@ -27,7 +27,7 @@ struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
-	t_node			*easyList;
+	t_node			*easyList; // ?
 	t_linkstab		*links;
 };
 
@@ -40,10 +40,10 @@ struct			s_node
 	int				weight;
 	int				count_hash;
 	t_node 			*parent;
-	t_node			*child;
-	t_node			*hash_next;
-	t_linkstab		*to;
-	t_linkstab		*from;
+	t_node			*child; // ?
+	t_node			*hash_next; // pour lookup
+	t_linkstab		*to;   // liste des links : nodeY->node, nodeX->node, ...
+	t_linkstab		*from; // liste des links : node->nodeY, node->nodeX, ...
 	int				isactive;
 };
 
@@ -63,9 +63,9 @@ struct			s_linkstab
 {
 	t_node			*in;
 	t_node			*out;
-	t_node			*first;
+	t_node			*first; // ?
 	int				weight;
-	int				directed;
+	int				directed; // ?
 	t_linkstab		*next;
 	t_linkstab		*nextfrom;
 	t_linkstab		*nexto;
@@ -123,5 +123,6 @@ t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg);
 int				is_link(char *line, t_data_map *map, t_lemin *arg);
 int				bellman_peugeot(t_data_map *map, t_lemin *arg);
 int 			find_path(t_data_map *map, t_lemin *arg);
+t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 
 #endif

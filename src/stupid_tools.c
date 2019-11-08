@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/06 11:28:26 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/08 19:36:25 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,6 @@ void free_map(t_data_map* map)
 		free(map->links);
 		map->links = tmp2;
 	}
-    free(map->list);
-    free(map);
 }
 
 int				exit_free(t_lemin *arg, t_data_map	*map)

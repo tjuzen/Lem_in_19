@@ -6,11 +6,42 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/07 20:08:36 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/08 19:30:56 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+void		update_links(t_data_map *map, t_lemin *arg)
+{
+	t_linkstab *link;
+
+	link = map->links;
+
+}
+
+void 		multiply_room(t_data_map *map, t_lemin *arg, int y)
+{
+	t_path	*path;
+	char	*in;
+	char	*out;
+	char	*newroom;
+
+	in = ft_strdup("#i-");
+	out = ft_strdup("#o-");
+	path = map->wayList[y];
+	while (path->x_next)
+	{
+		if (path->room->status == 'X')
+		{
+			newroom = ft_strjoin(in, path->room->room);
+			map = add_room(map, newroom, 'X', arg);
+			newroom = ft_strjoin(out, path->room->room);
+			map = add_room(map, newroom, 'X', arg);
+		}
+		path = path->x_next;
+	}
+}
 
 t_data_map	*add_path(t_data_map *map, t_node *tmp, t_lemin *arg, int y)
 {
@@ -161,6 +192,7 @@ int find_path(t_data_map *map, t_lemin *arg)
 	modify_path(map, arg);
 	add_path(map, arg->start, arg, 0);
 	follow(map, arg, arg->end, 0);
+	multiply_room(map, arg, 0);
 	print_path(map, arg, arg->end);
 	print_all_links(map, *map->wayList, map->links, 1);
 	print_all_links(map, *map->wayList, map->links, 0);
@@ -168,13 +200,13 @@ int find_path(t_data_map *map, t_lemin *arg)
 
 
 	// print_way(map, arg, map->walker);
-	bellman_peugeot(map, arg);
-	follow(map, arg, arg->end, 1);
-	print_path(map, arg, arg->end);
-	print_all_links(map, *map->wayList, map->links, 1);
-	print_all_links(map, *map->wayList, map->links, 0);
-	print_all_links(map, map->wayList[0], map->links, 2);
-	print_all_links(map, map->wayList[1], map->links, 2);
+	// bellman_peugeot(map, arg);
+	// follow(map, arg, arg->end, 1);
+	// print_path(map, arg, arg->end);
+	// print_all_links(map, *map->wayList, map->links, 1);
+	// print_all_links(map, *map->wayList, map->links, 0);
+	// print_all_links(map, map->wayList[0], map->links, 2);
+	// print_all_links(map, map->wayList[1], map->links, 2);
 
 
 	return (1);

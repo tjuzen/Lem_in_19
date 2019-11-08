@@ -6,13 +6,33 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/06 14:55:55 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/07 20:08:36 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void modify_path(t_data_map *map, t_lemin *arg)
+t_data_map	*add_path(t_data_map *map, t_node *tmp, t_lemin *arg, int y)
+{
+	t_path 	*newpath;
+
+	if (!(newpath = ft_memalloc(sizeof(t_path))))
+	{
+		arg->malloc_error = 1;
+		return (map);
+	}
+	newpath->room = tmp;
+	if (map->wayList[y] == NULL)
+		map->wayList[y] = newpath;
+	else
+	{
+		newpath->x_next = map->wayList[y];
+		map->wayList[y] = newpath;
+	}
+	return (map);
+}
+
+void  modify_path(t_data_map *map, t_lemin *arg)
 {
 	t_node *room = arg->end;
 	t_linkstab *link;
@@ -30,13 +50,32 @@ void modify_path(t_data_map *map, t_lemin *arg)
 	}
 }
 
-void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void print_all_links(t_data_map *map, t_path *path, t_linkstab *tmp, int i)
 {
 	printf("\n");
-	while (tmp->next)
+	if (i == 2)
 	{
-		printf("|%s-%s weight %3i|\n", tmp->in->room, tmp->out->room, tmp->weight);
-		tmp = tmp->next;
+		while (path->x_next)
+		{
+			printf("|%s|\n", path->room->room);
+			path = path->x_next;
+		}
+	}
+	if (i == 1)
+	{
+		while (tmp->next)
+		{
+			printf("|%s-%s weight %5i|\n", tmp->in->room, tmp->out->room, tmp->weight);
+			tmp = tmp->next;
+		}
+	}
+	if (i == 0)
+	{
+		while (tmp->next)
+		{
+			printf("|%s w:%5i|\n", tmp->in->room, tmp->in->weight);
+			tmp = tmp->next;
+		}
 	}
 }
 
@@ -46,8 +85,16 @@ void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
 		print_path(map, arg, room->parent);
 	if (room->status == 'I')
 		printf("\n\nPATH IS OK\n");
-	printf(" |%s| ", room->room);
+	// map = add_path(map, room, arg);
+	printf(" |%s|:%i\n", room->room, room->weight);
+}
 
+void	follow(t_data_map *map, t_lemin *arg, t_node *room, int y)
+{
+	// map = add_path(map, room, arg, y);
+	if (room->parent)
+		follow(map, arg, room->parent, y);
+	map = add_path(map, room, arg, y);
 }
 
 t_linkstab	*add_opti(t_node *room_a, t_node *room_b, t_linkstab *tab)
@@ -81,8 +128,11 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 		// printf("---\n");
 		while (link->next)
 		{
+			// if (link->weight == -1 && ((link->in->status == 'I' || link->in->status == 'O') || (link->out->status == 'O')))
+			// 	link = link->next;
 			if (link->in->weight != INT_MAX - 10 && link->in->weight + link->weight < link->out->weight)
 			{
+				printf("|######%s-%s weight %5i|\n", link->in->room, link->out->room, link->weight);
 				link->out->weight = link->weight + link->in->weight;
 				link->out->parent = link->in;
 				link->in->child = link->out;
@@ -102,13 +152,30 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 int find_path(t_data_map *map, t_lemin *arg)
 {
 	t_linkstab *prout = map->links;
-	print_all_links(map, arg, prout);
+	// print_all_links(map, arg, prout);
 	prout = map->links;
 	bellman_peugeot(map, arg);
 
-	print_path(map, arg, arg->end);
+	// print_path(map, arg, arg->end);
 	printf("\n");
 	modify_path(map, arg);
-	print_all_links(map, arg, map->links);
+	add_path(map, arg->start, arg, 0);
+	follow(map, arg, arg->end, 0);
+	print_path(map, arg, arg->end);
+	print_all_links(map, *map->wayList, map->links, 1);
+	print_all_links(map, *map->wayList, map->links, 0);
+	print_all_links(map, *map->wayList, map->links, 2);
+
+
+	// print_way(map, arg, map->walker);
+	bellman_peugeot(map, arg);
+	follow(map, arg, arg->end, 1);
+	print_path(map, arg, arg->end);
+	print_all_links(map, *map->wayList, map->links, 1);
+	print_all_links(map, *map->wayList, map->links, 0);
+	print_all_links(map, map->wayList[0], map->links, 2);
+	print_all_links(map, map->wayList[1], map->links, 2);
+
+
 	return (1);
 }

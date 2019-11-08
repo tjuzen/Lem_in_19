@@ -20,6 +20,7 @@ typedef struct	s_node		t_node;
 typedef struct	s_data_map	t_data_map;
 typedef	struct	s_lemin		t_lemin;
 typedef	struct	s_linkstab	t_linkstab;
+typedef	struct	s_path		t_path;
 typedef	struct	s_easyNode	t_easyNode;
 
 
@@ -27,7 +28,7 @@ struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
-	t_node			*easyList; // ?
+	t_path			**wayList; // ?
 	t_linkstab		*links;
 };
 
@@ -70,6 +71,13 @@ struct			s_linkstab
 	t_linkstab		*nextfrom;
 	t_linkstab		*nexto;
 };
+
+struct			s_path
+{
+	t_node		*room;
+	t_path		*x_next;
+};
+
 
 /*
 ** STUPID_TOOLS.C

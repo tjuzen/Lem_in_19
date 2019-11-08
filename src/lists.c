@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/06 14:49:34 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/07 13:48:26 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg)
 	newlink->directed = 1;
 	newlink->in = lookup(map, hashCode(splitted[0]), splitted[0]);
 	newlink->out = lookup(map, hashCode(splitted[1]), splitted[1]);
-	printf("#$^$#  %s %s\n", newlink->in->room, newlink->out->room);
+	// printf("#$^$#  %s %s\n", newlink->in->room, newlink->out->room);
 
 	if (!(newlink->in || (!(newlink->out))))
 		return (map);

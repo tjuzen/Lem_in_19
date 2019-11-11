@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 19:22:29 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 21:59:48 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
 		arg->malloc_error = 1;
 		return (map);
 	}
-
 	out->key = hashCode(out->room);
 	out->status = 'X';
 	out->isactive = 0;  // ?
@@ -71,24 +70,29 @@ t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
 	}
 	arg->totalrooms++;
 
-
-
+	in->to = NULL;
+	// in->to = in->parent;
+	in->to = lookuplink(map, in, in->parent);
 	newlink->rooma = out;
 	newlink->roomb = in;
 	newlink->weight = 0;
 	newlink->directed = 2;
 	newlink->isactive = 1;
 	map->links = add_it(map, newlink);
+	printf("%s ", in->room);
 printf("in  :");
 	while (in->to)
 	{
+		if (in->to->isactive)
 		printf("  %s  ", in->to->roomb->room);
 		in->to = in->to->nexto;
 	}
 printf("\n");
+printf("%s ", in->room);
 printf("out :");
 	while (out->to)
 	{
+		if (out->to->isactive)
 		printf("  %s  ", out->to->roomb->room);
 		out->to = out->to->nexto;
 	}
@@ -96,25 +100,47 @@ printf("\n");
 	return (map);
 }
 
+// void modify_path(t_data_map *map, t_lemin *arg)
+// {
+// 	t_node		*room = arg->end;
+// 	t_linkstab	*link;
+// 	t_linkstab	*findlink;
+//
+// 	link = map->links;
+// 	while (room)
+// 	{
+// 		if (room->parent)
+// 		{
+// 			findlink = lookuplink(map, room, room->parent);
+// 			findlink->weight = -1;
+// 			if (room != arg->start && room != arg->end)
+// 				map = duplicate(room, map, arg);
+// 			findlink = lookuplink(map, room->parent, room);
+// 			findlink->isactive = 0;
+// 		}
+// 		room = room->parent;
+// 	}
+// }
+
 void modify_path(t_data_map *map, t_lemin *arg)
 {
-	t_node		*room = arg->end;
+	t_node		*room = arg->start;
 	t_linkstab	*link;
 	t_linkstab	*findlink;
 
 	link = map->links;
 	while (room)
 	{
-		if (room->parent)
+		if (room->path)
 		{
-			findlink = lookuplink(map, room, room->parent);
+			findlink = lookuplink(map, room->path, room);
 			findlink->weight = -1;
 			if (room != arg->start && room != arg->end)
 				map = duplicate(room, map, arg);
-			findlink = lookuplink(map, room->parent, room);
+			findlink = lookuplink(map, room, room->path);
 			findlink->isactive = 0;
 		}
-		room = room->parent;
+		room = room->path;
 	}
 }
 
@@ -131,7 +157,10 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
 {
 	if (room->parent)
+	{
+		room->parent->path = room;
 		print_path(map, arg, room->parent);
+	}
 	if (room->status == 'I')
 		printf("\n\nPATH IS OK\n");
 	printf(" |%s| ", room->room);

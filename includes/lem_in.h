@@ -39,6 +39,7 @@ struct			s_node
 	char			status;
 	int				weight;
 	int				count_hash;
+	t_node			*path;
 	t_node 			*parent;
 	t_node			*child;
 	t_node			*hash_next; // pour lookup

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 21:18:37 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 17:24:23 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 			return (find);
 		find = find->next;
 	}
-	// find = map->links;
-	// while (find->nexto)
-	// {
-	// 	if (find->out == a && find->in == b)
-	// 		return (find);
-	// 	find = find->nexto;
-	// }
-	// find = map->links;
-	// while (find->nextfrom)
-	// {
-	// 	if (find->in == a && find->out == b)
-	// 		return (find);
-	// 	find = find->nextfrom;
-	// }
 	return (NULL);
 }
 

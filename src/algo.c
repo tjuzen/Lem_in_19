@@ -6,11 +6,95 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 16:34:15 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 19:22:29 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+/*
+  B --- C
+ /       \
+A -- E -- D -- H
+      \      /
+	  F --- G
+*/
+
+/*
+
+     i o    i o
+A -- E-E -- D-D -- H
+  -1  0  -1  0  -1
+
+*/
+//
+// void modify_room(t_node *room, t_data_map *map, t_lemin *arg)
+// {
+//
+// }
+//
+t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
+{
+	t_node			*out;
+	t_linkstab		*newlink;
+
+	if (!(out = ft_memalloc(sizeof(t_node))))
+	{
+		arg->malloc_error = 1;
+		return (NULL);
+	}
+	if (!(out->room = ft_strdup(in->room)))
+	{
+		arg->malloc_error = 1;
+		free(out);
+		return (NULL);
+	}
+	if (!(newlink = ft_memalloc(sizeof(t_linkstab))))
+	{
+		arg->malloc_error = 1;
+		return (map);
+	}
+
+	out->key = hashCode(out->room);
+	out->status = 'X';
+	out->isactive = 0;  // ?
+	out->parent = NULL;
+	out->child = NULL;
+	out->to = in->to; // ajouter tous les to sauf parent
+	out->type = 'O';
+	if (map->list[out->key % map->size] == NULL)
+		map->list[out->key % map->size] = out;
+	else
+	{
+		out->hash_next = map->list[out->key % map->size];
+		map->list[out->key % map->size] = out;
+	}
+	arg->totalrooms++;
+
+
+
+	newlink->rooma = out;
+	newlink->roomb = in;
+	newlink->weight = 0;
+	newlink->directed = 2;
+	newlink->isactive = 1;
+	map->links = add_it(map, newlink);
+printf("in  :");
+	while (in->to)
+	{
+		printf("  %s  ", in->to->roomb->room);
+		in->to = in->to->nexto;
+	}
+printf("\n");
+printf("out :");
+	while (out->to)
+	{
+		printf("  %s  ", out->to->roomb->room);
+		out->to = out->to->nexto;
+	}
+printf("\n");
+	return (map);
+}
 
 void modify_path(t_data_map *map, t_lemin *arg)
 {
@@ -25,6 +109,8 @@ void modify_path(t_data_map *map, t_lemin *arg)
 		{
 			findlink = lookuplink(map, room, room->parent);
 			findlink->weight = -1;
+			if (room != arg->start && room != arg->end)
+				map = duplicate(room, map, arg);
 			findlink = lookuplink(map, room->parent, room);
 			findlink->isactive = 0;
 		}
@@ -37,7 +123,7 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	printf("\n");
 	while (tmp->next)
 	{
-		printf("|%s-%s weight %3i|\n", tmp->rooma->room, tmp->roomb->room, tmp->weight);
+		printf("|%s-%s weight %3i active %3i|\n", tmp->rooma->room, tmp->roomb->room, tmp->weight, tmp->isactive);
 		tmp = tmp->next;
 	}
 }
@@ -49,23 +135,7 @@ void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
 	if (room->status == 'I')
 		printf("\n\nPATH IS OK\n");
 	printf(" |%s| ", room->room);
-
 }
-//
-// t_linkstab	*add_opti(t_node *room_a, t_node *room_b, t_linkstab *tab)
-// {
-// 	t_linkstab *test = room_b->from;
-// 	if (!(test))
-// 		return (NULL);
-// 	if (tab == NULL)
-// 		tab = test;
-// 	else
-// 	{
-// 		test->nextfrom = tab;
-// 		tab = test;
-// 	}
-// 	return (test);
-// }
 
 int bellman_peugeot(t_data_map *map, t_lemin *arg)
 {
@@ -82,7 +152,7 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				// link->in->child = link->out;
+				link->rooma->child = link->roomb;
 				// if (link->out->from->out != link->in)
 				// 	opti = add_opti(link->in, link->out, opti);
 			}

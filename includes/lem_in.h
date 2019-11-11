@@ -27,26 +27,24 @@ struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
-	t_node			*easyList; // ?
 	t_linkstab		*links;
 };
 
 struct			s_node
 {
 	char			*room;
+	char			type;
 	unsigned long	key;
 	unsigned long	pos;
 	char			status;
 	int				weight;
 	int				count_hash;
 	t_node 			*parent;
+	t_node			*child;
 	t_node			*hash_next; // pour lookup
 	int				isactive;
 
-	t_node			*to;   // liste des links : nodeY<-node, nodeX<-node, ...
-	t_node			*nexto;
-	t_node			*from; // liste des links : node->nodeY, node->nodeX, ...
-	t_node			*nextfrom;
+	t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
 };
 
 struct			s_linkstab
@@ -58,6 +56,7 @@ struct			s_linkstab
 	int				isactive;
 	int				directed;
 
+	t_linkstab		*nexto;
 	t_linkstab		*next; // liste de TOUS mes links
 };
 
@@ -69,6 +68,7 @@ struct	s_lemin
 	int				count_hash;
 	unsigned long	totalrooms;
 	unsigned long	totalinks;
+	int				foundpath;
 	t_node			*start;
 	t_node			*end;
 };
@@ -127,5 +127,6 @@ int				bellman_peugeot(t_data_map *map, t_lemin *arg);
 int 			find_path(t_data_map *map, t_lemin *arg);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 int				linkexist(t_data_map *map, t_node *a, t_node *b);
+t_linkstab		*add_it(t_data_map *map, t_linkstab *newlink);
 
 #endif

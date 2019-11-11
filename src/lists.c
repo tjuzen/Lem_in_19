@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 21:58:31 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 18:14:34 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 		return (map);
 	}
 
-
-
-
 	if (directed == 1) // si a<->b
 	{
 		if (!(otherlink = ft_memalloc(sizeof(t_linkstab))))
@@ -74,6 +71,13 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 		newlink->directed = 2;
 		newlink->isactive = 1;
 		map->links = add_it(map, newlink);
+		if (!(rooma->to))
+			rooma->to = newlink;
+		else
+		{
+			newlink->nexto = rooma->to;
+			rooma->to = newlink;
+		}
 
 		otherlink->rooma = roomb;
 		otherlink->roomb = rooma;
@@ -81,24 +85,25 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 		otherlink->directed = 2;
 		otherlink->isactive = 1;
 		map->links = add_it(map, otherlink);
+		if (!(roomb->to))
+			roomb->to = otherlink;
+		else
+		{
+			otherlink->nexto = roomb->to;
+			roomb->to = otherlink;
+		}
+
+		if (rooma->status == 'I' && roomb->status == 'O')
+		{
+			arg->foundpath = 1;
+			roomb->parent = rooma;
+		}
+		if (roomb->status == 'I' && rooma->status == 'O')
+		{
+			arg->foundpath = 1;
+			rooma->parent = roomb;
+		}
 	}
-
-	if (directed == 2) // si a->b
-	{
-		newlink->rooma = rooma;
-		newlink->roomb = roomb;
-		newlink->weight = 1;
-		newlink->directed = 2;
-		newlink->isactive = 1;
-		map->links = add_it(map, newlink);
-	}
-
-
-
-
-
-
-
 	arg->totalinks++;
 	ft_freetab_str(splitted);
 	return (map);
@@ -129,8 +134,9 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	}
 	new->key = hashCode(new->room);
 	new->status = status;
-	new->isactive = 0;
+	new->isactive = 0; // ?
 	new->parent = NULL;
+	new->child = NULL;
 	if (status == 'I')
 	{
 		new->weight= 0;
@@ -151,7 +157,6 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		map->list[new->key % map->size] = new;
 	}
 	arg->totalrooms++;
-	// ft_putendl(new->room);
 	ft_freetab_str(splitted);
 	return (map);
 }

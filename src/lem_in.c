@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/06 15:17:50 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 18:11:22 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ int				main(void)
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
 	find_path(map, &arg);
-	free_map(map);
+	// free_map(map);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 16:27:56 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 17:30:02 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int		is_room(char *line, t_lemin *arg)
 		return (intreturn_mallocerr(-1, arg));
 	if (!(splitted[0]) || !(splitted[1]) || !(splitted[2]) || splitted[3])
 	{
-		// printf("JE RENTRE\n");
 		return (retfreetab_str(splitted, -1));
 	}
 	while (splitted[1][++i])
@@ -60,7 +59,6 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 		return (-1);
 	if (!(splitted[0] || (!(splitted[1]))))
 	{
-		// printf("FDP\n");
 		ft_freetab_str(splitted);
 		return (-1);
 	}

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 19:36:25 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/08 21:18:37 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 	find = map->links;
 	while (find->next)
 	{
-		if (find->in == a && find->out == b)
+		if (find->rooma == a && find->roomb == b)
 			return (find);
 		find = find->next;
 	}
@@ -38,6 +38,22 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 	// 	find = find->nextfrom;
 	// }
 	return (NULL);
+}
+
+int	linkexist(t_data_map *map, t_node *a, t_node *b) // retourne 1 si a->b 2 si b->a 3 si a<->b
+{
+	t_linkstab	*find;
+	int			ret;
+
+	ret = 0;
+	find = map->links;
+	while (find->next)
+	{
+		if (find->rooma == a && find->roomb == b)
+			return (1);
+		find = find->next;
+	}
+	return (-1);
 }
 
 t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map)
@@ -108,6 +124,8 @@ void free_map(t_data_map* map)
 		free(map->links);
 		map->links = tmp2;
 	}
+    free(map->list);
+    free(map);
 }
 
 int				exit_free(t_lemin *arg, t_data_map	*map)
@@ -119,7 +137,7 @@ int				exit_free(t_lemin *arg, t_data_map	*map)
 	}
 	if (arg->malloc_error == 1)
 	{
-		ft_putendl("error malloc room! hihi");
+		ft_putendl("error malloc ! hihi");
 		free(map->list);
 		free(map->links);
 		free(map);

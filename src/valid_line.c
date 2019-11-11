@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/07 13:48:21 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/08 21:30:00 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int		is_room(char *line, t_lemin *arg)
 	if (!(splitted = ft_strsplit(line, ' ')))
 		return (intreturn_mallocerr(-1, arg));
 	if (!(splitted[0]) || !(splitted[1]) || !(splitted[2]) || splitted[3])
+	{
+		// printf("JE RENTRE\n");
 		return (retfreetab_str(splitted, -1));
+	}
 	while (splitted[1][++i])
 		if (ft_isdigit(splitted[1][i]) != 1)
 			return (retfreetab_str(splitted, -1));
@@ -57,16 +60,27 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 		return (-1);
 	if (!(splitted[0] || (!(splitted[1]))))
 	{
+		// printf("FDP\n");
 		ft_freetab_str(splitted);
 		return (-1);
 	}
 	room_a = lookup(map, hashCode(splitted[0]), splitted[0]);
-	room_b = lookup(map, hashCode(splitted[1]), splitted[1]);
-	if (room_a == NULL || room_b == NULL)
-	{
-		ft_freetab_str(splitted);
+	if (!(room_a))
 		return (-1);
-	}
+	room_b = lookup(map, hashCode(splitted[1]), splitted[1]);
+	if (!(room_b))
+		return (-1);
 	ft_freetab_str(splitted);
-	return (1);
+	if (linkexist(map, room_a, room_b) == -1)
+	{
+		if (linkexist(map, room_b, room_a) == -1)
+			return (1); // <->
+		return (2); // ->
+	}
+	else
+	{
+		if (linkexist(map, room_b, room_a) == -1)
+			return (3); // <-
+		return (4);  // le lien a deja ete ajoute, rien a faire
+	}
 }

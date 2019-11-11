@@ -9,23 +9,25 @@ E 1 1
 F 1 1
 G 0 0
 H 0 0
-K 0 0
-X 0 0
+grosfdp 0 0
+icilol 0 0
 I 0 0
 A-B
+B-A
 B-C
-X-F
+icilol-F
 C-D
 C-G
 F-A
-F-K
+F-grosfdp
 F-B
 G-H
 H-I
 B-F
 I-E
-F-X
-K-F
+A-B
+F-grosfdp
+icilol-F
 B-A
 D-E
 D-F

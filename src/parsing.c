@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/07 14:28:50 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/08 21:30:40 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,16 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 	// 	// ft_strdel(&line);
 	// 	return (map);
 	// }
-	if (is_link(line, map, arg) == 1)
+	int directed = is_link(line, map, arg);
+	// printf("Je return %i\n", directed);
+	if (directed != -1)
 	{
-		ft_putendl(line);
-		map = add_link(map, line, arg);
+		// ft_putendl(line);
+		map = add_link(map, line, arg, directed);
 		return (map);
 	}
-	printf("ERROR\n");
+
+	printf("\nWrong line\n");
 	arg->wrong_line = 1;
 	return (map);
 }

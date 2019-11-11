@@ -11,7 +11,7 @@
 # define CYAN     "\033[1;36m"
 # define GREY     "\033[1;37m"
 # define DEFAULT_COLOR "\033[0;m"
-
+# define INFINITE INT_MAX - 10
 /*
 **	Définition de ma Data_Map
 */
@@ -20,7 +20,6 @@ typedef struct	s_node		t_node;
 typedef struct	s_data_map	t_data_map;
 typedef	struct	s_lemin		t_lemin;
 typedef	struct	s_linkstab	t_linkstab;
-typedef	struct	s_path		t_path;
 typedef	struct	s_easyNode	t_easyNode;
 
 
@@ -28,7 +27,7 @@ struct s_data_map
 {
 	unsigned long	size;
 	t_node			**list;
-	t_path			**wayList; // ?
+	t_node			*easyList; // ?
 	t_linkstab		*links;
 };
 
@@ -41,11 +40,25 @@ struct			s_node
 	int				weight;
 	int				count_hash;
 	t_node 			*parent;
-	t_node			*child; // ?
 	t_node			*hash_next; // pour lookup
-	t_linkstab		*to;   // liste des links : nodeY->node, nodeX->node, ...
-	t_linkstab		*from; // liste des links : node->nodeY, node->nodeX, ...
 	int				isactive;
+
+	t_node			*to;   // liste des links : nodeY<-node, nodeX<-node, ...
+	t_node			*nexto;
+	t_node			*from; // liste des links : node->nodeY, node->nodeX, ...
+	t_node			*nextfrom;
+};
+
+struct			s_linkstab
+{
+	t_node			*rooma;
+	t_node			*roomb;
+
+	int 			weight;
+	int				isactive;
+	int				directed;
+
+	t_linkstab		*next; // liste de TOUS mes links
 };
 
 struct	s_lemin
@@ -59,25 +72,6 @@ struct	s_lemin
 	t_node			*start;
 	t_node			*end;
 };
-
-struct			s_linkstab
-{
-	t_node			*in;
-	t_node			*out;
-	t_node			*first; // ?
-	int				weight;
-	int				directed; // ?
-	t_linkstab		*next;
-	t_linkstab		*nextfrom;
-	t_linkstab		*nexto;
-};
-
-struct			s_path
-{
-	t_node		*room;
-	t_path		*x_next;
-};
-
 
 /*
 ** STUPID_TOOLS.C
@@ -127,10 +121,11 @@ void 			free_map(t_data_map* map);
 void 			free_node(t_node* node);
 t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
-t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg);
+t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg, int directed);
 int				is_link(char *line, t_data_map *map, t_lemin *arg);
 int				bellman_peugeot(t_data_map *map, t_lemin *arg);
 int 			find_path(t_data_map *map, t_lemin *arg);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
+int				linkexist(t_data_map *map, t_node *a, t_node *b);
 
 #endif

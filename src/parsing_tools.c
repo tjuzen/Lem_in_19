@@ -21,8 +21,8 @@ int get_number_of_ants(t_lemin *arg)
 		return (intreturn_mallocerr(1, arg));
 	if (arg->ants == -1)
 		arg->ants = ft_atoi(line);
-	if (arg->ants != 0)
-		ft_putendl(line);
+	// if (arg->ants != 0)
+	// 	ft_putendl(line);
 	ft_strdel(&line);
 	return (arg->ants == 0 ? -1 : 1);
 }

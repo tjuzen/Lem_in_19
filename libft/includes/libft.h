@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 11:15:33 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/14 16:15:12 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 16:22:41 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct		s_line
+{
+	int		fd;
+	char	*str;
+	size_t	size;
+	size_t	remaining;
+}					t_line;
 
 int				ft_atoi(const char *str);
 void			ft_bzero (void *s, size_t n);
@@ -90,11 +98,14 @@ void			ft_lstadd(t_list **alst, t_list *new);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int				ft_printf(const char *format, ...);
-int             get_next_line(const int fd, char **line);
+int				get_next_line(const int fd, char **line, int print);
 int        		nextline(char *str, char **line);
 int        		newline(char *str, char **line);
 void    		charctox(char *str, char c, char x);
 void 			ft_freetab_str(char **element);
 int 			retfreetab_str(char **element, int ret);
+size_t			ft_strfind(const char *str, char c);
+void			ft_lstremoveif(t_list **alst, void *data_ref, int (*cmp)());
+void			ft_lstpushback(t_list **alst, const void *content, size_t content_size);
 
 #endif

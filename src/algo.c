@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 21:13:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 16:34:15 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ int find_path(t_data_map *map, t_lemin *arg)
 	printf("\n");
 	modify_path(map, arg);
 
-	// print_all_links(map, arg, map->links);
+	print_all_links(map, arg, map->links);
 	return (1);
 }

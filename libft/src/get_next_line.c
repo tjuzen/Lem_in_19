@@ -6,106 +6,115 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 14:38:53 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/10/24 14:05:43 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 16:19:03 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-static char			*free_join(char *s1, char *s2, int free)
+static t_line	*ft_new_line(const int fd, char *buffer, size_t len, int print)
 {
-	char			*part;
-	unsigned long	size;
+	t_line	*line;
 
-	if (s1 == NULL || s2 == NULL)
+	if (print)
+		write(1, buffer, len);
+	line = (t_line *)malloc(sizeof(t_line));
+	if (line == NULL)
 		return (NULL);
-	size = (ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!(part = ft_strnew(size)))
-		return (NULL);
-	ft_strcpy(part, s1);
-	ft_strcat(part, s2);
-	if (free == 1)
-		ft_strdel(&s1);
-	if (free == 2)
-		ft_strdel(&s2);
-	if (free == 3)
-	{
-		ft_strdel(&s1);
-		ft_strdel(&s2);
-	}
-	return (part);
+	line->fd = (int)fd;
+	line->str = ft_strdup(buffer);
+	line->size = len;
+	return (line);
 }
 
-static int			get_rest(const int fd, char **line, char **tmp)
+static int		ft_clean(void *content, void *data_ref)
 {
-	char			*p;
-	char			*ftmp;
-	char			*ltmp;
+	t_line	*line;
+	int		*fd;
 
-	ltmp = *line;
-	if ((p = ft_strchr(tmp[fd], '\n')) == NULL)
-	{
-		if (!(*line = ft_strdup(tmp[fd])))
-			return (-1);
-		ft_strdel(&tmp[fd]);
-		ft_strdel(&ltmp);
-	}
-	else
-	{
-		if (!(*line = ft_strsub(tmp[fd], 0, (p - tmp[fd]))))
-			return (-1);
-		if (!(ftmp = ft_strsub(tmp[fd], (p - tmp[fd]) + 1, ft_strlen(tmp[fd]))))
-			return (-1);
-		ft_strdel(&tmp[fd]);
-		ft_strdel(&ltmp);
-		tmp[fd] = ftmp;
+	line = (t_line *)content;
+	fd = (int *)data_ref;
+	if (line->fd != *fd)
 		return (1);
-	}
-	return (0);
-}
-
-static int			get_read(const int fd, char **line, char **tmp, char *buff)
-{
-	int				ret;
-	char			*p;
-
-	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
+	if (*(line->str) == '\n')
+		line->str++;
+	if (*(line->str) == '\0')
 	{
-		buff[ret] = '\0';
-		if ((p = ft_strchr(buff, '\n')) == NULL)
-		{
-			if (!(*line = free_join(*line, buff, 1)))
-				return (-1);
-		}
-		else
-		{
-			if (!(*line = free_join(*line, ft_strsub(buff, 0, (p - buff)), 3)))
-				return (-1);
-			if (!(tmp[fd] = ft_strsub(buff, (p - buff) + 1, ft_strlen(buff))))
-				return (-1);
-			return (1);
-		}
-	}
-	return (0);
-}
-
-int					get_next_line(const int fd, char **line)
-{
-	static char		*tmp[OPEN_MAX];
-	char			buff[BUFF_SIZE + 1];
-	int				x;
-
-	if (!(fd >= 0 && line != NULL && (read(fd, buff, 0)) != -1
-				&& (*line = ft_strnew(0))))
-		return (-1);
-	if (tmp[fd])
-	{
-		if ((x = get_rest(fd, line, tmp)) != 0)
-			return (x);
-	}
-	if ((x = get_read(fd, line, tmp, buff)) != 0)
-		return (x);
-	if (line[0][0] == '\0')
+		line->str -= line->size;
+		free(line->str);
+		free(line);
 		return (0);
+	}
 	return (1);
+}
+
+static char		*ft_join_lines(t_list *list, const int fd, size_t count)
+{
+	t_line	*line;
+	char	*str;
+	size_t	nl_index;
+
+	if (!(str = ft_strnew(count)))
+		return (NULL);
+	while (list != NULL)
+	{
+		line = (t_line *)list->content;
+		if (line->fd == fd)
+		{
+			nl_index = ft_strfind(line->str, '\n');
+			ft_strncat(str, line->str, nl_index);
+			line->str += nl_index;
+			if (*(line->str) == '\n')
+				break ;
+		}
+		list = list->next;
+	}
+	return (str);
+}
+
+static int		ft_read_next_line(t_list **list, const int fd,
+		int *count, int print)
+{
+	char	buffer[BUFF_SIZE + 1];
+	t_list	*current;
+	t_line	*l;
+	int		ind[2];
+
+	current = *list;
+	while (current != NULL)
+	{
+		l = (t_line *)current->content;
+		if (l->fd == fd && (*count += (ind[1] = ft_strfind(l->str, '\n'))) >= 0)
+			if (l->str[ind[1]] == '\n')
+				return (1);
+		current = current->next;
+	}
+	while ((ind[0] = read(fd, buffer, BUFF_SIZE)) > 0)
+	{
+		buffer[ind[0]] = '\0';
+		l = ft_new_line(fd, buffer, ind[0], print);
+		ft_lstpushback(list, l, sizeof(t_line));
+		free(l);
+		*count += (ind[1] = ft_strfind(buffer, '\n'));
+		if (buffer[ind[1]] == '\n')
+			break ;
+	}
+	return (ind[0] == -1 ? -1 : (ind[0] != 0 || *count != 0));
+}
+
+int				get_next_line(const int fd, char **line, int print)
+{
+	static t_list	*list = NULL;
+	int				count;
+	int				result;
+
+	if (fd == -1 || line == NULL || BUFF_SIZE <= 0)
+		return (-1);
+	count = 0;
+	result = ft_read_next_line(&list, fd, &count, print);
+	if (result == -1 || result == 0)
+		return (result);
+	*line = ft_join_lines(list, fd, (size_t)count);
+	ft_lstremoveif(&list, (void *)&fd, &ft_clean);
+	return (result);
 }

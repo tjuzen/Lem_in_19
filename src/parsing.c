@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 21:30:40 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 16:33:59 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 
 	if (ft_strcmp(line, "##start") == 0)
 	{
-		get_next_line(0, &line);
+		get_next_line(0, &line, 0);
 		if (!line)
 		{
 			arg->malloc_error = -1;
@@ -36,7 +36,7 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 	}
 	if (ft_strcmp(line, "##end") == 0)
 	{
-		get_next_line(0, &line);
+		get_next_line(0, &line, 0);
 		if (!line)
 		{
 			arg->malloc_error = -1;
@@ -88,7 +88,7 @@ t_data_map *read_file(t_lemin *arg, t_data_map *map)
 
 	if (get_number_of_ants(arg) == -1)
 		return (lstreturn_mallocerr(1, arg, map));
-	while (get_next_line(0, &line) > 0)
+	while (get_next_line(0, &line, 0) > 0)
 	{
 		if (!(line))
 			return (lstreturn_mallocerr(1, arg, map));

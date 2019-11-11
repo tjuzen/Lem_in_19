@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/08 21:30:00 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/11 16:27:56 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,5 @@ int		is_link(char *line, t_data_map *map, t_lemin *arg)
 	if (!(room_b))
 		return (-1);
 	ft_freetab_str(splitted);
-	if (linkexist(map, room_a, room_b) == -1)
-	{
-		if (linkexist(map, room_b, room_a) == -1)
-			return (1); // <->
-		return (2); // ->
-	}
-	else
-	{
-		if (linkexist(map, room_b, room_a) == -1)
-			return (3); // <-
-		return (4);  // le lien a deja ete ajoute, rien a faire
-	}
+	return (1);
 }

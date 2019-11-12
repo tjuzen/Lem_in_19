@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 16:33:52 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/12 11:53:28 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,40 @@ int get_number_of_ants(t_lemin *arg)
 	// 	ft_putendl(line);
 	ft_strdel(&line);
 	return (arg->ants == 0 ? -1 : 1);
+}
+
+t_data_map *add_in_out(char *line, t_data_map *map, t_lemin *arg, char s)
+{
+	get_next_line(0, &line, 0);
+	if (!line)
+	{
+		arg->malloc_error = -1;
+		return (map);
+	}
+	if (is_room(line, arg) != 1)
+	{
+		printf("End is not a valid room\n");
+		arg->malloc_error = -1;
+		ft_strdel(&line);
+		return (map);
+	}
+	map = add_room(map, line, s, arg);
+	ft_strdel(&line);
+	return (map);
+}
+
+int		check_links(t_data_map *map, t_node *a, t_node *b)
+{
+	t_linkstab *find;
+
+	find = map->links;
+	while (find->next)
+	{
+		if (find->rooma == a && find->roomb == b)
+			return (0);
+		if (find->roomb == b && find->roomb == a)
+			return (0);
+		find = find->next;
+	}
+	return (1);
 }

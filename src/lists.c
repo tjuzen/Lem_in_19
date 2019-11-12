@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 18:14:34 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/12 16:43:52 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 		ft_freetab_str(splitted);
 		return (map);
 	}
-
 	if (directed == 1) // si a<->b
 	{
 		if (!(otherlink = ft_memalloc(sizeof(t_linkstab))))
@@ -106,6 +105,36 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 	}
 	arg->totalinks++;
 	ft_freetab_str(splitted);
+	printf("%s-%s\n", rooma->room, roomb->room);
+	return (map);
+}
+
+t_data_map *add_room_info(t_data_map *map, char stat, t_lemin *arg, t_node *new)
+{
+	new->key = hashCode(new->room);
+	new->status = stat;
+	new->isactive = 0; // ?
+	new->parent = NULL;
+	new->child = NULL;
+	if (stat == 'I')
+	{
+		new->weight= 0;
+		arg->start = new;
+	}
+	else
+	{
+		if (stat == 'O')
+			arg->end = new;
+		new->weight = INFINITE;
+	}
+
+	if (map->list[new->key % map->size] == NULL)
+		map->list[new->key % map->size] = new;
+	else
+	{
+		new->hash_next = map->list[new->key % map->size];
+		map->list[new->key % map->size] = new;
+	}
 	return (map);
 }
 
@@ -132,31 +161,8 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 		free(new);
 		return (NULL);
 	}
-	new->key = hashCode(new->room);
-	new->status = status;
-	new->isactive = 0; // ?
-	new->parent = NULL;
-	new->child = NULL;
-	if (status == 'I')
-	{
-		new->weight= 0;
-		arg->start = new;
-	}
-	else
-	{
-		if (status == 'O')
-			arg->end = new;
-		new->weight = INFINITE;
-	}
-
-	if (map->list[new->key % map->size] == NULL)
-		map->list[new->key % map->size] = new;
-	else
-	{
-		new->hash_next = map->list[new->key % map->size];
-		map->list[new->key % map->size] = new;
-	}
 	arg->totalrooms++;
 	ft_freetab_str(splitted);
-	return (map);
+	ft_putendl(new->room);
+	return (add_room_info(map, status, arg, new));
 }

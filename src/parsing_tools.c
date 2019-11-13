@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/12 11:53:28 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/13 11:15:37 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,19 @@ t_data_map *add_in_out(char *line, t_data_map *map, t_lemin *arg, char s)
 
 int		check_links(t_data_map *map, t_node *a, t_node *b)
 {
+
 	t_linkstab *find;
 
-	find = map->links;
-	while (find->next)
+	find = a->to;
+	if (a->to == NULL)
+		return (1);
+	while (find->nexto)
 	{
 		if (find->rooma == a && find->roomb == b)
 			return (0);
 		if (find->roomb == b && find->roomb == a)
 			return (0);
-		find = find->next;
+		find = find->nexto;
 	}
 	return (1);
 }

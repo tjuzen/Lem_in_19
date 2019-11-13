@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/12 16:43:52 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/12 17:26:56 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 	}
 	arg->totalinks++;
 	ft_freetab_str(splitted);
-	printf("%s-%s\n", rooma->room, roomb->room);
+	printf("[%s-%s]\n", rooma->room, roomb->room);
 	return (map);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 21:59:48 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/13 11:09:26 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,55 @@ A -- E-E -- D-D -- H
 // {
 //
 // }
-//
+int		switch_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp, char *io)
+{
+	t_linkstab 	*link;
+	char *start;
+
+	link = map->links;
+	if (!(start = ft_strjoin(io, "-")))
+		return (-1);
+	while (link->next)
+	{
+		if (link->rooma->room == tmp->rooma->room)
+		{
+			if (!(io = ft_strdup(start)))
+				return (-1);
+			if (!(io = ft_strjoin(io, link->roomb->room)))
+				return (-1);
+			// printf ("|%s| - room - |%s|\n", link->rooma->room, link->roomb->room);
+			// if (check_in_out(map, arg, ))
+			map = add_link(map, io, arg, 0);
+		}
+		link = link->next;
+	}
+	return (1);
+}
+
+int 		multiply_room(t_data_map *map, t_lemin *arg, t_node *room)
+{
+	char	*in;
+	char	*out;
+	char	*newroom;
+
+	if (!(in = ft_strdup("#i_")) || !(out = ft_strdup("#o_")))
+		return (-1);
+	if (!(newroom = ft_strjoin(in, room->room)))
+		return (-1);
+	map = add_room(map, newroom, 'X', arg);
+	if (!(switch_links(map, arg, room->to, newroom)))
+		return (-1);
+	free (newroom);
+	if (!(newroom = ft_strjoin(out, room->room)))
+		return (-1);
+	map = add_room(map, newroom, 'X', arg);
+	switch_links(map, arg, room->to, newroom);
+	free (newroom);
+	free (in);
+	free (out);
+	return (1);
+}
+
 t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
 {
 	t_node			*out;
@@ -60,7 +108,7 @@ t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
 	out->parent = NULL;
 	out->child = NULL;
 	out->to = in->to; // ajouter tous les to sauf parent
-	out->type = 'O';
+	out->type = 'I';
 	if (map->list[out->key % map->size] == NULL)
 		map->list[out->key % map->size] = out;
 	else
@@ -83,7 +131,7 @@ t_data_map *duplicate(t_node *in, t_data_map *map, t_lemin *arg)
 printf("in  :");
 	while (in->to)
 	{
-		if (in->to->isactive)
+		// if (in->to->isactive)
 		printf("  %s  ", in->to->roomb->room);
 		in->to = in->to->nexto;
 	}
@@ -92,7 +140,7 @@ printf("%s ", in->room);
 printf("out :");
 	while (out->to)
 	{
-		if (out->to->isactive)
+		// if (out->to->isactive)
 		printf("  %s  ", out->to->roomb->room);
 		out->to = out->to->nexto;
 	}
@@ -122,7 +170,7 @@ printf("\n");
 // 	}
 // }
 
-void modify_path(t_data_map *map, t_lemin *arg)
+int modify_path(t_data_map *map, t_lemin *arg)
 {
 	t_node		*room = arg->start;
 	t_linkstab	*link;
@@ -135,13 +183,18 @@ void modify_path(t_data_map *map, t_lemin *arg)
 		{
 			findlink = lookuplink(map, room->path, room);
 			findlink->weight = -1;
-			if (room != arg->start && room != arg->end)
-				map = duplicate(room, map, arg);
+			if (room->path->status == 'X')
+			{
+				if (multiply_room(map, arg, room->path) == -1)
+					return (-1);
+				// switch_links(map, arg, room->path->to);
+			}
 			findlink = lookuplink(map, room, room->path);
 			findlink->isactive = 0;
 		}
 		room = room->path;
 	}
+	return (1);
 }
 
 void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
@@ -149,7 +202,7 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	printf("\n");
 	while (tmp->next)
 	{
-		printf("|%s-%s weight %3i active %3i|\n", tmp->rooma->room, tmp->roomb->room, tmp->weight, tmp->isactive);
+		printf("|%s-%s weight %3i active %3i| |type %c - %c|\n", tmp->rooma->room, tmp->roomb->room, tmp->weight, tmp->isactive, tmp->rooma->type, tmp->roomb->type);
 		tmp = tmp->next;
 	}
 }
@@ -196,8 +249,10 @@ int find_path(t_data_map *map, t_lemin *arg)
 	bellman_peugeot(map, arg);
 	print_path(map, arg, arg->end);
 	printf("\n");
-	modify_path(map, arg);
+	if (modify_path(map, arg) == -1)
+		return (-1);
+	// switch_link(map, arg, map->links);
 
-	print_all_links(map, arg, map->links);
+	// print_all_links(map, arg, map->links);
 	return (1);
 }

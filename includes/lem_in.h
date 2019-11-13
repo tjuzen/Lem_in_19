@@ -103,6 +103,7 @@ t_data_map 		*read_file(t_lemin *arg, t_data_map *map);
 ** PARSING_TOOLS.C
 */
 
+t_data_map 		*add_in_out(char *line, t_data_map *map, t_lemin *arg, char s);
 int 			get_number_of_ants(t_lemin *arg);
 t_data_map		*start(t_data_map *map, char *str, char status, t_lemin *arg);
 t_data_map 		*end(t_lemin *arg, t_data_map *map);
@@ -116,7 +117,7 @@ int 			is_room(char *line, t_lemin *arg);
 int 			is_comment(char *line, t_lemin *arg);
 
 
-
+int		check_links(t_data_map *map, t_node *a, t_node *b);
 unsigned long 	hashCode(char *room);
 void 			free_map(t_data_map* map);
 void 			free_node(t_node* node);

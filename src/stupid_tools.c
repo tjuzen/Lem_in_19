@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/11 17:24:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/12 11:46:35 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,6 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 		find = find->next;
 	}
 	return (NULL);
-}
-
-int	linkexist(t_data_map *map, t_node *a, t_node *b) // retourne 1 si a->b 2 si b->a 3 si a<->b
-{
-	t_linkstab	*find;
-	int			ret;
-
-	ret = 0;
-	find = map->links;
-	while (find->next)
-	{
-		if (find->rooma == a && find->roomb == b)
-			return (1);
-		find = find->next;
-	}
-	return (-1);
 }
 
 t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map)

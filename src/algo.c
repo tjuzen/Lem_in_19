@@ -6,79 +6,137 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/13 14:10:14 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/13 21:22:01 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-/*
-  B --- C
- /       \
-A -- E -- D -- H
-      \      /
-	  F --- G
-*/
-
-/*
-
-     i o    i o
-A -- E-E -- D-D -- H
-  -1  0  -1  0  -1
-
-*/
-//
-// void modify_room(t_node *room, t_data_map *map, t_lemin *arg)
-// {
-//
-// }
-int		switch_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp, char *io)
+void print_debug(t_data_map *map, t_lemin *arg)
 {
-	t_linkstab 	*link;
-	char *start;
+	t_node *a = lookup(map, hashCode("a"), "a");
+	t_node *b = lookup(map, hashCode("b"), "b");
+	t_node *c = lookup(map, hashCode("c"), "c");
+	t_node *d = lookup(map, hashCode("d"), "d");
+	t_node *e = lookup(map, hashCode("e"), "e");
+	t_node *f = lookup(map, hashCode("f"), "f");
+	t_node *g = lookup(map, hashCode("g"), "g");
+	t_node *h = lookup(map, hashCode("h"), "h");
+	t_node *i = lookup(map, hashCode("#e"), "#e");
+	t_node *j = lookup(map, hashCode("#d"), "#d");
 
-	link = map->links;
-	if (!(start = ft_strjoin(io, "-")))
-		return (-1);
-	while (link->next)
+	a->weight = INFINITE;
+b->weight = INFINITE;
+c->weight = INFINITE;
+d->weight = INFINITE;
+e->weight = INFINITE;
+f->weight = INFINITE;
+g->weight = INFINITE;
+h->weight = INFINITE;
+i->weight = INFINITE;
+j->weight = INFINITE;
+
+arg->start->weight = 0;
+	printf("\n----------------\nLiaisons partant de %s-%c ayant %s en path\n----------------\n", a->room, a->type, a->path->room);
+	while (a->to)
 	{
-		if (link->rooma->room == tmp->rooma->room)
-		{
-			if (!(io = ft_strdup(start)))
-				return (-1);
-			if (!(io = ft_strjoin(io, link->roomb->room)))
-				return (-1);
-			// printf ("|%s| - room - |%s|\n", link->rooma->room, link->roomb->room);
-			// if (check_in_out(map, arg, ))
-			map = add_link(map, io, arg, 0);
-		}
-		link = link->next;
+		if (a->to->isactive)
+		printf("%s-%c ", a->to->roomb->room, a->to->roomb->type);
+		a->to = a->to->nexto;
 	}
-	return (1);
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", b->room, b->type);
+	while (b->to)
+	{
+		if (b->to->isactive)
+		printf("%s-%c ", b->to->roomb->room, b->to->roomb->type);
+		b->to = b->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", c->room, c->type);
+	while (c->to)
+	{
+		if (c->to->isactive)
+		printf("%s-%c ", c->to->roomb->room, c->to->roomb->type);
+		c->to = c->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", d->room, d->type);
+	while (d->to)
+	{
+		if (d->to->isactive)
+		printf("%s-%c ", d->to->roomb->room, d->to->roomb->type);
+		d->to = d->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", e->room, e->type);
+	while (e->to)
+	{
+		if (e->to->isactive)
+		printf("%s-%c ", e->to->roomb->room, e->to->roomb->type);
+		e->to = e->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", f->room, f->type);
+	while (f->to)
+	{
+		if (f->to->isactive)
+		printf("%s-%c ", f->to->roomb->room, f->to->roomb->type);
+		f->to = f->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", g->room, g->type);
+	while (g->to)
+	{
+		if (g->to->isactive)
+		printf("%s-%c ", g->to->roomb->room, g->to->roomb->type);
+		g->to = g->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", h->room, h->type);
+	while (h->to)
+	{
+		if (h->to->isactive)
+		printf("%s-%c ", h->to->roomb->room, h->to->roomb->type);
+		h->to = h->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", i->room, i->type);
+	while (i->to)
+	{
+		if (i->to->isactive)
+		printf("%s-%c ", i->to->roomb->room, i->to->roomb->type);
+		i->to = i->to->nexto;
+	}
+	printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", j->room, j->type);
+	while (j->to)
+	{
+		if (j->to->isactive)
+		printf("%s-%c ", j->to->roomb->room, j->to->roomb->type);
+		j->to = j->to->nexto;
+	}
+	printf("\n\nTotal nodes %lu\n", arg->totalrooms);
 }
 
-int 		multiply_room(t_data_map *map, t_lemin *arg, t_node *room)
+void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 {
-	char	*in;
-	char	*out;
-	char	*newroom;
+	printf("\n");
+	while (tmp->next)
+	{
+		// if (tmp->isactive)
+		printf("%c%2s    ---    %c%2s%5i", tmp->rooma->type, tmp->rooma->room,   tmp->roomb->type, tmp->roomb->room, tmp->weight);
+		if (tmp->isactive == 1)
+			printf(" XXXX");
+		printf("\n");
+		tmp = tmp->next;
+	}
+}
 
-	if (!(in = ft_strdup("#i_")) || !(out = ft_strdup("#o_")))
-		return (-1);
-	if (!(newroom = ft_strjoin(in, room->room)))
-		return (-1);
-	map = add_room(map, newroom, 'X', arg);
-	if (!(switch_links(map, arg, room->to, newroom)))
-		return (-1);
-	free (newroom);
-	if (!(newroom = ft_strjoin(out, room->room)))
-		return (-1);
-	map = add_room(map, newroom, 'X', arg);
-	switch_links(map, arg, room->to, newroom);
-	free (newroom);
-	free (in);
-	free (out);
-	return (1);
+void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
+{
+
+	if (room->parent)
+	{
+		room->parent->path = room;
+		if (room->status == 'I')
+			printf("\n\nPATH IS OK\n");
+		print_path(map, arg, room->parent);
+	}
+	if (room->status == 'I')
+		printf("\n\nPATH IS OK\n");
+	printf(" |%s| ", room->room);
 }
 
 t_data_map *duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
@@ -91,7 +149,7 @@ t_data_map *duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
 		arg->malloc_error = 1;
 		return (NULL);
 	}
-	if (!(out->room = ft_strdup(in->room)))
+	if (!(out->room = ft_strjoin("#", in->room)))
 	{
 		arg->malloc_error = 1;
 		free(out);
@@ -102,14 +160,40 @@ t_data_map *duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
 		arg->malloc_error = 1;
 		return (map);
 	}
+
 	out->key = hashCode(out->room);
 	out->status = 'X';
-	out->isactive = 0;  // ?
-	out->parent = NULL;
-	out->child = NULL;
-	out->to = in->to; // ajouter tous les to sauf parent
+	out->isactive = 1;  // ?
+	out->parent = in->parent;
+	out->path = in->path;
 	out->type = 'O';
-	// in->type = 'I';
+	in->type = 'I';
+	out->weight = 1;
+	in->weight = 1;
+t_linkstab *try;
+
+	while (in->to)
+	{
+		if (in->to->isactive)
+		{
+			try = lookuplink(map, in, in->to->roomb);
+			printf("Mon link %c%s %c%s\n", try->rooma->type, try->rooma->room, try->roomb->type, try->roomb->room);
+			if (try->roomb->path == try->rooma)
+			{
+				printf("Je passe \n");
+				// printf("Je remplace %s par %s\n", try->rooma->room, try->roomb->room);
+				// try->rooma = out;
+			}
+			else
+			{
+				try->rooma = out;
+			}
+			in->to = in->to->nexto;
+		}
+		else
+			in->to = in->to->nexto;
+
+	}
 	if (map->list[out->key % map->size] == NULL)
 		map->list[out->key % map->size] = out;
 	else
@@ -119,108 +203,53 @@ t_data_map *duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
 	}
 	arg->totalrooms++;
 
-	in->to = NULL;
-	// in->to = in->parent;
-	in->to = lookuplink(map, in, in->parent);
+// in<-out weight 0
 	newlink->rooma = out;
 	newlink->roomb = in;
-	newlink->weight = 0;
-	newlink->directed = 2;
+	// newlink->weight = 0;
 	newlink->isactive = 1;
 	map->links = add_it(map, newlink);
-	printf("%s ", in->room);
-printf("in  :");
-	while (in->to)
-	{
-		if (in->parent == in->to->roomb)
-			printf("  %s:%c  ", in->to->roomb->room, in->to->roomb->type);
-		in->to = in->to->nexto;
-	}
-printf("\n");
-printf("%s ", in->room);
-printf("out :");
-	while (out->to)
-	{
-		if (out->to->roomb->status == 'X')
-			printf("  %s:%c ", out->to->roomb->room, out->to->roomb->type);
-		out->to = out->to->nexto;
-	}
-printf("\n");
+//
+	try = lookuplink(map, in->path, in);
+	try->roomb = out;
 	return (map);
 }
 
-// void modify_path(t_data_map *map, t_lemin *arg)
-// {
-// 	t_node		*room = arg->end;
-// 	t_linkstab	*link;
-// 	t_linkstab	*findlink;
-//
-// 	link = map->links;
-// 	while (room)
-// 	{
-// 		if (room->parent)
-// 		{
-// 			findlink = lookuplink(map, room, room->parent);
-// 			findlink->weight = -1;
-// 			if (room != arg->start && room != arg->end)
-// 				map = duplicate(room, map, arg);
-// 			findlink = lookuplink(map, room->parent, room);
-// 			findlink->isactive = 0;
-// 		}
-// 		room = room->parent;
-// 	}
-// }
+
+void duppp(t_data_map *map, t_lemin *arg)
+{
+	t_node		*room = arg->start;
+	t_linkstab	*findlink;
+
+	while (room->path)
+	{
+			if (room->path->status == 'X')
+				duplicate(room->path, room, map, arg);
+			// findlink = lookuplink(map, room, room->path);
+		room = room->path;
+	}
+}
 
 int modify_path(t_data_map *map, t_lemin *arg)
 {
 	t_node		*room = arg->start;
-	t_node		*tmp;
 	t_linkstab	*findlink;
 
-	tmp = room;
-	while (room)
+	while (room->path)
 	{
-		if (room->path)
-		{
-			findlink = lookuplink(map, room->path, room);
-			findlink->weight = -1;
-			if (room->path->status == 'X')
-			{
-				duplicate(room->path, tmp, map, arg);
-				// if (multiply_room(map, arg, room->path) == -1)
-				// 	return (-1);
-				// switch_links(map, arg, room->path->to);
-			}
-			findlink = lookuplink(map, room, room->path);
-			findlink->isactive = 0;
-		}
-		tmp = room;
+		findlink = lookuplink(map, room->path, room);
+		findlink->weight = -1;
+		findlink = lookuplink(map, room, room->path);
+		findlink->isactive = -1;
+			// if (room->path->status == 'X')
+			// 	duplicate(room->path, room, map, arg);
+			// findlink = lookuplink(map, room, room->path);
 		room = room->path;
 	}
 	return (1);
 }
 
-void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
-{
-	printf("\n");
-	while (tmp->next)
-	{
-		printf("|%s-%s weight %3i active %3i| |type %c - %c|\n", tmp->rooma->room, tmp->roomb->room, tmp->weight, tmp->isactive, tmp->rooma->type, tmp->roomb->type);
-		tmp = tmp->next;
-	}
-}
 
-void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
-{
-	if (room->parent)
-	{
-		room->parent->path = room;
-		print_path(map, arg, room->parent);
-	}
-	if (room->status == 'I')
-		printf("\n\nPATH IS OK\n");
-	printf(" |%s| ", room->room);
-}
 
 int bellman_peugeot(t_data_map *map, t_lemin *arg)
 {
@@ -231,21 +260,36 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 	while (--countrooms > 0)
 	{
 		link = map->links;
+		printf("-----------\n");
 		while (link->next)
 		{
-			if (link->rooma->weight != INT_MAX - 10 && link->rooma->weight + link->weight < link->roomb->weight)
+			if (link->isactive == 1)
 			{
-				link->roomb->weight = link->weight + link->rooma->weight;
-				link->roomb->parent = link->rooma;
-				link->rooma->child = link->roomb;
-				// if (link->out->from->out != link->in)
-				// 	opti = add_opti(link->in, link->out, opti);
+				printf("Je teste %s (%i) %s (%i)\n", link->rooma->room, link->rooma->weight, link->roomb->room, link->roomb->weight);
+				if (link->rooma->weight != INFINITE && link->rooma->weight + link->weight < link->roomb->weight && link->roomb != arg->start && link->isactive == 1)
+				{
+					link->roomb->weight = link->weight + link->rooma->weight;
+					link->roomb->parent = link->rooma;
+					link->rooma->child = link->roomb;
+					printf("%s est le parent de %s\n", link->roomb->parent->room, link->roomb->room);
+				}
 			}
 			link = link->next;
 		}
 	}
+	link = map->links;
+	while (link->next)
+	{
+		if (link->rooma->weight != INT_MAX - 10 && link->rooma->weight + link->weight < link->roomb->weight)
+		{
+			printf("NEGATIF WEIGHT CYCLE AAAAAH\n");
+			printf("oo %s %s \n", link->rooma->room, link->roomb->room);
+		}
+		link = link->next;
+	}
 	return (1);
 }
+
 
 int find_path(t_data_map *map, t_lemin *arg)
 {
@@ -254,8 +298,14 @@ int find_path(t_data_map *map, t_lemin *arg)
 	printf("\n");
 	if (modify_path(map, arg) == -1)
 		return (-1);
-	// switch_link(map, arg, map->links);
+	duppp(map, arg);
+	print_all_links(map, arg, map->links);
+	printf("Si segfault commenter la fonction print_debug()\n");
+	print_debug(map, arg);
+	// printf("\n");
+	bellman_peugeot(map, arg);
+	// printf("\n");
+	print_path(map, arg, arg->end);
 
-	// print_all_links(map, arg, map->links);
 	return (1);
 }

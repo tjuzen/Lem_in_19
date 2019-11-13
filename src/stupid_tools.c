@@ -6,11 +6,25 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/12 11:46:35 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/13 16:12:31 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+t_linkstab *lookuplinknode(t_node *a, t_node *b)
+{
+	t_linkstab *find;
+
+	find = a->to;
+	while (find->nexto)
+	{
+		if (find->rooma == a && find->roomb == b)
+			return (find);
+		find = find->nexto;
+	}
+	return (NULL);
+}
 
 t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 {

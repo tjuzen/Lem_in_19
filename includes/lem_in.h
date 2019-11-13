@@ -130,5 +130,6 @@ int 			find_path(t_data_map *map, t_lemin *arg);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 int				linkexist(t_data_map *map, t_node *a, t_node *b);
 t_linkstab		*add_it(t_data_map *map, t_linkstab *newlink);
+t_linkstab *lookuplinknode(t_node *a, t_node *b);
 
 #endif

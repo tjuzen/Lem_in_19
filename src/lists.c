@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/12 17:26:56 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/13 15:31:07 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ t_data_map *add_room_info(t_data_map *map, char stat, t_lemin *arg, t_node *new)
 	new->isactive = 0; // ?
 	new->parent = NULL;
 	new->child = NULL;
+	new->path = NULL;
+	new->type = '/';
 	if (stat == 'I')
 	{
 		new->weight= 0;

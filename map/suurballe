@@ -10,18 +10,12 @@ g 0 0
 ##end
 h 0 0
 a-b
-a-e
 b-c
-f-g
-g-f
 c-d
+d-e
+a-e
 e-f
-e-d
-f-d
+d-f
 d-h
 f-g
-f-g
-f-g
-f-g
-f-g
-d-h
+g-h

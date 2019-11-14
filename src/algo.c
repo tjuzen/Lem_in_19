@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 15:34:10 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/14 16:33:02 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,12 +148,14 @@ int modify_path(t_data_map *map, t_lemin *arg)
 	while (room->path)
 	{
 		findlink = lookuplink(map, room->path, room);
+		if (findlink == NULL)
+			return (-1);
 		findlink->weight = -1;
 		findlink = lookuplink(map, room, room->path);
 		findlink->isactive = -1;
 		room = room->path;
 	}
-	return (1);
+	return (42);
 }
 
 
@@ -187,18 +189,19 @@ int find_path(t_data_map *map, t_lemin *arg)
 {
 	int i;
 
-	i = -1;
+	i = 42;
 	bellman_peugeot(map, arg);
 	print_path(map, arg, arg->end);
-
-	if (modify_path(map, arg) == -1)
-		return (-1);
-	duppp(map, arg);
-	init_room_weight(map, arg, map->links);
-	// print_all_links(map, arg, map->links);
-	// print_theo(map);
-	bellman_peugeot(map, arg);
-	print_path(map, arg, arg->end);
-
+	while (i == 42)
+	{
+		if ((i = modify_path(map, arg)) == -1)
+			return (-1);
+		duppp(map, arg);
+		init_room_weight(map, arg, map->links);
+		// print_all_links(map, arg, map->links);
+		// print_theo(map);
+		bellman_peugeot(map, arg);
+		print_path(map, arg, arg->end);
+	}
 	return (1);
 }

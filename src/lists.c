@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/13 15:31:07 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/14 11:36:30 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 			ft_freetab_str(splitted);
 			return (map);
 		}
-
 		newlink->rooma = rooma;
 		newlink->roomb = roomb;
 		newlink->weight = 1;
@@ -77,11 +76,10 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 			newlink->nexto = rooma->to;
 			rooma->to = newlink;
 		}
-
 		otherlink->rooma = roomb;
 		otherlink->roomb = rooma;
 		otherlink->weight = 1;
-		otherlink->directed = 2;
+		otherlink->directed = 1;
 		otherlink->isactive = 1;
 		map->links = add_it(map, otherlink);
 		if (!(roomb->to))
@@ -91,7 +89,6 @@ t_data_map	*add_link(t_data_map *map, char *line, t_lemin *arg, int directed)
 			otherlink->nexto = roomb->to;
 			roomb->to = otherlink;
 		}
-
 		if (rooma->status == 'I' && roomb->status == 'O')
 		{
 			arg->foundpath = 1;

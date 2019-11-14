@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/14 15:00:25 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/14 22:10:08 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links)
 {
 	t_node *a;
 	t_node *b;
-
 
 	while (links->next)
 	{
@@ -29,6 +28,8 @@ void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links)
 			{
 				a->weight = INFINITE;
 				b->weight = INFINITE;
+				a->path = NULL;
+				b->path = NULL;
 			}
 		}
 		links = links->next;
@@ -59,7 +60,107 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 		}
 		link = link->next;
 	}
-	if (did_change == 0)
-		return (666);
+	return (did_change == 0) ? 666 : 1;
+}
+
+int duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
+{
+	t_node			*out;
+	t_linkstab		*newlink;
+	t_linkstab *try;
+
+	if (!(out = ft_memalloc(sizeof(t_node))))
+	{
+		arg->malloc_error = 1;
+		return (-1);
+	}
+	if (!(out->room = ft_strjoin("#", in->room)))
+	{
+		arg->malloc_error = 1;
+		free(out);
+		return (-1);
+	}
+	if (!(newlink = ft_memalloc(sizeof(t_linkstab))))
+	{
+		arg->malloc_error = 1;
+		ft_strdel(&out->room);
+		free(out);
+		return (-1);
+	}
+	out->key = hashCode(out->room);
+	out->status = 'X';
+	out->isactive = 1;
+	out->parent = in->parent;
+	out->path = in->path;
+	out->type = 'O';
+	out->weight = 1;
+	in->type = 'I';
+	in->weight = 1;
+	while (in->to)
+	{
+		if (in->to->isactive)
+		{
+			if (!(try = lookuplink(map, in, in->to->roomb)))
+				break ;
+			if (try->roomb->path != try->rooma)
+				try->rooma = out;
+			in->to = in->to->nexto;
+		}
+		else
+			in->to = in->to->nexto;
+	}
+	if (map->list[out->key % map->size] == NULL)
+		map->list[out->key % map->size] = out;
+	else
+	{
+		out->hash_next = map->list[out->key % map->size];
+		map->list[out->key % map->size] = out;
+	}
+	arg->totalrooms++;
+	newlink->rooma = out;
+	newlink->roomb = in;
+	newlink->isactive = 1;
+	map->links = add_it(map, newlink);
+	if (!(try = lookuplink(map, in->path, in)))
+		return (-1);
+	try->roomb = out;
+	return (1);
+}
+
+
+int duppp(t_data_map *map, t_lemin *arg)
+{
+	t_node		*room;
+	t_linkstab	*findlink;
+
+	room = arg->start;
+	while (room->path)
+	{
+		if (room->path->status == 'X')
+			if (duplicate(room->path, room, map, arg) == -1)
+				return (-1);
+		room = room->path;
+	}
+	return (1);
+}
+
+int modify_path(t_data_map *map, t_lemin *arg)
+{
+	t_node		*room;
+	t_linkstab	*findlink;
+
+	room = arg->start;
+	if (!(room->path))
+		return (-1);
+	while (room->path)
+	{
+		if (!(findlink = lookuplink(map, room->path, room)))
+			return (-1);
+		findlink->weight = -1;
+		if (!(findlink = lookuplink(map, room, room->path)))
+			return (-1);
+		findlink->isactive = -1;
+		room = room->path;
+	}
 	return (1);
 }

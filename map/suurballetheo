@@ -1,0 +1,29 @@
+3
+##start
+a 0 0
+b 0 0
+c 0 0
+d 0 0
+e 0 0
+f 0 0
+g 0 0
+##end
+h 0 0
+i 0 0
+s 0 0
+z 0 0
+a-b
+b-c
+c-d
+d-e
+a-e
+e-f
+d-f
+d-h
+f-g
+g-h
+a-i
+h-i
+s-i
+i-z
+z-s

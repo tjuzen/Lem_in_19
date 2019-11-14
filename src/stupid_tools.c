@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/13 16:12:31 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/14 18:05:28 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,19 @@ int				intreturn_mallocerr(int value, t_lemin *arg)
 	return (-1);
 }
 
-void			init_arg(t_lemin *arg)
+t_data_map			*init_arg(t_lemin *arg)
 {
+	t_data_map *map;
+
+	if (!(map = createMap(500000, map)))
+		return (NULL);
 	arg->ants = -1;
 	arg->wrong_line = 0;
 	arg->malloc_error = 0;
 	arg->count_hash = 0;
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
+	return (map);
 }
 
 t_data_map	*return_delete(t_data_map	*map, char *line)
@@ -87,9 +92,9 @@ void free_node(t_node* node)
 
 void free_map(t_data_map* map)
 {
-	unsigned long i;
-	t_node *tmp;
-	t_linkstab	*tmp2;
+	unsigned long	i;
+	t_node			*tmp;
+	t_linkstab		*tmp2;
 
 	i = 0;
 	while (i < map->size)
@@ -116,19 +121,19 @@ int				exit_free(t_lemin *arg, t_data_map	*map)
 {
 	if (arg->malloc_error == -1)
 	{
-		ft_putendl("error get_next_line!");
+		ft_putendl("\nerror get_next_line!");
 		free_map(map);
 	}
 	if (arg->malloc_error == 1)
 	{
-		ft_putendl("error malloc ! hihi");
-		free(map->list);
-		free(map->links);
+		ft_putendl("\nerror malloc ! hihi");
+		// free(map->list);
+		// free(map->links);
 		free(map);
 	}
 	if (arg->malloc_error == 2)
-		ft_putendl("Wrong start or end!");
+		ft_putendl("\nRIP!");
 	if (arg->malloc_error == 3)
-		ft_putendl("invalid file!");
+		free(map);
 	return (-1);
 }

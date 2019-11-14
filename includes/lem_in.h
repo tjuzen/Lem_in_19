@@ -80,7 +80,7 @@ struct	s_lemin
 
 t_data_map		*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map);
 int				intreturn_mallocerr(int value, t_lemin *arg);
-void			init_arg(t_lemin *arg);
+t_data_map			*init_arg(t_lemin *arg);
 int 			exit_free(t_lemin *arg, t_data_map *map);
 t_data_map		*return_delete(t_data_map *map, char *line);
 
@@ -133,5 +133,17 @@ t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 int				linkexist(t_data_map *map, t_node *a, t_node *b);
 t_linkstab		*add_it(t_data_map *map, t_linkstab *newlink);
 t_linkstab *lookuplinknode(t_node *a, t_node *b);
+int modify_path(t_data_map *map, t_lemin *arg);
+int duppp(t_data_map *map, t_lemin *arg);
+int duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg);
+
+
+/*
+** MAIN.C
+*/
+t_node	*lookup(t_data_map *map, unsigned long key, char *room);
+unsigned long hashCode(char *room);
+t_data_map			*createMap(unsigned long size, t_data_map *map);
+int				main(void);
 
 #endif

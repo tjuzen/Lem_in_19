@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/12 14:22:00 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/14 17:49:53 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 	return (NULL);
 }
 
-t_data_map *createMap(unsigned long size)
+t_data_map		*createMap(unsigned long size, t_data_map *map)
 {
-   t_data_map	*map;
    t_data_map	*tmp;
    int			i;
 
@@ -68,13 +67,13 @@ int				main(void)
 	t_lemin			arg;
 	t_data_map		*map;
 
-	init_arg(&arg);
-	if (!(map = createMap(50000)))
+	if (!(map = init_arg(&arg)))
 		return (exit_free(&arg, map));
 	map = read_file(&arg, map);
 	if (arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-	find_path(map, &arg);
+	if (find_path(map, &arg) == -1)
+		return (exit_free(&arg, map));
 	free_map(map);
-	return (0);
+	return (1);
 }

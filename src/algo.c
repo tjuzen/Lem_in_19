@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 16:33:02 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/14 22:10:25 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,116 +47,10 @@ void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
 	}
 	if (room->status == 'I')
 		printf("\n\nPATH IS OK\n");
-	printf("|%s| ", room->room);
+	if (room)
+		printf("|%s| ", room->room);
 }
 
-t_data_map *duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg)
-{
-	t_node			*out;
-	t_linkstab		*newlink;
-
-	if (!(out = ft_memalloc(sizeof(t_node))))
-	{
-		arg->malloc_error = 1;
-		return (NULL);
-	}
-	if (!(out->room = ft_strjoin("#", in->room)))
-	{
-		arg->malloc_error = 1;
-		free(out);
-		return (NULL);
-	}
-	if (!(newlink = ft_memalloc(sizeof(t_linkstab))))
-	{
-		arg->malloc_error = 1;
-		return (map);
-	}
-
-	out->key = hashCode(out->room);
-	out->status = 'X';
-	out->isactive = 1;  // ?
-	out->parent = in->parent;
-	out->path = in->path;
-	out->type = 'O';
-	in->type = 'I';
-	out->weight = 1;
-	in->weight = 1;
-t_linkstab *try;
-
-	while (in->to)
-	{
-		if (in->to->isactive)
-		{
-			try = lookuplink(map, in, in->to->roomb);
-			// printf("Mon link %c%s %c%s\n", try->rooma->type, try->rooma->room, try->roomb->type, try->roomb->room);
-			if (try->roomb->path == try->rooma)
-			{
-				// printf("Je passe \n");
-				// printf("Je remplace %s par %s\n", try->rooma->room, try->roomb->room);
-				// try->rooma = out;
-			}
-			else
-			{
-				try->rooma = out;
-			}
-			in->to = in->to->nexto;
-		}
-		else
-			in->to = in->to->nexto;
-
-	}
-	if (map->list[out->key % map->size] == NULL)
-		map->list[out->key % map->size] = out;
-	else
-	{
-		out->hash_next = map->list[out->key % map->size];
-		map->list[out->key % map->size] = out;
-	}
-	arg->totalrooms++;
-
-	newlink->rooma = out;
-	newlink->roomb = in;
-	// newlink->weight = 0;
-	newlink->isactive = 1;
-	map->links = add_it(map, newlink);
-	try = lookuplink(map, in->path, in);
-	try->roomb = out;
-	return (map);
-}
-
-
-void duppp(t_data_map *map, t_lemin *arg)
-{
-	t_node		*room = arg->start;
-	t_linkstab	*findlink;
-
-	while (room->path)
-	{
-		if (room->path->status == 'X')
-			duplicate(room->path, room, map, arg);
-		room = room->path;
-	}
-}
-
-int modify_path(t_data_map *map, t_lemin *arg)
-{
-	t_node		*room = arg->start;
-	t_linkstab	*findlink;
-
-	if (!(room->path))
-		return (-1);
-	while (room->path)
-	{
-		findlink = lookuplink(map, room->path, room);
-		if (findlink == NULL)
-			return (-1);
-		findlink->weight = -1;
-		findlink = lookuplink(map, room, room->path);
-		findlink->isactive = -1;
-		room = room->path;
-	}
-	return (42);
-}
 
 
 
@@ -166,7 +60,9 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 	int			countrooms;
 
 	countrooms = arg->totalrooms;
-	while (--countrooms > 0)
+	link = map->links;
+
+	while (--countrooms > 0 && link)
 	{
 		link = map->links;
 		// printf("-----------\n");
@@ -189,19 +85,25 @@ int find_path(t_data_map *map, t_lemin *arg)
 {
 	int i;
 
-	i = 42;
-	bellman_peugeot(map, arg);
-	print_path(map, arg, arg->end);
-	while (i == 42)
+	i = -1;
+
+	int p;
+
+	p = 50;
+	while (--p)
 	{
-		if ((i = modify_path(map, arg)) == -1)
+		bellman_peugeot(map, arg);
+		print_path(map, arg, arg->end);
+		if (modify_path(map, arg) == -1)
 			return (-1);
 		duppp(map, arg);
 		init_room_weight(map, arg, map->links);
-		// print_all_links(map, arg, map->links);
-		// print_theo(map);
-		bellman_peugeot(map, arg);
-		print_path(map, arg, arg->end);
 	}
+
+	// duppp(map, arg);
+	// bellman_peugeot(map, arg);
+	// print_path(map, arg, arg->end);
+	// print_all_links(map, arg, map->links);
+	// print_theo(map);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 15:26:22 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/14 18:10:33 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int get_number_of_ants(t_lemin *arg)
 		return (intreturn_mallocerr(1, arg));
 	if (arg->ants == -1)
 		arg->ants = ft_atoi(line);
-	// if (arg->ants != 0)
-	// 	ft_putendl(line);
 	ft_strdel(&line);
 	return (arg->ants == 0 ? -1 : 1);
 }
@@ -57,7 +55,6 @@ int		check_links(t_data_map *map, t_node *a, t_node *b)
 	{
 		while (find->nexto)
 		{
-			// printf("Je teste %s et %s\n", find->rooma->room, find->roomb->room);
 			if (find->rooma->room == a->room && find->roomb->room == b->room)
 				return (0);
 			if (find->rooma->room == b->room && find->roomb->room == a->room)

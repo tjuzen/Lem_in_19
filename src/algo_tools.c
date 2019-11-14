@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/14 13:26:43 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/14 15:00:25 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links)
 	arg->start->weight = 0;
 }
 
-void 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
+int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 {
+	int did_change;
+
+	did_change = 0;
 	while (link->next)
 	{
 		if (link->isactive == 1)
@@ -50,9 +53,13 @@ void 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
 				link->rooma->child = link->roomb;
+				did_change = 1;
 				// printf("%s est le parent de %s\n", link->roomb->parent->room, link->roomb->room);
 			}
 		}
 		link = link->next;
 	}
+	if (did_change == 0)
+		return (666);
+	return (1);
 }

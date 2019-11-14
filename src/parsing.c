@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 20:26:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 11:37:29 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/14 15:23:49 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ t_data_map *get_infos(char *line, t_data_map *map, t_lemin *arg)
 		map = add_room(map, line, 'X', arg);
 		return (map);
 	}
-	if (is_link(line, map, arg) != -1)
+	int ret = is_link(line, map, arg);
+	if (ret == 0)
+		return (map);
+	else if (ret == 1)
 	{
 		map = add_link(map, line, arg, 1);
 		return (map);
 	}
-	// printf("\nWrong line\n");
+	printf("\nWrong line\n");
 	arg->wrong_line = 1;
 	return (map);
 }
@@ -41,7 +44,7 @@ t_data_map *read_file(t_lemin *arg, t_data_map *map)
 
 	if (get_number_of_ants(arg) == -1)
 		return (lstreturn_mallocerr(1, arg, map));
-	while (get_next_line(0, &line, 0) > 0)
+	while (get_next_line(0, &line, 1) > 0)
 	{
 		if (!(line))
 			return (lstreturn_mallocerr(1, arg, map));

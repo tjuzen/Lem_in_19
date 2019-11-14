@@ -117,7 +117,7 @@ int 			is_room(char *line, t_lemin *arg);
 int 			is_comment(char *line, t_lemin *arg);
 
 
-void 	bellwhile_ford(t_linkstab *link, t_lemin *arg);
+int 	bellwhile_ford(t_linkstab *link, t_lemin *arg);
 void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links);
 int		check_links(t_data_map *map, t_node *a, t_node *b);
 unsigned long 	hashCode(char *room);

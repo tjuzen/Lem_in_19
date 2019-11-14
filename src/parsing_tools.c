@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 11:43:08 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/14 15:26:22 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int get_number_of_ants(t_lemin *arg)
 {
 	char	*line;
 
-	get_next_line(0, &line , 0);
+	get_next_line(0, &line , 1);
 	if (!(line))
 		return (intreturn_mallocerr(1, arg));
 	if (arg->ants == -1)
@@ -29,7 +29,7 @@ int get_number_of_ants(t_lemin *arg)
 
 t_data_map *add_in_out(char *line, t_data_map *map, t_lemin *arg, char s)
 {
-	get_next_line(0, &line, 0);
+	get_next_line(0, &line, 1);
 	if (!line)
 	{
 		arg->malloc_error = -1;
@@ -53,15 +53,17 @@ int		check_links(t_data_map *map, t_node *a, t_node *b)
 	t_linkstab *find;
 
 	find = a->to;
-	if (a->to == NULL)
-		return (1);
-	while (find->nexto)
+	if (a->to != NULL)
 	{
-		if (find->rooma == a && find->roomb == b)
-			return (0);
-		if (find->roomb == b && find->roomb == a)
-			return (0);
-		find = find->nexto;
+		while (find->nexto)
+		{
+			// printf("Je teste %s et %s\n", find->rooma->room, find->roomb->room);
+			if (find->rooma->room == a->room && find->roomb->room == b->room)
+				return (0);
+			if (find->rooma->room == b->room && find->roomb->room == a->room)
+				return (0);
+			find = find->nexto;
+		}
 	}
 	return (1);
 }

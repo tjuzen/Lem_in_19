@@ -6,11 +6,31 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/14 22:10:08 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:38:45 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+t_node		*give_name(t_data_map *map, int i, t_lemin *arg)
+{
+	t_node *tmp;
+	char *str;
+	char *nbr;
+
+	if (!(nbr = ft_itoa(i)))
+		return (NULL);
+	if (!(str = ft_strjoin("L-", nbr)))
+	{
+		free(nbr);
+		return (NULL);
+	}
+	free(nbr);
+	map = add_room(map, str, 'P', arg);
+	tmp = lookup(map, hashCode(str), str);
+	free(str);
+	return (tmp);
+}
 
 void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links)
 {

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 18:12:21 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:13:02 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,6 @@ t_data_map	*add_room(t_data_map *map, char *str, char status, t_lemin *arg)
 	}
 	arg->totalrooms++;
 	ft_freetab_str(splitted);
+	ft_putendl (str);
 	return (add_room_info(map, status, arg, new));
 }

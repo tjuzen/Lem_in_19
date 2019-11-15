@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 22:10:25 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/15 17:32:01 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,22 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	}
 }
 
-void 	print_path(t_data_map *map, t_lemin *arg, t_node *room)
+void 	print_path(t_data_map *map, t_lemin *arg, t_node *room, t_node *path)
 {
 	if (room->parent)
 	{
 		room->parent->path = room;
-		print_path(map, arg, room->parent);
+		print_path(map, arg, room->parent, path);
 	}
 	if (room->status == 'I')
 		printf("\n\nPATH IS OK\n");
 	if (room)
+	{
+		path->path = room;
+		printf("|%s|", path->path->room);
+		path = path->path;
 		printf("|%s| ", room->room);
+	}
 }
 
 
@@ -84,16 +89,16 @@ int bellman_peugeot(t_data_map *map, t_lemin *arg)
 int find_path(t_data_map *map, t_lemin *arg)
 {
 	int i;
-
-	i = -1;
-
 	int p;
+	t_node *way;
 
 	p = 50;
+	i = -1;
 	while (--p)
 	{
 		bellman_peugeot(map, arg);
-		print_path(map, arg, arg->end);
+		way = give_name(map, ++i, arg);
+		print_path(map, arg, arg->end, way);
 		if (modify_path(map, arg) == -1)
 			return (-1);
 		duppp(map, arg);

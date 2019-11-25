@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
+/*   Updated: 2019/11/25 14:28:12 by bsuarez-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
@@ -12,6 +24,7 @@
 # define GREY     "\033[1;37m"
 # define DEFAULT_COLOR "\033[0;m"
 # define INFINITE INT_MAX - 10
+
 /*
 **	Définition de ma Data_Map
 */
@@ -28,6 +41,7 @@ struct s_data_map
 	unsigned long	size;
 	t_node			**list;
 	t_linkstab		*links;
+	t_node			**path_list;
 };
 
 struct			s_node
@@ -39,13 +53,16 @@ struct			s_node
 	char			status;
 	int				weight;
 	int				count_hash;
-	t_node			*path;
 	t_node 			*parent;
-	t_node			*child;
 	t_node			*hash_next; // pour lookup
+	t_node			*out;
+	t_node			*in;
 	int				isactive;
 
-	t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
+	t_node			*parentdup;
+	t_linkstab		*theopath;
+	// t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
+
 };
 
 struct			s_linkstab
@@ -55,7 +72,8 @@ struct			s_linkstab
 
 	int 			weight;
 	int				isactive;
-	int				directed;
+	int				ISUSED;
+	int				inversed;
 
 	t_linkstab		*nexto;
 	t_linkstab		*next; // liste de TOUS mes links
@@ -63,6 +81,7 @@ struct			s_linkstab
 
 struct	s_lemin
 {
+	int				paths_founds;
 	int				ants;
 	int				wrong_line;
 	int				malloc_error;
@@ -72,7 +91,26 @@ struct	s_lemin
 	int				foundpath;
 	t_node			*start;
 	t_node			*end;
+	short			in;
+	short			out;
 };
+
+/*
+** LEM_IN.C
+*/
+
+int				main(void);
+t_data_map		*createMap(unsigned long size, t_data_map *map);
+t_node			*lookup(t_data_map *map, unsigned long key, char *room);
+unsigned long 	hashCode(char *room);
+
+/*
+** LOOKUP.C
+*/
+
+t_node			*lookup(t_data_map *map, unsigned long key, char *room);
+t_linkstab 		*lookuplinknode(t_node *a, t_node *b);
+t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 
 /*
 ** STUPID_TOOLS.C
@@ -80,58 +118,62 @@ struct	s_lemin
 
 t_data_map		*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map);
 int				intreturn_mallocerr(int value, t_lemin *arg);
-t_data_map			*init_arg(t_lemin *arg);
+t_data_map		*init_arg(t_lemin *arg);
 int 			exit_free(t_lemin *arg, t_data_map *map);
 t_data_map		*return_delete(t_data_map *map, char *line);
 
 /*
-** LISTS.C
+** ADD_INFO.C
 */
 
-t_data_map		*add_room(t_data_map *map, char *str, char state, t_lemin *arg);
-void			print_delete(t_data_map *map, t_lemin *arg);
-void			delete(t_data_map *map, t_lemin *arg);
+int				add_room(t_data_map **map, char *str, char status, t_lemin *arg);
+int 			add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new);
+int				add_link(t_data_map **map, char *line, t_lemin *arg, int directed);
+t_linkstab 		*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed);
+void			add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink);
 
 /*
-** PARSING.C
+** READ_FILE.C
 */
 
-t_data_map 		*get_infos(char *line, t_data_map *map, t_lemin *arg);
-t_data_map 		*read_file(t_lemin *arg, t_data_map *map);
+int 			read_file(t_lemin *arg, t_data_map **map);
+int 			get_infos(char *line, t_data_map **map, t_lemin *arg);
+
 
 /*
 ** PARSING_TOOLS.C
 */
 
-t_data_map 		*add_in_out(char *line, t_data_map *map, t_lemin *arg, char s);
-int 			get_number_of_ants(t_lemin *arg);
-t_data_map		*start(t_data_map *map, char *str, char status, t_lemin *arg);
-t_data_map 		*end(t_lemin *arg, t_data_map *map);
-void 			insert(t_data_map *map ,unsigned long pos, char *value, t_node	*tmp);
+int 			add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
+int 			get_number_of_ants(char *line, t_lemin *arg);
+int				check_links(t_data_map *map, t_node *a, t_node *b);
+int				valid_end_start(int i, t_lemin *arg, char s);
 
 /*
 ** VALID_LINE.C
 */
 
+int				is_ant(char *line, t_lemin *arg);
 int 			is_room(char *line, t_lemin *arg);
 int 			is_comment(char *line, t_lemin *arg);
+int				is_command(char *line);
+int				is_link(char *line, t_data_map **map, t_lemin *arg);
 
+/*
+** IN_CLASSEMENT
+*/
 
-int 	bellwhile_ford(t_linkstab *link, t_lemin *arg);
-void 	init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links);
-int		check_links(t_data_map *map, t_node *a, t_node *b);
+int 			bellwhile_ford(t_linkstab *link, t_lemin *arg);
+void 			init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links);
+
 unsigned long 	hashCode(char *room);
 void 			free_map(t_data_map* map);
 void 			free_node(t_node* node);
 t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
-t_node			*lookup(t_data_map *map, unsigned long key, char *room);
-t_data_map		*add_link(t_data_map *map, char *line, t_lemin *arg, int directed);
-int				is_link(char *line, t_data_map *map, t_lemin *arg);
-int				bellman_peugeot(t_data_map *map, t_lemin *arg);
-int 			find_path(t_data_map *map, t_lemin *arg);
+int				bellman_peugeot(t_data_map **map, t_lemin *arg);
+int 			find_path(t_data_map **map, t_lemin *arg);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 int				linkexist(t_data_map *map, t_node *a, t_node *b);
-t_linkstab		*add_it(t_data_map *map, t_linkstab *newlink);
 t_linkstab *lookuplinknode(t_node *a, t_node *b);
 int modify_path(t_data_map *map, t_lemin *arg);
 int duppp(t_data_map *map, t_lemin *arg);

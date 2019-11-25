@@ -6,50 +6,16 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 18:05:28 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/22 11:34:10 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_linkstab *lookuplinknode(t_node *a, t_node *b)
-{
-	t_linkstab *find;
-
-	find = a->to;
-	while (find->nexto)
-	{
-		if (find->rooma == a && find->roomb == b)
-			return (find);
-		find = find->nexto;
-	}
-	return (NULL);
-}
-
-t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
-{
-	t_linkstab *find;
-
-	find = map->links;
-	while (find->next)
-	{
-		if (find->rooma == a && find->roomb == b)
-			return (find);
-		find = find->next;
-	}
-	return (NULL);
-}
-
 t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map)
 {
 	arg->malloc_error = value;
 	return (map);
-}
-
-int				intreturn_mallocerr(int value, t_lemin *arg)
-{
-	arg->malloc_error = value;
-	return (-1);
 }
 
 t_data_map			*init_arg(t_lemin *arg)
@@ -64,6 +30,8 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->count_hash = 0;
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
+	arg->in = 0;
+	arg->out = 0;
 	return (map);
 }
 
@@ -72,7 +40,6 @@ t_data_map	*return_delete(t_data_map	*map, char *line)
 	ft_strdel(&line);
 	return (map);
 }
-
 
 void free_node(t_node* node)
 {
@@ -119,21 +86,7 @@ void free_map(t_data_map* map)
 
 int				exit_free(t_lemin *arg, t_data_map	*map)
 {
-	if (arg->malloc_error == -1)
-	{
-		ft_putendl("\nerror get_next_line!");
-		free_map(map);
-	}
-	if (arg->malloc_error == 1)
-	{
-		ft_putendl("\nerror malloc ! hihi");
-		// free(map->list);
-		// free(map->links);
-		free(map);
-	}
-	if (arg->malloc_error == 2)
-		ft_putendl("\nRIP!");
-	if (arg->malloc_error == 3)
-		free(map);
+	printf("ERROR\n");
+	free_map(map);
 	return (-1);
 }

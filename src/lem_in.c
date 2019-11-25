@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/14 17:49:53 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/25 14:26:16 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ unsigned long hashCode(char *room)
 		't' + 'j' + 'u' + 'z' + 'e' + 'n' +
 		'b' + 's' + 'u' + 'a' + 'r' + 'e' + 'z' + '-';
 	return (hash);
-}
-
-t_node	*lookup(t_data_map *map, unsigned long key, char *room)
-{
-	t_node *tmp;
-
-	tmp = map->list[key % map->size];
-	while (tmp)
-	{
-		if (tmp->key == key && ft_strcmp(room, tmp->room) == 0)
-				return (tmp);
-		tmp = tmp->hash_next;
-	}
-	return (NULL);
 }
 
 t_data_map		*createMap(unsigned long size, t_data_map *map)
@@ -64,16 +50,17 @@ t_data_map		*createMap(unsigned long size, t_data_map *map)
 
 int				main(void)
 {
-	t_lemin			arg;
+    t_lemin			arg;
 	t_data_map		*map;
 
 	if (!(map = init_arg(&arg)))
 		return (exit_free(&arg, map));
-	map = read_file(&arg, map);
-	if (arg.malloc_error != 0)
+	if (read_file(&arg, &map) == -1)
 		return (exit_free(&arg, map));
-	if (find_path(map, &arg) == -1)
-		return (exit_free(&arg, map));
+    if (arg.in != 1 || arg.out != 1 || map->links == NULL || arg.ants == -1)
+        return (exit_free(&arg, map));
+	if (find_path(&map, &arg) == -1)
+	   return (exit_free(&arg, map));
 	free_map(map);
-	return (1);
+	return (0);
 }

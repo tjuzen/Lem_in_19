@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/22 15:42:36 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/26 13:50:43 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 				&& link->rooma->weight + link->weight < link->roomb->weight
 				&& link->roomb != arg->start && link->isactive == 1)
 			{
-				printf(" %s est le parent de %s\n", link->rooma->room, link->roomb->room);
+				printf(" %s%c est le parent de %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
 				// link->rooma->child = link->roomb;

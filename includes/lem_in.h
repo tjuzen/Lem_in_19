@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/25 14:28:12 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/25 15:47:55 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ struct			s_node
 	t_node			*out;
 	t_node			*in;
 	int				isactive;
-
+	int				duplicated;
 	t_node			*parentdup;
 	t_linkstab		*theopath;
 	// t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
@@ -178,6 +178,8 @@ t_linkstab *lookuplinknode(t_node *a, t_node *b);
 int modify_path(t_data_map *map, t_lemin *arg);
 int duppp(t_data_map *map, t_lemin *arg);
 int duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg);
+void print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 
 
 /*

@@ -6,90 +6,29 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/25 14:46:34 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/27 13:32:58 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void check(t_data_map *map, t_lemin *arg, t_node *room)
 {
-	printf("\n\n");
-	printf(BLUE "OUT "DEFAULT_COLOR);
-	printf(RED " IN "DEFAULT_COLOR);
-	printf(GREY " START ET END \n\n"DEFAULT_COLOR);
+	t_linkstab *tmp = map->links;
+
 	while (tmp->next)
 	{
-		if (tmp->rooma == arg->end || tmp->rooma == arg->start)
+		printf(" On parle de %s%c et %s%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
+		if (tmp->rooma->type == 'I' && tmp->roomb->type == 0)
 		{
-			printf(GREY" %s "DEFAULT_COLOR, tmp->rooma->room );
+			// tmp->rooma = tmp->rooma->out;
 		}
-		else
+		if (tmp->rooma->type == 'O' && tmp->roomb->status == 'I')
 		{
-			if (tmp->rooma->type == 0)
-				printf(DEFAULT_COLOR" %s " DEFAULT_COLOR, tmp->rooma->room);
-			else if (tmp->rooma->type == 'I')
-				printf(RED " %s "DEFAULT_COLOR, tmp->rooma->room);
-			else if (tmp->rooma->type == 'O')
-				printf(BLUE " %s " DEFAULT_COLOR, tmp->rooma->room);
+			// tmp->rooma = tmp->rooma->in;
 		}
-		printf(" ----");
-		if (tmp->roomb == arg->end || tmp->roomb == arg->start)
-		{
-			printf(GREY"  %s "DEFAULT_COLOR, tmp->roomb->room );
-		}
-		else
-		{
-			if (tmp->roomb->type == 0)
-				printf(DEFAULT_COLOR"  %s " DEFAULT_COLOR, tmp->roomb->room);
-			else if (tmp->roomb->type == 'I')
-				printf(RED "  %s " DEFAULT_COLOR, tmp->roomb->room);
-			else if (tmp->roomb->type == 'O')
-				printf(BLUE "  %s " DEFAULT_COLOR, tmp->roomb->room);
-		}
-
-		if (tmp->ISUSED == 1)
-		printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
-		else
-		printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
-		if (tmp->isactive == 1)
-			printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
-		else
-			printf("\n");
 		tmp = tmp->next;
 	}
-}
-
-void print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
-{
-	if (tmp->rooma == arg->end || tmp->rooma == arg->start)
-	{
-		printf(GREY" %s "DEFAULT_COLOR, tmp->rooma->room );
-	}
-	else
-	{
-		if (tmp->rooma->type == 0)
-			printf(DEFAULT_COLOR" %s " DEFAULT_COLOR, tmp->rooma->room);
-		else if (tmp->rooma->type == 'I')
-			printf(RED " %s "DEFAULT_COLOR, tmp->rooma->room);
-		else if (tmp->rooma->type == 'O')
-			printf(BLUE " %s " DEFAULT_COLOR, tmp->rooma->in->room);
-	}
-	printf(" ----");
-	if (tmp->roomb == arg->end || tmp->roomb == arg->start)
-	{
-		printf(GREY"  %s "DEFAULT_COLOR, tmp->roomb->room );
-	}
-	else
-	{
-		if (tmp->roomb->type == 0)
-			printf(DEFAULT_COLOR"  %s " DEFAULT_COLOR, tmp->roomb->room);
-		else if (tmp->roomb->type == 'I')
-			printf(RED "  %s " DEFAULT_COLOR, tmp->roomb->room);
-		else if (tmp->roomb->type == 'O')
-			printf(BLUE "  %s " DEFAULT_COLOR, tmp->roomb->in->room);
-	}
-	printf("\n");
 }
 
 int bellman_peugeot(t_data_map **map, t_lemin *arg)
@@ -121,13 +60,6 @@ void remove_inversed(t_data_map *map, t_lemin *arg)
 		{
 			tmp->isactive = 0;
 			tmp->ISUSED = 0;
-
-			// try = lookuplink(map, tmp->roomb, tmp->rooma);
-			// if (try)
-			// {
-			// 	tmp->isactive = 0;
-			// 	tmp->ISUSED = 0;
-			// }
 		}
 		if (tmp->rooma->type == 'O' && tmp->roomb->type == 'I')
 		{
@@ -147,10 +79,11 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 
 	while (room)
 	{
+		printf("Room %s\n", room->room);
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
-			print_colors(map, arg, tmp);
+			// print_colors(map, arg, tmp);
 			tmp->isactive = 0;
 			tmp->rooma->theopath = tmp;
 		}
@@ -164,7 +97,6 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 	t_node		*out;
 	t_linkstab	*outin;
 
-	printf("avant  %s%c  %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
 	if (!(out = ft_memalloc(sizeof(t_node))))
 	{
 		arg->malloc_error = 1;
@@ -202,21 +134,21 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 	outin->rooma = out;
 	outin->roomb = link->roomb;
 	outin->isactive = 1;
-	printf("outin  %s%c  %s%c\n", outin->rooma->room, outin->rooma->type, outin->roomb->room, outin->roomb->type);
 	outin->rooma->parentdup = outin->roomb;
 	outin->roomb->type = 'I';
+	printf("Nouveau outin  %s%c  %s%c\n", outin->rooma->room, outin->rooma->type, outin->roomb->room, outin->roomb->type);
 	add_it(arg, &map, outin);
+	link->roomb->duplicated = 1;
 	link->roomb = out;
 	link->weight = -1;
-	printf("apres  %s%c  %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
+	printf("Mon lien est devenu  %s%c  %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
 	link->rooma->parentdup = link->roomb;
 
-	printf("kiki de %c %c\n", outin->rooma->type, outin->roomb->type);
 
 	outin->rooma->in = outin->roomb;
-	printf("%s%c possede %s%c en in\n", out->room, out->type,  out->in->room, out->in->type);
-	link->roomb->out = outin->rooma;
-	printf("%s%c possede %s%c en out\n", link->roomb->room, link->roomb->type, link->roomb->out->room, link->roomb->out->type);
+	printf("%s%c possede %s%c en in\n", outin->rooma->room, outin->rooma->type,  outin->roomb->room, outin->roomb->type);
+	outin->roomb->out = outin->rooma;
+	printf("%s%c possede %s%c en out\n\n", outin->roomb->room, outin->roomb->type,  outin->rooma->room, outin->rooma->type);
 
 
 	return (1);
@@ -233,35 +165,27 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 		tmp = lookuplink(map, room, room->parent);
 		if (tmp)
 		{
-			printf("alo %s%c %s%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
-
+			printf("Mon lien %s%c-%s%c, ", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
 			tmp->weight = -1;
-			print_colors(map, arg, tmp);
-			printf("_________Staut:%c\n", tmp->roomb->status);
-			if (tmp->roomb->status == 'X')
+			if (tmp->roomb->status == 'X' && tmp->roomb->duplicated != 1)
 			{
-				printf("Je duplique %s\n", tmp->roomb->room);
-				//duplicate();
+				printf("je duplique %s%c\n", tmp->roomb->room, tmp->roomb->type);
 				if (new_duplicate(map, arg, tmp) == -1)
 					return (-1);
 			}
 			else if (tmp->roomb == arg->start)
-			{
-				printf("je rentre\n");
 				tmp->rooma->parentdup = tmp->roomb;
-			}
-			// tmp->rooma->theopath = tmp;
 		}
 		room = room->parent;
 	}
 	return (1);
 }
 
-int reset(t_data_map **map, t_lemin *arg)
+int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 {
 	t_node *a;
 	t_node *b;
-	t_linkstab *links = (*map)->links;
+
 	while (links->next)
 	{
 		a = lookup((*map), links->rooma->key, links->rooma->room);
@@ -271,11 +195,20 @@ int reset(t_data_map **map, t_lemin *arg)
 			a->weight = INFINITE;
 			a->parent = NULL;
 			a->parentdup = NULL;
+			a->theopath = NULL;
 			if (a->in)
 			{
 				a->in->weight = INFINITE;
 				a->in->parent = NULL;
 				a->in->parentdup = NULL;
+				a->in->theopath = NULL;
+			}
+			if (a->out)
+			{
+				a->out->weight = INFINITE;
+				a->out->parent = NULL;
+				a->out->parentdup = NULL;
+				a->out->theopath = NULL;
 			}
 		}
 		if (b)
@@ -283,104 +216,63 @@ int reset(t_data_map **map, t_lemin *arg)
 			b->weight = INFINITE;
 			b->parent = NULL;
 			b->parentdup = NULL;
+			b->theopath = NULL;
 			if (b->in)
 			{
 				b->in->weight = INFINITE;
 				b->in->parent = NULL;
 				b->in->parentdup = NULL;
+				b->in->theopath = NULL;
+			}
+			if (b->out)
+			{
+				b->out->weight = INFINITE;
+				b->out->parent = NULL;
+				b->out->parentdup = NULL;
+				b->out->theopath = NULL;
 			}
 		}
-
 		links = links->next;
 	}
 	arg->start->weight = 0;
 	return (1);
 }
 
-void check(t_data_map *map, t_lemin *arg, t_node *room)
-{
-	t_linkstab *tmp = map->links;
-
-	while (tmp->next)
-	{
-		printf(" On parle de %s%c et %s%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
-		if (tmp->rooma->type == 'I' && tmp->roomb->type == 0)
-		{
-			// tmp->rooma = tmp->rooma->out;
-		}
-		if (tmp->rooma->type == 'O' && tmp->roomb->status == 'I')
-		{
-			// tmp->rooma = tmp->rooma->in;
-		}
-		tmp = tmp->next;
-	}
-}
+// si link->rooma->type == 'I' && link->roomb != arg->end && if (link->roomb) link->roomb != link->roomb->out &&
 
 int find_path(t_data_map **map, t_lemin *arg)
 {
-	bellman_peugeot(map, arg);
-	if (add_found_path((*map), arg, arg->end) == -1)
-		return (-1);
-	if (duplicate_nodes((*map), arg, arg->end) == -1)
-		return (-1);
-	check((*map), arg, arg->end);
-	printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
-	print_all_links((*map), arg, (*map)->links);
-	if (reset(map, arg) == -1)
-		return (-1);
-
-	printf("\n Theo Path \n");
 	t_node *tmp;
-	tmp = arg->start;
-	while (tmp->theopath)
-	{
-		printf("%s\n", tmp->room);
-		tmp = tmp->theopath->roomb;
-	}
-	printf("%s\n", tmp->room);
-
-
-
-
-	bellman_peugeot(map, arg);
-	if (add_found_path((*map), arg, arg->end) == -1)
-		return (-1);
-	if (duplicate_nodes((*map), arg, arg->end) == -1)
-		return (-1);
-	check((*map), arg, arg->end);
-	printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
+	int p = 3;
 	print_all_links((*map), arg, (*map)->links);
-	if (reset(map, arg) == -1)
-		return (-1);
 
-	printf("\n Theo Path \n");
-	tmp = arg->start;
-	while (tmp->theopath)
+	while (p--)
 	{
-		printf("%s\n", tmp->room);
-		tmp = tmp->theopath->roomb;
-	}
-	printf("%s\n", tmp->room);
+		bellman_peugeot(map, arg);
+		if (add_found_path((*map), arg, arg->end) == -1)
+			return (-1);
+		if (duplicate_nodes((*map), arg, arg->end) == -1)
+			return (-1);
+		printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
+		print_all_links((*map), arg, (*map)->links);
 
-	// bellman_peugeot(map, arg);
-	// if (add_found_path((*map), arg, arg->end) == -1)
-	// 	return (-1);
-	// if (duplicate_nodes((*map), arg, arg->end) == -1)
-	// 	return (-1);
-	// check((*map), arg, arg->end);
-	// printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
-	// // print_all_links((*map), arg, (*map)->links);
-	// if (reset(map, arg) == -1)
-	// 	return (-1);
-	//
-	// printf("\n Theo Path \n");
-	// tmp = arg->start;
-	// while (tmp->theopath)
-	// {
-	// 	printf("%s\n", tmp->room);
-	// 	tmp = tmp->theopath->roomb;
-	// }
-	// printf("%s\n", tmp->room);
+
+					// printf("\n Theo Path \n");
+					// tmp = arg->start;
+					// while (tmp->theopath)
+					// {
+					// 	printf("%s\n", tmp->room);
+					// 	if (tmp->out)
+					// 		printf("%s\n", tmp->out->room);
+					// 	tmp = tmp->theopath->roomb;
+					// }
+					// printf("%s\n", tmp->room);
+
+		if (reset(map, arg, (*map)->links) == -1)
+			return (-1);
+
+
+	}
 
 	return (1);
 }

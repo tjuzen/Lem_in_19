@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/25 14:37:24 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/11/25 15:49:10 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,10 +125,10 @@ int		add_room(t_data_map **map, char *str, char stat, t_lemin *arg)
 		free(new);
 		return (-1);
 	}
-	printf("_________-----------Staut:%c\n", stat);
 	arg->totalrooms++;
 	ft_freetab_str(splitted);
 	new->key = hashCode(new->room);
+	new->duplicated = 0;
 	new->status = stat;
 	new->isactive = 0;
 	new->type = 0;

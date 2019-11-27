@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:49:10 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/27 13:41:42 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	link->ISUSED = 0;
 	link->isactive = 1;
 	link->inversed = 0;
-	// if (!(a->to))
-	// 	a->to = link;
-	// else
-	// {
-	// 	link->nexto = a->to;
-	// 	a->to = link;
-	// }
+	if (!(a->to))
+		a->to = link;
+	else
+	{
+		link->nexto = a->to;
+		a->to = link;
+	}
 	return (link);
 }
 

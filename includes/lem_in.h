@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/25 15:47:55 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/27 16:34:31 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ struct			s_node
 	int				duplicated;
 	t_node			*parentdup;
 	t_linkstab		*theopath;
-	// t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
+	t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
 
 };
 
@@ -162,6 +162,10 @@ int				is_link(char *line, t_data_map **map, t_lemin *arg);
 /*
 ** IN_CLASSEMENT
 */
+
+void 	print_to_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp, t_node *out);
+t_linkstab *lookup_to(t_data_map *map, t_node *a, t_node *b);
+
 
 int 			bellwhile_ford(t_linkstab *link, t_lemin *arg);
 void 			init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links);

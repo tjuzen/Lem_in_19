@@ -6,11 +6,20 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/27 13:32:58 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/11/27 19:34:30 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+t_linkstab *find_to(t_data_map *map, t_lemin *arg, t_node *a, t_node*b)
+{
+	t_linkstab *tmp;
+
+	tmp = lookuplink(map, a, b);
+	// while
+	return (tmp);
+}
 
 void check(t_data_map *map, t_lemin *arg, t_node *room)
 {
@@ -84,7 +93,10 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 		if (tmp)
 		{
 			// print_colors(map, arg, tmp);
-			tmp->isactive = 0;
+			if (tmp->isactive == 1)
+				tmp->isactive = 0;
+			else if (tmp->isactive == 0)
+				tmp->isactive = 1;
 			tmp->rooma->theopath = tmp;
 		}
 		room = room->parent;
@@ -96,6 +108,7 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 {
 	t_node		*out;
 	t_linkstab	*outin;
+	t_linkstab *tmp;
 
 	if (!(out = ft_memalloc(sizeof(t_node))))
 	{
@@ -121,6 +134,8 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 	out->type = 'O';
 	out->weight = 1;
 	out->theopath = NULL;
+	out->to = link->rooma->to;
+	// link->rooma->to = link->rooma->parentdup;
 
 
 	if (map->list[out->key % map->size] == NULL)
@@ -130,7 +145,6 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 		out->hash_next = map->list[out->key % map->size];
 		map->list[out->key % map->size] = out;
 	}
-
 	outin->rooma = out;
 	outin->roomb = link->roomb;
 	outin->isactive = 1;
@@ -144,11 +158,16 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 	printf("Mon lien est devenu  %s%c  %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
 	link->rooma->parentdup = link->roomb;
 
+	// tmp = lookup_to(map, out->to->rooma, out->to->roomb);
+	// // if (tmp)
+	// printf ("-----------------------------[%s]%c - [%s]%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
+	// print_to_links(map, arg, out->parentdup->to, out);
 
 	outin->rooma->in = outin->roomb;
 	printf("%s%c possede %s%c en in\n", outin->rooma->room, outin->rooma->type,  outin->roomb->room, outin->roomb->type);
 	outin->roomb->out = outin->rooma;
 	printf("%s%c possede %s%c en out\n\n", outin->roomb->room, outin->roomb->type,  outin->rooma->room, outin->rooma->type);
+	// print_to_links(map, arg, out->parentdup->to, out);
 
 
 	return (1);
@@ -243,7 +262,7 @@ int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 int find_path(t_data_map **map, t_lemin *arg)
 {
 	t_node *tmp;
-	int p = 3;
+	int p = 4;
 	print_all_links((*map), arg, (*map)->links);
 
 	while (p--)
@@ -253,6 +272,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 			return (-1);
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
+		print_to_links ((*map), arg, (*map)->links, arg->start);
 		printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
 		print_all_links((*map), arg, (*map)->links);
 

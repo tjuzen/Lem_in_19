@@ -27,7 +27,6 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->ants = -1;
 	arg->wrong_line = 0;
 	arg->malloc_error = 0;
-	arg->count_hash = 0;
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
 	arg->in = 0;

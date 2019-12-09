@@ -6,39 +6,38 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/27 19:34:30 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/09 20:59:02 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_linkstab *find_to(t_data_map *map, t_lemin *arg, t_node *a, t_node*b)
+// Augmente de 1 la valeur de selected pour A-B (== tmp) et B-A (== reversed)
+
+int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 {
+	printf("\n\nADD FOUND PATH\n\n");
 	t_linkstab *tmp;
 
-	tmp = lookuplink(map, a, b);
-	// while
-	return (tmp);
-}
-
-void check(t_data_map *map, t_lemin *arg, t_node *room)
-{
-	t_linkstab *tmp = map->links;
-
-	while (tmp->next)
+	while (room)
 	{
-		printf(" On parle de %s%c et %s%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
-		if (tmp->rooma->type == 'I' && tmp->roomb->type == 0)
+		tmp = lookuplink(map, room->parent, room);
+		if (tmp)
 		{
-			// tmp->rooma = tmp->rooma->out;
+			tmp->selected++;
+			print_colors(map, arg, tmp);
+			if (tmp->reversed)
+			{
+				print_colors(map, arg, tmp->reversed);
+				tmp->reversed->selected++;
+			}
+			printf("\n");
 		}
-		if (tmp->rooma->type == 'O' && tmp->roomb->status == 'I')
-		{
-			// tmp->rooma = tmp->rooma->in;
-		}
-		tmp = tmp->next;
+		room = room->parent;
 	}
+	return (1);
 }
+
 
 int bellman_peugeot(t_data_map **map, t_lemin *arg)
 {
@@ -54,61 +53,15 @@ int bellman_peugeot(t_data_map **map, t_lemin *arg)
 		if (bellwhile_ford(link, arg) == 666)
 			break;
 	}
-	return (1);
-}
 
-void remove_inversed(t_data_map *map, t_lemin *arg)
-{
-	t_linkstab *tmp;
-	t_linkstab *try;
-
-	tmp = map->links;
-	while (tmp->next)
-	{
-		if (tmp->rooma->type == 'I' && tmp->roomb->type == 'O')
-		{
-			tmp->isactive = 0;
-			tmp->ISUSED = 0;
-		}
-		if (tmp->rooma->type == 'O' && tmp->roomb->type == 'I')
-		{
-			tmp->isactive = 0;
-			tmp->ISUSED = 0;
-		}
-		tmp = tmp->next;
-	}
-	// boucle dans mes liens et remove (isactive = 0) les inversed + originales
-}
-
-int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
-{
-	printf("\n");
-
-	t_linkstab *tmp;
-
-	while (room)
-	{
-		printf("Room %s\n", room->room);
-		tmp = lookuplink(map, room->parent, room);
-		if (tmp)
-		{
-			// print_colors(map, arg, tmp);
-			if (tmp->isactive == 1)
-				tmp->isactive = 0;
-			else if (tmp->isactive == 0)
-				tmp->isactive = 1;
-			tmp->rooma->theopath = tmp;
-		}
-		room = room->parent;
-	}
 	return (1);
 }
 
 int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 {
 	t_node		*out;
-	t_linkstab	*outin;
-	t_linkstab *tmp;
+	t_node		*in = link->roomb;
+	t_linkstab	*intern;
 
 	if (!(out = ft_memalloc(sizeof(t_node))))
 	{
@@ -121,23 +74,23 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 		free(out);
 		return (-1);
 	}
-	if (!(outin = ft_memalloc(sizeof(t_linkstab))))
+	if (!(intern = ft_memalloc(sizeof(t_linkstab))))
 	{
 		arg->malloc_error = 1;
 		ft_strdel(&out->room);
 		free(out);
 		return (-1);
 	}
+
+	print_colors(map, arg, link);
+	in->duplicated = 1;
+	out->duplicated = 1;
 	out->key = hashCode(out->room);
+	out->paths = NULL;
 	out->status = 'X';
-	out->isactive = 1;
 	out->type = 'O';
-	out->weight = 1;
-	out->theopath = NULL;
-	out->to = link->rooma->to;
-	// link->rooma->to = link->rooma->parentdup;
-
-
+	out->in = in;
+	in->out = out;
 	if (map->list[out->key % map->size] == NULL)
 		map->list[out->key % map->size] = out;
 	else
@@ -145,32 +98,39 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 		out->hash_next = map->list[out->key % map->size];
 		map->list[out->key % map->size] = out;
 	}
-	outin->rooma = out;
-	outin->roomb = link->roomb;
-	outin->isactive = 1;
-	outin->rooma->parentdup = outin->roomb;
-	outin->roomb->type = 'I';
-	printf("Nouveau outin  %s%c  %s%c\n", outin->rooma->room, outin->rooma->type, outin->roomb->room, outin->roomb->type);
-	add_it(arg, &map, outin);
-	link->roomb->duplicated = 1;
-	link->roomb = out;
-	link->weight = -1;
-	printf("Mon lien est devenu  %s%c  %s%c\n", link->rooma->room, link->rooma->type, link->roomb->room, link->roomb->type);
-	link->rooma->parentdup = link->roomb;
-
-	// tmp = lookup_to(map, out->to->rooma, out->to->roomb);
-	// // if (tmp)
-	// printf ("-----------------------------[%s]%c - [%s]%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
-	// print_to_links(map, arg, out->parentdup->to, out);
-
-	outin->rooma->in = outin->roomb;
-	printf("%s%c possede %s%c en in\n", outin->rooma->room, outin->rooma->type,  outin->roomb->room, outin->roomb->type);
-	outin->roomb->out = outin->rooma;
-	printf("%s%c possede %s%c en out\n\n", outin->roomb->room, outin->roomb->type,  outin->rooma->room, outin->rooma->type);
-	// print_to_links(map, arg, out->parentdup->to, out);
-
-
+	printf("Je cree le out %s%c\n", out->room, out->type);
+	intern->rooma = link->roomb;
+	intern->roomb = out;
+	intern->isactive = 1;
+	intern->selected = 1;
+	intern->rooma->in = intern->roomb;
+	intern->roomb->out = intern->rooma;
+	intern->rooma->type = 'I';
+	intern->roomb->parent = intern->rooma;
+	link->rooma->parent = out;
+	printf("Je cree le lien interne %s%c ---> %s%c\n", intern->rooma->room, intern->rooma->type, intern->roomb->room, intern->roomb->type);
+	add_it(arg, &map, intern);
 	return (1);
+}
+
+void        update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+{
+	t_linkstab *link;
+
+	link = tmp;
+	while (link->next)
+	{
+        if (link->rooma->type == 'I' && link->rooma->out != link->roomb)
+			{
+				print_colors(map, arg, link);
+
+				printf("DEVIENS\n");
+				link->rooma = link->rooma->out;
+				print_colors(map, arg, link);
+				printf("\n");
+			}
+		link = link->next;
+	}
 }
 
 int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
@@ -184,115 +144,153 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 		tmp = lookuplink(map, room, room->parent);
 		if (tmp)
 		{
-			printf("Mon lien %s%c-%s%c, ", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
-			tmp->weight = -1;
 			if (tmp->roomb->status == 'X' && tmp->roomb->duplicated != 1)
-			{
-				printf("je duplique %s%c\n", tmp->roomb->room, tmp->roomb->type);
 				if (new_duplicate(map, arg, tmp) == -1)
 					return (-1);
-			}
-			else if (tmp->roomb == arg->start)
-				tmp->rooma->parentdup = tmp->roomb;
 		}
 		room = room->parent;
 	}
+	printf("\n");
+	update_links(map, arg, map->links);
 	return (1);
 }
 
-int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
+void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 {
-	t_node *a;
-	t_node *b;
+	printf("\n");
 
-	while (links->next)
+	t_linkstab *tmp;
+	t_node	*tmproom;
+
+	while (room)
 	{
-		a = lookup((*map), links->rooma->key, links->rooma->room);
-		b = lookup((*map), links->roomb->key, links->roomb->room);
-		if (a)
+		if (room->parent)
+		printf("Parent de %s%c : %s%c\n", room->room,room->type, room->parent->room, room->parent->type);
+
+		tmp = lookuplink(map, room->parent, room);
+		if (tmp)
 		{
-			a->weight = INFINITE;
-			a->parent = NULL;
-			a->parentdup = NULL;
-			a->theopath = NULL;
-			if (a->in)
-			{
-				a->in->weight = INFINITE;
-				a->in->parent = NULL;
-				a->in->parentdup = NULL;
-				a->in->theopath = NULL;
-			}
-			if (a->out)
-			{
-				a->out->weight = INFINITE;
-				a->out->parent = NULL;
-				a->out->parentdup = NULL;
-				a->out->theopath = NULL;
-			}
+			printf("-------------------------+-+-+-+-+ %s%c ---> %s%c\n", tmp->rooma->room, tmp->rooma->type, tmp->roomb->room, tmp->roomb->type);
+			tmproom = tmp->rooma;
+			tmp->rooma = tmp->roomb;
+			tmp->roomb = tmproom;
+			tmp->weight = -1;
+			tmp->inversed = 1;
 		}
-		if (b)
-		{
-			b->weight = INFINITE;
-			b->parent = NULL;
-			b->parentdup = NULL;
-			b->theopath = NULL;
-			if (b->in)
-			{
-				b->in->weight = INFINITE;
-				b->in->parent = NULL;
-				b->in->parentdup = NULL;
-				b->in->theopath = NULL;
-			}
-			if (b->out)
-			{
-				b->out->weight = INFINITE;
-				b->out->parent = NULL;
-				b->out->parentdup = NULL;
-				b->out->theopath = NULL;
-			}
-		}
-		links = links->next;
+		room = room->parent;
 	}
-	arg->start->weight = 0;
-	return (1);
 }
 
-// si link->rooma->type == 'I' && link->roomb != arg->end && if (link->roomb) link->roomb != link->roomb->out &&
+void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+{
+	while (tmp->next)
+	{
+		if (tmp->selected > 1)
+			tmp->selected = 0;
+		if (tmp->reversed && tmp->reversed->selected > 1)
+			tmp->reversed->selected = 0;
+		tmp = tmp->next;
+	}
+}
 
+void add_path(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+{
+	int p;
+
+	while (tmp->next)
+	{
+		if (tmp->selected == 1)
+		{
+
+			if ((tmp->rooma->in && tmp->rooma->in == tmp->roomb) || (tmp->rooma->out && tmp->rooma->out == tmp->roomb))
+				p = 0;
+			else
+			{
+				if (tmp->rooma->type == 'O' && tmp->rooma->in)
+					tmp->rooma = tmp->rooma->in;
+				if (tmp->roomb->type == 'O' && tmp->roomb->in)
+					tmp->roomb = tmp->roomb->in;
+				if (tmp->inversed != 1)
+				{
+					printf("|||| %s %s\n", tmp->rooma->room, tmp->roomb->room);
+					if (tmp->rooma->paths == NULL)
+						tmp->rooma->paths = tmp;
+					else
+					{
+						tmp->nextpath = tmp->rooma->paths;
+						tmp->rooma->paths = tmp;
+					}
+					if (tmp->roomb->paths == NULL)
+						tmp->roomb->paths = tmp;
+					else
+					{
+						tmp->nextpath = tmp->roomb->paths;
+						tmp->roomb->paths = tmp;
+					}
+				}
+			}
+		}
+		tmp = tmp->next;
+	}
+
+	t_linkstab *hihi = arg->start->paths;
+
+	while (hihi)
+	{
+		printf("^^^ %s %s\n", hihi->rooma->room, hihi->roomb->room);
+		hihi = hihi->nextpath;
+	}
+}
+/*
+
+1: Find the shortest path P1 from node s to node t
+2: for i = 2,..., k
+3: For node-disjoint paths, split the intermediate nodes of all Px where x < i (refer to Figure 3)
+4: Replace each link of all Px where x < i with a reverse link of inverted link weight in the original graph
+5: Find the shortest path Pi from node s to node t
+6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
+
+*/
 int find_path(t_data_map **map, t_lemin *arg)
 {
 	t_node *tmp;
-	int p = 4;
+	int nombredepaths = 1;
+
+	bellman_peugeot(map, arg);
+	if (add_found_path((*map), arg, arg->end) == -1)
+		return (-1);
 	print_all_links((*map), arg, (*map)->links);
 
-	while (p--)
+	while (nombredepaths--)
 	{
+		printf("\n\n\n                                   CA TOURNE \n\n\n");
+		printf("je dup \n");
+		if (duplicate_nodes((*map), arg, arg->end) == -1)
+			return (-1);
+			print_all_links((*map), arg, (*map)->links);
+
+		printf("j'inverse \n");
+		inverse_links((*map), arg, arg->end);
+		print_all_links((*map), arg, (*map)->links);
+
+		printf("je  reset\n");
+		if (reset(map, arg, (*map)->links) == -1)
+			return (-1);
+			print_all_links((*map), arg, (*map)->links);
+
+		printf("je bellman \n");
 		bellman_peugeot(map, arg);
 		if (add_found_path((*map), arg, arg->end) == -1)
 			return (-1);
-		if (duplicate_nodes((*map), arg, arg->end) == -1)
-			return (-1);
-		print_to_links ((*map), arg, (*map)->links, arg->start);
-		printf("\n----------------------------------------\n	 DUPLICATE NODES\n----------------------------------------\n");
+			print_all_links((*map), arg, (*map)->links);
+
+		printf("je check inversed\n");
+	 	check_inversed((*map), arg, (*map)->links);
 		print_all_links((*map), arg, (*map)->links);
-
-
-					// printf("\n Theo Path \n");
-					// tmp = arg->start;
-					// while (tmp->theopath)
-					// {
-					// 	printf("%s\n", tmp->room);
-					// 	if (tmp->out)
-					// 		printf("%s\n", tmp->out->room);
-					// 	tmp = tmp->theopath->roomb;
-					// }
-					// printf("%s\n", tmp->room);
-
-		if (reset(map, arg, (*map)->links) == -1)
-			return (-1);
-
 
 	}
 
+	add_path((*map), arg, (*map)->links);
+	printf("dddddd");
 	return (1);
 }

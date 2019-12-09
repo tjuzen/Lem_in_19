@@ -1,0 +1,48 @@
+560
+##start
+START 0 0
+B 1 1
+C 2 2
+D 3 3
+E 4 4
+F 5 5
+G 6 6
+H 7 7
+I 1 6
+J 1 4
+K 1 1
+M 1 1
+##end
+END 2 2
+N 0 0
+O 0 0
+P 0 0
+Q 0 0
+R 0 0
+S 0 0
+T 0 0
+U 0 0
+START-B
+START-C
+B-E
+E-H
+H-I
+I-K
+K-END
+F-I
+C-F
+C-D
+D-G
+G-J
+M-J
+M-END
+I-END
+START-N
+N-O
+O-P
+P-Q
+Q-R
+R-S
+S-T
+T-U
+U-END

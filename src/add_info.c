@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/27 13:41:42 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/09 20:35:57 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,9 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	link->rooma = a;
 	link->roomb = b;
 	link->weight = 1;
-	link->ISUSED = 0;
 	link->isactive = 1;
 	link->inversed = 0;
-	if (!(a->to))
-		a->to = link;
-	else
-	{
-		link->nexto = a->to;
-		a->to = link;
-	}
+	link->selected = 0;
 	return (link);
 }
 
@@ -74,6 +67,8 @@ int		add_link(t_data_map **map, char *line, t_lemin *arg, int directed)
 	{
 		add_it(arg, map, add_link_info(newlink, rooma, roomb, 1));
 		add_it(arg, map, add_link_info(otherlink, roomb, rooma, 2));
+		newlink->reversed = otherlink;
+		otherlink->reversed = newlink;
 	}
 	arg->totalinks++;
 	ft_freetab_str(splitted);
@@ -82,9 +77,10 @@ int		add_link(t_data_map **map, char *line, t_lemin *arg, int directed)
 
 int 	add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new)
 {
-	new->parentdup = NULL;
 	new->in = NULL;
-	new->theopath = NULL;
+	new->out = NULL;
+	new->parent = NULL;
+	new->paths = NULL;
 	if (stat == 'I')
 	{
 		new->weight= 0;
@@ -130,8 +126,6 @@ int		add_room(t_data_map **map, char *str, char stat, t_lemin *arg)
 	new->key = hashCode(new->room);
 	new->duplicated = 0;
 	new->status = stat;
-	new->isactive = 0;
 	new->type = 0;
-	new->out = NULL;
 	return (add_room_info(map, stat, arg, new));
 }

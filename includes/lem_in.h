@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/27 16:34:31 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/09 17:35:07 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,18 @@ struct s_data_map
 
 struct			s_node
 {
-	char			*room;
-	char			type;
+	char			*room;		// nom
+	char			type;		// Room in ou room out?
 	unsigned long	key;
 	unsigned long	pos;
-	char			status;
-	int				weight;
-	int				count_hash;
-	t_node 			*parent;
+	char			status;		// Start, end, ou autre ?
+	int				weight;		// bellman
+	t_node 			*parent;	// bellman ford nous set des parents pour chaque room
 	t_node			*hash_next; // pour lookup
-	t_node			*out;
-	t_node			*in;
-	int				isactive;
-	int				duplicated;
-	t_node			*parentdup;
-	t_linkstab		*theopath;
-	t_linkstab		*to;   // liste des links : nodeY<-node, nodeX<-node, ...
-
+	t_node			*out;		 // lien vers Xo
+	t_node			*in;  		// lien vers Xi
+	t_linkstab		*paths;
+	int				duplicated; // ma room a été dupliquée
 };
 
 struct			s_linkstab
@@ -70,13 +65,14 @@ struct			s_linkstab
 	t_node			*rooma;
 	t_node			*roomb;
 
-	int 			weight;
-	int				isactive;
-	int				ISUSED;
-	int				inversed;
+	int 			weight; // poids du lien
+	int				isactive; // en avons nous réellement besoin ?
+	int				inversed; // Ci->Co deviens Co->Ci, etc
+	int				selected; // mon chemin passe par la
 
-	t_linkstab		*nexto;
+	t_linkstab		*reversed; // Stoque l'opposé (A->B contient B->A)
 	t_linkstab		*next; // liste de TOUS mes links
+	t_linkstab		*nextpath; // lol
 };
 
 struct	s_lemin
@@ -85,7 +81,6 @@ struct	s_lemin
 	int				ants;
 	int				wrong_line;
 	int				malloc_error;
-	int				count_hash;
 	unsigned long	totalrooms;
 	unsigned long	totalinks;
 	int				foundpath;
@@ -184,6 +179,7 @@ int duppp(t_data_map *map, t_lemin *arg);
 int duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg);
 void print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+int reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
 
 
 /*

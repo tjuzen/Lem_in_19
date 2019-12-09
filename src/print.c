@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/26 13:24:55 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/09 13:45:16 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,14 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 				printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
 		}
 
-		if (tmp->ISUSED == 1)
+		if (tmp->selected == 1)
 		printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
 		else
 		printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
+		if (tmp->inversed == 1)
+		printf(RED" inversed "DEFAULT_COLOR);
+		else
+		printf(BLUE" inversed "DEFAULT_COLOR);
 		if (tmp->isactive == 1)
 			printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
 		else

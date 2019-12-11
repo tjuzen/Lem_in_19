@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/09 17:35:07 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/11 14:09:49 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct	s_node		t_node;
 typedef struct	s_data_map	t_data_map;
 typedef	struct	s_lemin		t_lemin;
 typedef	struct	s_linkstab	t_linkstab;
-typedef	struct	s_easyNode	t_easyNode;
+typedef	struct	s_path		t_path;
 
 
 struct s_data_map
@@ -41,7 +41,6 @@ struct s_data_map
 	unsigned long	size;
 	t_node			**list;
 	t_linkstab		*links;
-	t_node			**path_list;
 };
 
 struct			s_node
@@ -88,6 +87,14 @@ struct	s_lemin
 	t_node			*end;
 	short			in;
 	short			out;
+};
+
+struct s_path
+{
+	int				path;
+	int				weight;
+	char			**path_list;
+	t_path			next;
 };
 
 /*

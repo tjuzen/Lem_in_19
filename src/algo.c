@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/09 20:59:02 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/11 12:07:28 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,57 @@ void add_path(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 		hihi = hihi->nextpath;
 	}
 }
+
+t_linkstab 		*stock_room_path(t_linkstab *tmp, t_linkstab *path)
+{
+	t_linkstab *next;
+
+	next = path;
+	while (path->next)
+	{
+		if (path->selected == 1 && path->weight == 1)
+		{
+			if (path->rooma->room == tmp->rooma->room
+				&& path->rooma->room != tmp->roomb->room
+				&& path->rooma->status != 'O')
+			{
+				printf ("____[%s]-[%s]: %i\n", path->rooma->room, path->roomb->room, path->weight);
+				if (tmp->rooma->status != 'O')
+				{
+					tmp->rooma = path->roomb;
+					path = next;
+				}
+				// stock_room_path(path, next);
+				// return (NULL);
+			}
+		}
+		path = path->next;
+	}
+	return (NULL);
+}
+
+void 		stock_path(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+{
+	t_linkstab *path;
+	int room;
+
+	path = tmp;
+	room = 0;
+	while (tmp->next)
+	{
+		if (tmp->selected == 1 && tmp->weight == 1)
+		{
+			if (/*tmp->rooma->status == 'I' || */tmp->roomb->status == 'I')
+			{
+				printf ("[%s]-[%s]\n", tmp->rooma->room, tmp->roomb->room);
+				stock_room_path(tmp, path);
+			}
+		}
+		tmp = tmp->next;
+		// if (tmp->next == NULL)
+		// 	tmp = path;
+	}
+}
 /*
 
 1: Find the shortest path P1 from node s to node t
@@ -289,8 +340,8 @@ int find_path(t_data_map **map, t_lemin *arg)
 		print_all_links((*map), arg, (*map)->links);
 
 	}
-
-	add_path((*map), arg, (*map)->links);
-	printf("dddddd");
+	stock_path((*map), arg, (*map)->links);
+	// add_path((*map), arg, (*map)->links);
+	// printf("dddddd");
 	return (1);
 }

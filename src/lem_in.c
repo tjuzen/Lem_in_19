@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/09 15:48:01 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/10 14:58:10 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,11 @@ t_data_map		*createMap(unsigned long size, t_data_map *map)
        free(map);
 	   return (NULL);
    }
+   if (!(map->path_list = (char**)ft_memalloc(sizeof(char*)*size / 2)))
+      {
+          free(map);
+   	   return (NULL);
+      }
    if (!(map->links = (t_linkstab*)ft_memalloc(sizeof(t_linkstab*)*size)))
    {
 	   free(map);

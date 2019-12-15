@@ -63,13 +63,10 @@ int		add_link(t_data_map **map, char *line, t_lemin *arg, int directed)
 		ft_freetab_str(splitted);
 		return (-1);
 	}
-	if (directed == 1) // si a<->b
-	{
-		add_it(arg, map, add_link_info(newlink, rooma, roomb, 1));
-		add_it(arg, map, add_link_info(otherlink, roomb, rooma, 2));
-		newlink->reversed = otherlink;
-		otherlink->reversed = newlink;
-	}
+	add_it(arg, map, add_link_info(newlink, rooma, roomb, 1));
+	add_it(arg, map, add_link_info(otherlink, roomb, rooma, 2));
+	newlink->reversed = otherlink;
+	otherlink->reversed = newlink;
 	arg->totalinks++;
 	ft_freetab_str(splitted);
 	return (0);
@@ -92,7 +89,6 @@ int 	add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new)
 			arg->end = new;
 		new->weight = INFINITE;
 	}
-
 	if ((*map)->list[new->key % (*map)->size] == NULL)
 		(*map)->list[new->key % (*map)->size] = new;
 	else

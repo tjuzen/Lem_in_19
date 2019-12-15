@@ -28,9 +28,7 @@ unsigned long hashCode(char *room)
 t_data_map		*createMap(unsigned long size, t_data_map *map)
 {
    t_data_map	*tmp;
-   int			i;
 
-   i = 0;
    if (!(map = (t_data_map*)ft_memalloc(sizeof(t_data_map))))
    	return (NULL);
    map->size = size;
@@ -62,7 +60,6 @@ int				main(void)
 		return (exit_free(&arg, map));
 	if (read_file(&arg, &map) == -1)
 		return (exit_free(&arg, map));
-    // print_to_links(map, &arg, map->links);
     if (arg.in != 1 || arg.out != 1 || map->links == NULL || arg.ants == -1)
         return (exit_free(&arg, map));
 	if (find_path(&map, &arg) == -1)

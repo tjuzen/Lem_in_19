@@ -56,22 +56,3 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 	ft_strdel(&line);
 	return (0);
 }
-
-int		check_links(t_data_map *map, t_node *a, t_node *b)
-{
-	t_linkstab *find;
-
-	// find = a->to;
-	// if (a->to != NULL)
-	// {
-	// 	while (find->nexto)
-	// 	{
-	// 		if (find->rooma->room == a->room && find->roomb->room == b->room)
-	// 			return (0);
-	// 		if (find->rooma->room == b->room && find->roomb->room == a->room)
-	// 			return (0);
-	// 		find = find->nexto;
-	// 	}
-	// }
-	return (1);
-}

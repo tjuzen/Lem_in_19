@@ -111,7 +111,6 @@ unsigned long 	hashCode(char *room);
 */
 
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
-t_linkstab 		*lookuplinknode(t_node *a, t_node *b);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
 
 /*
@@ -161,40 +160,70 @@ int 			is_comment(char *line, t_lemin *arg);
 int				is_command(char *line);
 int				is_link(char *line, t_data_map **map, t_lemin *arg);
 
-/*
-** IN_CLASSEMENT
-*/
-
-void 	print_to_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp, t_node *out);
-t_linkstab *lookup_to(t_data_map *map, t_node *a, t_node *b);
-
-
-int 			bellwhile_ford(t_linkstab *link, t_lemin *arg);
-void 			init_room_weight(t_data_map *map, t_lemin *arg, t_linkstab *links);
-
-unsigned long 	hashCode(char *room);
-void 			free_map(t_data_map* map);
-void 			free_node(t_node* node);
-t_data_map		*add_collision(t_data_map *map, t_node *new, unsigned long key);
-int				bellman_peugeot(t_data_map **map, t_lemin *arg);
-int 			find_path(t_data_map **map, t_lemin *arg);
-t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
-int				linkexist(t_data_map *map, t_node *a, t_node *b);
-t_linkstab *lookuplinknode(t_node *a, t_node *b);
-int modify_path(t_data_map *map, t_lemin *arg);
-int duppp(t_data_map *map, t_lemin *arg);
-int duplicate(t_node *in, t_node *tmp, t_data_map *map, t_lemin *arg);
-void print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
-void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
-int reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
-
 
 /*
-** MAIN.C
+** LEM_IN.C
 */
-t_node	*lookup(t_data_map *map, unsigned long key, char *room);
-unsigned long hashCode(char *room);
-t_data_map			*createMap(unsigned long size, t_data_map *map);
+
+unsigned long	hashCode(char *room);
+t_data_map		*createMap(unsigned long size, t_data_map *map);
 int				main(void);
+
+
+/*
+** ALGO_TOOLS.C
+*/
+
+int 	bellwhile_ford(t_linkstab *link, t_lemin *arg);
+void 	reset_a(t_node *a);
+void 	reset_b(t_node *b);
+void 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
+
+
+/*
+** ALGO.C
+*/
+
+int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room);
+int 	bellman_peugeot(t_data_map **map, t_lemin *arg);
+void 	out_infos(t_data_map *map, t_lemin *arg, t_linkstab *link, t_node *out);
+int 	intern_infos(t_data_map *map, t_lemin *arg, t_linkstab *link, t_node *out);
+int 	new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link);
+void    update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+int 	duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room);
+void 	inverse_links(t_data_map *map, t_lemin *arg, t_node *room);
+void 	check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+int 	stock_room_path(t_data_map **map, t_linkstab *tmp, t_linkstab *path, int way, t_lemin *arg);
+int 	stock_path(t_data_map **map, t_lemin *arg, t_linkstab *tmp);
+void	print_way(t_data_map **map, t_lemin *arg, int nbr);
+int 	find_path(t_data_map **map, t_lemin *arg);
+
+
+/*
+** PARSING_TOOLS.C
+*/
+
+int 	get_number_of_ants(char *line, t_lemin *arg);
+int		valid_end_start(int i, t_lemin *arg, char s);
+int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
+
+
+/*
+** PRINT.C
+*/
+
+void 	print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+void 	print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+
+/*
+** FREE_MAP.C
+*/
+
+int			exit_free(t_lemin *arg, t_data_map	*map);
+void 		free_map(t_data_map* map);
+void 		free_node(t_node* node);
+t_data_map	*return_delete(t_data_map	*map, char *line);
+t_data_map	*init_arg(t_lemin *arg);
+t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map);
 
 #endif

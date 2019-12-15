@@ -37,7 +37,45 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 	return (did_change == 0) ? 666 : 1;
 }
 
-int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
+void reset_a(t_node *a)
+{
+	if (a)
+	{
+		a->weight = INFINITE;
+		a->parent = NULL;
+		if (a->in)
+		{
+			a->in->weight = INFINITE;
+			a->in->parent = NULL;
+		}
+		if (a->out)
+		{
+			a->out->weight = INFINITE;
+			a->out->parent = NULL;
+		}
+	}
+}
+
+void reset_b(t_node *b)
+{
+	if (b)
+	{
+		b->weight = INFINITE;
+		b->parent = NULL;
+		if (b->in)
+		{
+			b->in->weight = INFINITE;
+			b->in->parent = NULL;
+		}
+		if (b->out)
+		{
+			b->out->weight = INFINITE;
+			b->out->parent = NULL;
+		}
+	}
+}
+
+void reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 {
 	t_node *a;
 	t_node *b;
@@ -46,38 +84,9 @@ int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 	{
 		a = lookup((*map), links->rooma->key, links->rooma->room);
 		b = lookup((*map), links->roomb->key, links->roomb->room);
-		if (a)
-		{
-			a->weight = INFINITE;
-			a->parent = NULL;
-			if (a->in)
-			{
-				a->in->weight = INFINITE;
-				a->in->parent = NULL;
-			}
-			if (a->out)
-			{
-				a->out->weight = INFINITE;
-				a->out->parent = NULL;
-			}
-		}
-		if (b)
-		{
-			b->weight = INFINITE;
-			b->parent = NULL;
-			if (b->in)
-			{
-				b->in->weight = INFINITE;
-				b->in->parent = NULL;
-			}
-			if (b->out)
-			{
-				b->out->weight = INFINITE;
-				b->out->parent = NULL;
-			}
-		}
+		reset_a(a);
+		reset_b(b);
 		links = links->next;
 	}
 	arg->start->weight = 0;
-	return (1);
 }

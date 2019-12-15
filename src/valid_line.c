@@ -61,14 +61,9 @@ int		is_room(char *line, t_lemin *arg)
 	if (!(splitted = ft_strsplit(line, ' ')))
 		return (-1);
 	if (!(splitted[0]) || !(splitted[1]) || !(splitted[2]) || splitted[3])
-	{
 		return (retfreetab_str(splitted, -1));
-	}
 	if (ft_strlen(splitted[1]) > 9 || ft_strlen(splitted[2]) > 9)
-	{
-		printf("PUTE\n\n\n\n");
 		return (-1);
-	}
 	while (splitted[1][++i])
 		if (ft_isdigit(splitted[1][i]) != 1)
 			return (retfreetab_str(splitted, -1));
@@ -102,7 +97,5 @@ int		is_link(char *line, t_data_map **map, t_lemin *arg)
 	if (!(room_b))
 		return (-1);
 	ft_freetab_str(splitted);
-	if (check_links((*map), room_a, room_b) != 1)
-		return (0);
 	return (1);
 }

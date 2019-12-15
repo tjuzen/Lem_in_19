@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/11 14:09:49 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/11 17:27:27 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ struct s_data_map
 	unsigned long	size;
 	t_node			**list;
 	t_linkstab		*links;
+	t_path			**way;
 };
 
 struct			s_node
@@ -94,7 +95,6 @@ struct s_path
 	int				path;
 	int				weight;
 	char			**path_list;
-	t_path			next;
 };
 
 /*

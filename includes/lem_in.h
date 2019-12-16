@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/11 17:27:27 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/16 19:02:22 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,8 @@ void    update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 int 	duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room);
 void 	inverse_links(t_data_map *map, t_lemin *arg, t_node *room);
 void 	check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
-int 	stock_room_path(t_data_map **map, t_linkstab *tmp, t_linkstab *path, int way, t_lemin *arg);
-int 	stock_path(t_data_map **map, t_lemin *arg, t_linkstab *tmp);
+int		find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
+int 	stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
 void	print_way(t_data_map **map, t_lemin *arg, int nbr);
 int 	find_path(t_data_map **map, t_lemin *arg);
 

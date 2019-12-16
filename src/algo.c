@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/15 15:54:17 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/16 19:01:58 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,96 +177,6 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	}
 }
 
-int 		stock_room_path(t_data_map **map, t_linkstab *tmp, t_linkstab *path, int way, t_lemin *arg)
-{
-	t_linkstab	*next;
-	t_path 		*new;
-	int			i;
-
-	next = path;
-	i = 0;
-	if (!(new = ft_memalloc(sizeof(t_path))))
-		return (-1);
-	if (!(new->path_list = ft_memalloc(sizeof(char**) * 10)))
-		return (-1);
-	while (path->next)
-	{
-		// printf ("XXXXXXX____[%s]-[%s]: %i | %i\n", path->rooma->room, path->roomb->room, path->weight, path->selected);
-		if (path->selected == 1 && path->weight == 1)
-		{
-			if (path->rooma->room == tmp->rooma->room
-				&& path->rooma->room != tmp->roomb->room
-				&& path->rooma->status != 'O')
-			{
-				printf ("____[%s]-[%s]: %i\n", path->rooma->room, path->roomb->room, path->weight);
-				if (!(new->path_list[i++] = ft_strdup(path->rooma->room)))
-				{
-					free(new);
-					return (-1);
-				}
-				printf ("_____________[%s]\n", new->path_list[i - 1]);
-				if (tmp->rooma->status != 'O')
-				{
-					tmp->rooma = path->roomb;
-					path = next;
-				}
-			}
-		}
-		path = path->next;
-	}
-	printf("\n|---------------------------------------------|\n\n");
-	printf("waaaaaaaaaay: %i\n", way);
-	printf ("NBR%i|\n", i);
-	new->weight = i;
-	new->path_list[i] = arg->end->room;
-	printf ("_____________[%s]\n", new->path_list[i]);
-	printf ("WEG%i|\n", new->weight);
-	printf("\n|---------------------------------------------|\n\n");
-	(*map)->way[way] = new;
-	return (0);
-}
-
-int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *tmp)
-{
-	t_linkstab	*path;
-	int 		way;
-
-	path = tmp;
-	way = 0;
-	while (tmp->next)
-	{
-		if (tmp->selected == 1 && tmp->weight == 1 && tmp->roomb->room != tmp->rooma->room)
-		{
-			if (tmp->roomb->status == 'I' && tmp->rooma->status != 'I')
-			{
-				printf ("[%s]-[%s]\n", tmp->rooma->room, tmp->roomb->room);
-				if (stock_room_path(map, tmp, path, way++, arg) == -1)
-					return (-1);
-			}
-		}
-		tmp = tmp->next;
-	}
-	return (way);
-}
-
-void		print_way(t_data_map **map, t_lemin *arg, int nbr)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	printf("nbr: %i | i: %i | j: %i\n", nbr, i , j);
-	while (i < nbr)
-	{
-		printf("WAY:--");
-		j = 0;
-		while (j <= (*map)->way[i]->weight)
-			printf("[%s]", (*map)->way[i]->path_list[j++]);
-		i++;
-		printf("\n");
-	}
-}
 /*
 
 1: Find the shortest path P1 from node s to node t
@@ -316,7 +226,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 		print_all_links((*map), arg, (*map)->links);
 
 	}
-	if ((nbr = stock_path(map, arg, (*map)->links)) == -1)
+	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
 		return (-1);
 	print_way(map, arg, nbr);
 	return (1);

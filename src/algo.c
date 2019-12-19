@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/16 19:01:58 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/19 15:55:22 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
+	max_path(arg, map);
 	print_all_links((*map), arg, (*map)->links);
 
 	while (nombredepaths--)

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/25 13:02:54 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/19 15:55:53 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,33 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);
+	return (0);
+}
+
+int		max_path(t_lemin *arg, t_data_map **map)
+{
+	t_linkstab *links;
+	int			end;
+	int			tmp;
+	double		turns;
+
+	links = (*map)->links;
+	tmp = 0;
+	end = 0;
+	while (links->next)
+	{
+		if (arg->start->room == links->rooma->room)
+			tmp++;
+		if (arg->end->room == links->rooma->room)
+			end++;
+		links = links->next;
+	}
+	printf ("START %i, END %i\n", tmp ,end);
+	arg->max_path = ((tmp > end) ? end : tmp);
+	tmp = arg->ants + arg->total_weight;
+	printf ("TURNS %f, TMP %i\n", turns, tmp);
+	turns = ((double)tmp / (double)arg->max_path) - (double)1;
+	arg->nbr_round = turns;
+	printf("total_weight: %d\nmax_path: %i\nants :%i\nNBR_ROUND %f\n", arg->total_weight, arg->max_path, arg->ants, arg->nbr_round);
 	return (0);
 }

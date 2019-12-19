@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/16 19:02:22 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/19 16:07:28 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,15 @@ struct			s_linkstab
 
 struct	s_lemin
 {
-	int				paths_founds;
+	int				foundpath;
 	int				ants;
 	int				wrong_line;
 	int				malloc_error;
 	unsigned long	totalrooms;
 	unsigned long	totalinks;
-	int				foundpath;
+	int				total_weight;
+	int				max_path;
+	double			nbr_round;
 	t_node			*start;
 	t_node			*end;
 	short			in;
@@ -147,6 +149,7 @@ int 			get_infos(char *line, t_data_map **map, t_lemin *arg);
 
 int 			add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
 int 			get_number_of_ants(char *line, t_lemin *arg);
+int				max_path(t_lemin *arg, t_data_map **map);
 int				check_links(t_data_map *map, t_node *a, t_node *b);
 int				valid_end_start(int i, t_lemin *arg, char s);
 
@@ -193,11 +196,25 @@ void    update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 int 	duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room);
 void 	inverse_links(t_data_map *map, t_lemin *arg, t_node *room);
 void 	check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
-int		find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
-int 	stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
-void	print_way(t_data_map **map, t_lemin *arg, int nbr);
 int 	find_path(t_data_map **map, t_lemin *arg);
 
+/*
+** ADD_PATH_TOOLS.C
+*/
+
+t_node		*switch_room(t_linkstab *links, t_lemin *arg);
+int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way);
+int 		check_follow(t_path *new, t_lemin *arg, t_node *links);
+
+
+/*
+** ADD_PATH.C
+*/
+
+t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp);
+int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
+int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
+void		print_way(t_data_map **map, t_lemin *arg, int nbr);
 
 /*
 ** PARSING_TOOLS.C

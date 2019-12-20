@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 05:25:09 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/20 06:11:02 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp)
 		return (tmp);
 	while (links->next)
 	{
-		if (links->selected == 1 && links->weight == 1)
+		if (links->selected == 1)
 		{
 			if ((ft_strcmp(links->rooma->room, tmp->room) == 0)
 				&& check_follow(new, arg, links->roomb) == 0)
 			{
-					tmp = links->roomb;
+					return (tmp = links->roomb);
 					// printf ("1111111______[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 			}
 			if ((ft_strcmp(links->roomb->room, tmp->room) == 0)
 				&& (check_follow(new, arg, links->rooma) == 0))
 			{
-					tmp = links->rooma;
+					return (tmp = links->rooma);
 					// printf ("22222________[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 			}
 		}

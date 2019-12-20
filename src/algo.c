@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 05:31:12 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/20 06:41:55 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 {
 	t_node *out;
 
+	printf("iciiiii hahahaa\n\n");
+	print_colors(link);
 	if (!(out = ft_memalloc(sizeof(t_node))))
 	{
 		arg->malloc_error = 1;
@@ -113,6 +115,7 @@ int new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link)
 	if (intern_infos(map, arg, link, out) == -1)
 		return (-1);
 	link->rooma->parent = out;
+	print_colors(link);
 	return (1);
 }
 
@@ -136,8 +139,11 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 	while (room)
 	{
 		tmp = lookuplink(map, room, room->parent);
+		printf("fun\n");
 		if (tmp)
 		{
+			print_colors(tmp);
+
 			if (tmp->roomb->status == 'X' && tmp->roomb->duplicated != 1)
 				if (new_duplicate(map, arg, tmp) == -1)
 					return (-1);
@@ -158,6 +164,8 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
+			printf("ici\n");
+			print_colors(tmp);
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
@@ -173,7 +181,7 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	t_node		*tmproom;
 	while (tmp->next)
 	{
-		if ( tmp->selected > 1)
+		if (tmp->selected > 1)
 		{
 			print_colors(tmp);
 

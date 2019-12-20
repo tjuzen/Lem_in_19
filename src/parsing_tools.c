@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 02:32:04 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/20 02:47:09 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,21 +128,22 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	{
 		list = arg->army;
 		i = 0;
-		while (i == 0 && j < path + round)
+		printf ("[LINE]: %i ", l++);
+		while (j < path * round)
 		{
-			if (list->nrj >= 0)
+			if (list->nrj >= 0 && list->nbr <= path * round)
 			{
 				j++;
 				list->nrj--;
-				printf ("L-%i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
+				printf ("L%i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
 			}
 			if (list->nbr == arg->ants)
 				break ;
 			list = list->next;
 		}
-		printf ("[LINE]: %i\n", l++);
+		printf ("\n");
 		j = 0;
-		round += path;
+		round -= -1;
 		if (list->nbr == arg->ants && list->nrj == -1)
 			return (0);
 	}

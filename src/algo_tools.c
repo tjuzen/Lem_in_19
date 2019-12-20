@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/16 19:07:37 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 03:36:41 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				// printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
+				printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
 				did_change = 1;
 			}
 		}

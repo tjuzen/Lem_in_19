@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 11:30:57 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/17 17:29:41 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 03:56:17 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 	{
 		// printf("[%s]-[%s]\n", find->rooma->room, find->roomb->room);
 		// print_colors(find);
-		// printf("		[%s]-[%s]\n", a->room, b->room);
+		// printf("		[%s%c]-[%s%c]\n", a->room, a->type, b->room, b->type);
 		if (find->rooma && find->roomb && a && b)
-			if (find->rooma->key == a->key && find->roomb->key == b->key)
+			if (find->rooma->key == a->key && find->roomb->key == b->key && find->rooma->type == a->type && find->roomb->type == b->type)
 				return (find);
 		find = find->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 01:56:27 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/20 05:25:09 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,16 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 	tmp = switch_room(links, arg);
 	if (!(new = ft_memalloc(sizeof(t_path))))
 		return (-1);
-	if (!(new->path_list = ft_memalloc(sizeof(char**) * 50)))
+	if (!(new->path_list = ft_memalloc(sizeof(char**) * 5000)))
 		return (-1);
-	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end && i < 10)
+	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end)
 	{
 		if (!(new->path_list[i++] = ft_strdup(tmp->room)))
 		{
 			free(new);
 			return (-1);
 		}
+		ft_printf("\n\nhaha %s\n", tmp->room);
 	}
 	new->weight = i;
 	arg->sum_path += i;
@@ -76,7 +77,7 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 	path = 0;
 	while (links->next)
 	{
-		if (links->selected == 1 && links->weight == 1)
+		if (links->selected == 1)
 		{
 			if (arg->start->room == links->rooma->room
 				|| arg->start->room == links->roomb->room)

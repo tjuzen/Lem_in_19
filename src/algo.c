@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 01:55:53 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/20 05:31:12 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
 			tmp->weight *= -1;
-			tmp->inversed *= -1;
+			tmp->inversed = 1;
 		}
 		room = room->parent;
 	}
@@ -173,7 +173,7 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	t_node		*tmproom;
 	while (tmp->next)
 	{
-		if (tmp->inversed == 1 && tmp->selected > 1)
+		if ( tmp->selected > 1)
 		{
 			print_colors(tmp);
 
@@ -182,13 +182,13 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 			tmp->roomb = tmproom;
 
 			tmp->inversed = 0;
-			// if (tmp->imintern == 1)
-			// 	tmp->weight = 0;
-			// else
+			if (tmp->imintern == 1)
+				tmp->weight = 0;
+			else
 				tmp->weight = 1;
 
 			tmp->selected = 0;
-			print_colors(tmp);
+			// print_colors(tmp);
 
 		}
 		// if (tmp->reversed && tmp->reversed->selected > 1)
@@ -211,18 +211,17 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 int find_path(t_data_map **map, t_lemin *arg)
 {
 	t_node *tmp;
-	int nombredepaths = 1;
+	int nombredepaths = 2;
 	int nbr = 0;
 
-print_all_links((*map), arg, (*map)->links);
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
 	max_path(arg, map);
 	print_all_links((*map), arg, (*map)->links);
-	// arg->nbr_round = 3.0;
-	printf("coucou pute salope %i\n\n\n\n\n\n\n\n\n\n", (int)arg->nbr_round);
-	while ((int)arg->nbr_round--)
+	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
+		return (-1);
+	while (nombredepaths--)
 	{
 		printf("\n\n\n                                   CA TOURNE \n\n\n");
 		printf("je dup \n");
@@ -250,10 +249,10 @@ print_all_links((*map), arg, (*map)->links);
 		printf("je check inversed\n");
 	 	check_inversed((*map), arg, (*map)->links);
 		print_all_links((*map), arg, (*map)->links);
-
+		if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
+			return (-1);
 	}
-	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
-		return (-1);
+
 	// print_way(map, arg, nbr);
 	return (1);
 }

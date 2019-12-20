@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/12 17:57:39 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/16 19:07:37 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
-
+				// printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
 				did_change = 1;
 			}
 		}
@@ -37,45 +36,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 	return (did_change == 0) ? 666 : 1;
 }
 
-void reset_a(t_node *a)
-{
-	if (a)
-	{
-		a->weight = INFINITE;
-		a->parent = NULL;
-		if (a->in)
-		{
-			a->in->weight = INFINITE;
-			a->in->parent = NULL;
-		}
-		if (a->out)
-		{
-			a->out->weight = INFINITE;
-			a->out->parent = NULL;
-		}
-	}
-}
-
-void reset_b(t_node *b)
-{
-	if (b)
-	{
-		b->weight = INFINITE;
-		b->parent = NULL;
-		if (b->in)
-		{
-			b->in->weight = INFINITE;
-			b->in->parent = NULL;
-		}
-		if (b->out)
-		{
-			b->out->weight = INFINITE;
-			b->out->parent = NULL;
-		}
-	}
-}
-
-void reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
+int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 {
 	t_node *a;
 	t_node *b;
@@ -84,9 +45,38 @@ void reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 	{
 		a = lookup((*map), links->rooma->key, links->rooma->room);
 		b = lookup((*map), links->roomb->key, links->roomb->room);
-		reset_a(a);
-		reset_b(b);
+		if (a)
+		{
+			a->weight = INFINITE;
+			a->parent = NULL;
+			if (a->in)
+			{
+				a->in->weight = INFINITE;
+				a->in->parent = NULL;
+			}
+			if (a->out)
+			{
+				a->out->weight = INFINITE;
+				a->out->parent = NULL;
+			}
+		}
+		if (b)
+		{
+			b->weight = INFINITE;
+			b->parent = NULL;
+			if (b->in)
+			{
+				b->in->weight = INFINITE;
+				b->in->parent = NULL;
+			}
+			if (b->out)
+			{
+				b->out->weight = INFINITE;
+				b->out->parent = NULL;
+			}
+		}
 		links = links->next;
 	}
 	arg->start->weight = 0;
+	return (1);
 }

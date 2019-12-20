@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/19 15:55:53 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 01:43:49 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,93 @@ int		max_path(t_lemin *arg, t_data_map **map)
 	tmp = arg->ants + arg->total_weight;
 	printf ("TURNS %f, TMP %i\n", turns, tmp);
 	turns = ((double)tmp / (double)arg->max_path) - (double)1;
-	arg->nbr_round = turns;
+	arg->nbr_round = (arg->max_path > 12) ? turns : (double)arg->max_path;
 	printf("total_weight: %d\nmax_path: %i\nants :%i\nNBR_ROUND %f\n", arg->total_weight, arg->max_path, arg->ants, arg->nbr_round);
 	return (0);
+}
+
+int 	assign_ants(t_lemin *arg, int i, t_path *way)
+{
+	t_ants *walker;
+
+	if (!(walker = ft_memalloc(sizeof(t_ants))))
+		return (-1);
+	walker->nbr = i;
+	walker->nrj = way->weight;
+	walker->path = way->path;
+	walker->room = 0;
+	if (arg->army == NULL)
+		arg->army = walker;
+	else
+	{
+		walker->next = arg->army;
+		arg->army = walker;
+	}
+	return (0);
+}
+
+int		gives_order(t_lemin *arg, t_path **way, int path)
+{
+	int i;
+	int j;
+	int l;
+	int round;
+	t_ants *list;
+
+	i = arg->ants;
+	j = 0;
+	l = 0;
+	round = 0;
+	while (i > 0)
+	{
+		if ((assign_ants(arg, i--, way[j % path])) == -1)
+			return (-1);
+		j++;
+	}
+	j = 0;
+	while (1)
+	{
+		list = arg->army;
+		i = 0;
+		while (i == 0 && j < path + round)
+		{
+			if (list->nrj >= 0)
+			{
+				j++;
+				list->nrj--;
+				printf ("L-%i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
+			}
+			if (list->nbr == arg->ants)
+				break ;
+			list = list->next;
+		}
+		printf ("[LINE]: %i\n", l++);
+		j = 0;
+		round += path;
+		if (list->nbr == arg->ants && list->nrj == -1)
+			return (0);
+	}
+
+	return (0);
+}
+
+
+
+int		check_links(t_data_map *map, t_node *a, t_node *b)
+{
+	t_linkstab *find;
+
+	// find = a->to;
+	// if (a->to != NULL)
+	// {
+	// 	while (find->nexto)
+	// 	{
+	// 		if (find->rooma->room == a->room && find->roomb->room == b->room)
+	// 			return (0);
+	// 		if (find->rooma->room == b->room && find->roomb->room == a->room)
+	// 			return (0);
+	// 		find = find->nexto;
+	// 	}
+	// }
+	return (1);
 }

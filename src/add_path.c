@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/19 16:01:10 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 00:14:45 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,8 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 		return (-1);
 	if (!(new->path_list = ft_memalloc(sizeof(char**) * 50)))
 		return (-1);
-	// printf ("____[%s]-[%s]: %i\n", links->rooma->room, links->roomb->room, links->weight);
-	// printf ("///////////////[%s]\n", tmp->room);
 	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end && i < 10)
 	{
-		// printf ("||||||///////////////[%s]\n", tmp->room);
 		if (!(new->path_list[i++] = ft_strdup(tmp->room)))
 		{
 			free(new);
@@ -65,6 +62,8 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 		}
 	}
 	new->weight = i;
+	arg->sum_path += i;
+	new->path = way;
 	new->path_list[i] = arg->end->room;
 	(*map)->way[way] = new;
 	return (0);
@@ -72,9 +71,9 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 
 int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 {
-	int way;
+	int path;
 
-	way = 0;
+	path = 0;
 	while (links->next)
 	{
 		if (links->selected == 1 && links->weight == 1)
@@ -84,17 +83,74 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 			{
 				// printf("[CHECK1]-");
 				// printf ("[%s]-[%s]\n", links->rooma->room, links->roomb->room);
-				if (check_way(arg, map, links, way) == 0)
-					if (stock_path(map, arg, links, way++) == -1)
+				if (check_way(arg, map, links, path) == 0)
+					if (stock_path(map, arg, links, path++) == -1)
 						return (-1);
 			}
 		}
 		links = links->next;
 	}
-	return (way);
+	printf ("YOOOOOOOOOWWWWWWWWW\nYOOOOOOOOOOOOOOOWWWWOWOWOWOWWWWWWW");
+	printf ("OOOOOwwww: %i\n", path);
+	if (!(gives_order(arg, (*map)->way, path)))
+			return (-1);
+	return (path);
 }
 
-void		print_way(t_data_map **map, t_lemin *arg, int nbr)
+// int			prepare_ants(t_data_map **map, t_lemin *arg, int way)
+// {
+// 	int i;
+// 	int j;
+//
+// 	i = 0;
+// 	j = 0;
+// 	while (++i < arg->ants)
+// 	{
+// 		if (!(gives_order(i, (*map)->way[l], j++)))
+// 			return (-1);
+// 		if (j / way == 0)
+//
+// 	}
+// 	return (0);
+// }
+
+void 		send_ant(t_data_map **map, t_lemin *arg, int nbr)
+{
+		int i;
+		int j;
+		int k;
+		int l;
+		int t;
+		int tmp;
+
+		i = 0;
+		k = 0;
+		l = 0;
+		j = 0;
+		t = 0;
+		tmp = nbr;
+		while (i++ < 10)
+		{
+			while (k < tmp && j <= (*map)->way[l]->weight)
+			{
+				printf("L-%i-%s ", ++k ,(*map)->way[l++]->path_list[j]);
+				if (l == nbr )
+					l = 0;
+				printf ("\nk%%nbr: %i k/nbr: %i\n", k % nbr, k / nbr);
+				if (k / nbr == t)
+				{
+					j--;
+					t++;
+				}
+			}
+			printf ("\n");
+			k = 0;
+			tmp += nbr;
+			j++;
+		}
+}
+
+void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant)
 {
 	int i;
 	int j;

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/09 13:45:16 by tjuzen           ###   ########.fr       */
+/*   Updated: 2019/12/17 17:21:41 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,34 +64,21 @@ void print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	}
 }
 
-void print_colors(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void print_colors(t_linkstab *tmp)
 {
-	if (tmp->rooma == arg->end || tmp->rooma == arg->start)
-	{
-		printf(GREY" %s "DEFAULT_COLOR, tmp->rooma->room );
-	}
-	else
-	{
 		if (tmp->rooma->type == 0)
 			printf(DEFAULT_COLOR" %s " DEFAULT_COLOR, tmp->rooma->room);
 		else if (tmp->rooma->type == 'I')
 			printf(RED " %s "DEFAULT_COLOR, tmp->rooma->room);
 		else if (tmp->rooma->type == 'O')
 			printf(BLUE " %s " DEFAULT_COLOR, tmp->rooma->in->room);
-	}
 	printf(" ----");
-	if (tmp->roomb == arg->end || tmp->roomb == arg->start)
-	{
-		printf(GREY"  %s "DEFAULT_COLOR, tmp->roomb->room );
-	}
-	else
-	{
+
 		if (tmp->roomb->type == 0)
 			printf(DEFAULT_COLOR"  %s " DEFAULT_COLOR, tmp->roomb->room);
 		else if (tmp->roomb->type == 'I')
 			printf(RED "  %s " DEFAULT_COLOR, tmp->roomb->room);
 		else if (tmp->roomb->type == 'O')
 			printf(BLUE "  %s " DEFAULT_COLOR, tmp->roomb->in->room);
-	}
 	printf("\n");
 }

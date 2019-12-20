@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/22 11:34:10 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 00:13:37 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->malloc_error = 0;
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
+	arg->total_weight = 1;
+	arg->nbr_round = 0.0;
 	arg->in = 0;
 	arg->out = 0;
+	arg->sum_path = 0;
 	return (map);
 }
 

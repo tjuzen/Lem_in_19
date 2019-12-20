@@ -1,0 +1,155 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    checker                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lode-spi <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/11/14 00:19:23 by lode-spi          #+#    #+#              #
+#    Updated: 2019/11/28 19:58:37 by lode-spi         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+#!/bin/bash
+
+generateNewMap()
+{
+	if [ $1 = "flow-one" -o\
+		$1 = "flow-ten" -o\
+		$1 = "flow-thousand" -o\
+		$1 = "big" -o\
+		$1 = "big-superposition" ]
+	then
+		printf "%s" "`./generator --$1`"
+	else
+		printf "TypeError"
+	fi
+}
+
+getLemInOutput()
+{
+	printf "%s" "`printf \"%s\" \"$1\" | grep 'L[0-9]\{1,\}-'`"
+}
+
+getMapCost()
+{
+	printf "%s" `printf "%s" "$1" | awk "NR==2" | awk -F" " '{print $NF}'`
+}
+
+getLemInCost()
+{
+	printf "%s" `printf "%s" "$1" | grep COST | awk -F" " '{print $NF}'`
+}
+
+getLemInOutputSize()
+{
+	printf "%s" `printf "%s\n" "$1" | wc -l | tr -d '[:blank:]'`
+}
+
+getAntAmount()
+{
+	printf "%s" `printf "%s" "$1" | grep "NOMBRE FOURMIS" | awk -F" " '{print $NF}'`
+}
+
+getPercentage()
+{
+	printf "%s" `bc <<< "scale=$3; (($1/$2)*100)"`
+}
+
+for i in `seq 0 50`
+do
+	successes[$i]=0
+	failures[$i]=0
+done
+
+#clear
+#touch log.txt
+#while read line;
+#	do
+#		printf "reading history\r"
+#		costdiff=`echo "$line" | awk '{print $11}'`
+#		if [ $costdiff -ge 0 ]
+#		then
+#			let successes[$costdiff]++
+#		else
+#			let failures[${costdiff#-}]++
+#		fi
+#done < log.txt
+
+if [ $# -eq 2 ]
+then
+	for i in `seq 1 $2`
+	do
+		clear
+		printf "%s%% (%d/%d)\n" $(getPercentage "$i" "$2" "4") $i $2
+		printf "generating new map\r"
+		map=$(generateNewMap "$1")
+		map_cost=$(getMapCost "$map")
+		echo "$map" | ./lem-in > checker.tmp &
+		ppid=$!
+		sec=0
+		while ps -p $ppid >/dev/null
+		do
+			printf "waiting for lem-in : %s ds..\r" $sec
+			if [ $sec -lt 100 ]
+			then
+				sleep 0.1s
+			else
+				break
+			fi
+			let sec++
+		done
+		if ps -p $ppid >/dev/null
+		then
+			mkdir -p maps/infinite_loop
+			echo "$map" > maps/infinite_loop/$i.$1
+			kill $ppid
+			wait $ppid 2>/dev/null
+			continue
+		fi
+		lemin=$(cat checker.tmp)
+		rm checker.tmp
+		lemin_output=$(getLemInOutput "$lemin")
+		lemin_output_size=$(getLemInOutputSize "$lemin_output")
+		lemin_cost=$(getLemInCost "$lemin")
+		costdiff=`bc <<< "scale=4; ($map_cost - $lemin_output_size)"`
+		if [ ! -z $costdiff ]
+		then
+			if [ $costdiff -ge 0 ]
+			then
+				let successes[$costdiff]++
+			else
+				let failures[${costdiff#-}]++
+			fi
+		fi
+		total_s=0
+		total_f=0
+		for k in `seq 0 50`
+		do
+			total_s=$(($total_s + ${successes[$k]}))
+			total_f=$(($total_f + ${failures[$k]}))
+		done
+		printf "map : %s | lem-in : %s | costdiff : %s\r" $(getMapCost "$map") $lemin_output_size $costdiff
+		sleep 1s #waitforinput for debug
+	done
+	clear
+	printf "%-3d | \033[42;30m%12s%11s\033[0m | %3d\n" 0 ${successes[0]} " " 0
+		for j in `seq 1 50`
+		do
+			printf "%-3d | " $j
+			if [ ${successes[$j]} -eq 0 ]
+			then
+				printf "%5s%5s | " ${successes[$j]} " "
+			else
+				printf "\033[42;30m%5s%5s\033[0m | " ${successes[$j]} " "
+			fi
+			if [ ${failures[$j]} -eq 0 ]
+			then
+				printf "%5s%5s" ${failures[$j]} " "
+			else
+				printf "\033[41;30m%5s%5s\033[0m" ${failures[$j]} " "
+			fi
+			printf " | %3d\n" $(($j * -1))
+		done
+	printf "%%   | \033[42;30m%-10.10s\033[0m | \033[41;30m%-10s\033[0m\n" $(getPercentage $total_s $(($total_s + $total_f)) "7") $(getPercentage $total_f $(($total_s + $total_f)) "7")
+fi

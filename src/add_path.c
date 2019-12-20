@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 00:14:45 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 01:56:27 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 	}
 	printf ("YOOOOOOOOOWWWWWWWWW\nYOOOOOOOOOOOOOOOWWWWOWOWOWOWWWWWWW");
 	printf ("OOOOOwwww: %i\n", path);
-	if (!(gives_order(arg, (*map)->way, path)))
+	if (gives_order(arg, (*map)->way, path) == -1)
 			return (-1);
 	return (path);
 }

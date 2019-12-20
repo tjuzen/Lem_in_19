@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 00:09:52 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 01:50:31 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ struct			s_linkstab
 	int				isactive; // en avons nous réellement besoin ?
 	int				inversed; // Ci->Co deviens Co->Ci, etc
 	int				selected; // mon chemin passe par la
-
+	int				imintern;
 	t_linkstab		*reversed; // Stoque l'opposé (A->B contient B->A)
 	t_linkstab		*next; // liste de TOUS mes links
 	t_linkstab		*nextpath; // lol
@@ -230,7 +230,7 @@ int 		check_follow(t_path *new, t_lemin *arg, t_node *links);
 t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp);
 int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
 int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
-void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant);
+// void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant);
 void 		send_ant(t_data_map **map, t_lemin *arg, int nbr);
 
 /*

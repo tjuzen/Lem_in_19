@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/19 22:52:00 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2019/12/20 01:55:53 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,14 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 
 	while (room)
 	{
-		// printf("je boucle ici aussi ");
-		// printf("{} %s {}", room->room);
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
+			print_colors(tmp);
+			arg->total_weight -= -1;
 			tmp->selected++;
 			if (tmp->reversed)
 				tmp->reversed->selected++;
-			arg->total_weight++;
 		}
 		room = room->parent;
 	}
@@ -85,6 +84,7 @@ int intern_infos(t_data_map *map, t_lemin *arg, t_linkstab *link, t_node *out)
 	intern->rooma = link->roomb;
 	intern->roomb = out;
 	intern->isactive = 1;
+	intern->imintern = 1;
 	intern->selected = 1;
 	intern->rooma->in = intern->roomb;
 	intern->roomb->out = intern->rooma;
@@ -161,116 +161,99 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
-			tmp->weight = -1;
-			tmp->inversed = 1;
+			tmp->weight *= -1;
+			tmp->inversed *= -1;
 		}
 		room = room->parent;
 	}
 }
 
-void 	check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 {
+	t_node		*tmproom;
 	while (tmp->next)
 	{
-		if (tmp->selected > 1)
+		if (tmp->inversed == 1 && tmp->selected > 1)
 		{
+			print_colors(tmp);
+
+			tmproom = tmp->rooma;
+			tmp->rooma = tmp->roomb;
+			tmp->roomb = tmproom;
+
+			tmp->inversed = 0;
+			// if (tmp->imintern == 1)
+			// 	tmp->weight = 0;
+			// else
+				tmp->weight = 1;
+
 			tmp->selected = 0;
+			print_colors(tmp);
+
 		}
-		if (tmp->reversed && tmp->reversed->selected > 1)
-			tmp->reversed->selected = 0;
+		// if (tmp->reversed && tmp->reversed->selected > 1)
+		// 	tmp->reversed->selected = 0;
 		tmp = tmp->next;
 	}
 }
 
-// int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *tmp)
-// {
-// 	t_linkstab	*path;
-// 	int 		way;
-//
-// 	path = tmp;
-// 	way = 0;
-// 	while (tmp->next)
-// 	{
-// 		if (tmp->selected == 1 && tmp->weight == 1 && tmp->roomb->room != tmp->rooma->room)
-// 		{
-// 			if (tmp->roomb->status == 'I' && tmp->rooma->status != 'I')
-// 			{
-// 				printf ("[%s]-[%s]\n", tmp->rooma->room, tmp->roomb->room);
-// 				if (stock_room_path(map, tmp, path, way++, arg) == -1)
-// 					return (-1);
-// 			}
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	return (way);
-// }
-//
-// void		print_way(t_data_map **map, t_lemin *arg, int nbr)
-// {
-// 	int i;
-// 	int j;
-//
-// 	i = 0;
-// 	j = 0;
-// 	printf("nbr: %i | i: %i | j: %i\n", nbr, i , j);
-// 	while (i < nbr)
-// 	{
-// 		printf("WAY:--");
-// 		j = 0;
-// 		while (j <= (*map)->way[i]->weight)
-// 			printf("[%s]", (*map)->way[i]->path_list[j++]);
-// 		i++;
-// 		printf("\n");
-// 	}
-// }
 /*
+
 1: Find the shortest path P1 from node s to node t
 2: for i = 2,..., k
 3: For node-disjoint paths, split the intermediate nodes of all Px where x < i (refer to Figure 3)
 4: Replace each link of all Px where x < i with a reverse link of inverted link weight in the original graph
 5: Find the shortest path Pi from node s to node t
 6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
+
 */
 
 int find_path(t_data_map **map, t_lemin *arg)
 {
 	t_node *tmp;
+	int nombredepaths = 1;
 	int nbr = 0;
 
+print_all_links((*map), arg, (*map)->links);
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
 	max_path(arg, map);
-	// print_all_links((*map), arg, (*map)->links);
-
+	print_all_links((*map), arg, (*map)->links);
+	// arg->nbr_round = 3.0;
+	printf("coucou pute salope %i\n\n\n\n\n\n\n\n\n\n", (int)arg->nbr_round);
 	while ((int)arg->nbr_round--)
 	{
-		// printf("\n\n\n                                   CA TOURNE \n\n\n");
-		// printf("je dup \n");
-		// if (duplicate_nodes((*map), arg, arg->end) == -1)
-		// 	return (-1);
-			// print_all_links((*map), arg, (*map)->links);
+		printf("\n\n\n                                   CA TOURNE \n\n\n");
+		printf("je dup \n");
+		if (duplicate_nodes((*map), arg, arg->end) == -1)
+			return (-1);
+			print_all_links((*map), arg, (*map)->links);
 
-		// printf("j'inverse \n");
+		printf("j'inverse \n");
 		inverse_links((*map), arg, arg->end);
-		// print_all_links((*map), arg, (*map)->links);
+		print_all_links((*map), arg, (*map)->links);
 
-		// printf("je  reset\n");
+		printf("je  reset\n");
 		reset(map, arg, (*map)->links);
-		// print_all_links((*map), arg, (*map)->links);
+		print_all_links((*map), arg, (*map)->links);
 
-		// printf("je bellman \n");
+		printf("je bellman \n");
 		bellman_peugeot(map, arg);
+		printf("out\n");
 		if (add_found_path((*map), arg, arg->end) == -1)
 			return (-1);
+
+		printf("encore out\n");
 			// print_all_links((*map), arg, (*map)->links);
 
-		// printf("je check inversed\n");
+		printf("je check inversed\n");
 	 	check_inversed((*map), arg, (*map)->links);
-		// print_all_links((*map), arg, (*map)->links);
+		print_all_links((*map), arg, (*map)->links);
 
 	}
 	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
-		return (1);
+		return (-1);
+	// print_way(map, arg, nbr);
 	return (1);
 }

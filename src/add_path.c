@@ -60,12 +60,16 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 			free(new);
 			return (-1);
 		}
-		ft_printf("\n\nhaha %s\n", tmp->room);
+		ft_printf(" [%s]", new->path_list[i-1]);
 	}
-	new->weight = i;
+	printf("_____weight: %i\n", i);
+	// printf("_____new: %s\n", new->path_list[i]);
+	new->weight = i + 1;
 	arg->sum_path += i;
 	new->path = way;
 	new->path_list[i] = arg->end->room;
+	ft_printf(" [%s]", new->path_list[i]);
+	// printf("_____new: %s\n", new->path_list[i]);
 	(*map)->way[way] = new;
 	return (0);
 }
@@ -87,68 +91,14 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 				if (check_way(arg, map, links, path) == 0)
 					if (stock_path(map, arg, links, path++) == -1)
 						return (-1);
+					printf(":i %i\n", path - 1);
 			}
 		}
 		links = links->next;
 	}
-	printf ("YOOOOOOOOOWWWWWWWWW\nYOOOOOOOOOOOOOOOWWWWOWOWOWOWWWWWWW");
+	// printf ("YOOOOOOOOOWWWWWWWWW\nYOOOOOOOOOOOOOOOWWWWOWOWOWOWWWWWWW");
 	printf ("OOOOOwwww: %i\n", path);
-	if (gives_order(arg, (*map)->way, path) == -1)
-			return (-1);
 	return (path);
-}
-
-// int			prepare_ants(t_data_map **map, t_lemin *arg, int way)
-// {
-// 	int i;
-// 	int j;
-//
-// 	i = 0;
-// 	j = 0;
-// 	while (++i < arg->ants)
-// 	{
-// 		if (!(gives_order(i, (*map)->way[l], j++)))
-// 			return (-1);
-// 		if (j / way == 0)
-//
-// 	}
-// 	return (0);
-// }
-
-void 		send_ant(t_data_map **map, t_lemin *arg, int nbr)
-{
-		int i;
-		int j;
-		int k;
-		int l;
-		int t;
-		int tmp;
-
-		i = 0;
-		k = 0;
-		l = 0;
-		j = 0;
-		t = 0;
-		tmp = nbr;
-		while (i++ < 10)
-		{
-			while (k < tmp && j <= (*map)->way[l]->weight)
-			{
-				printf("L-%i-%s ", ++k ,(*map)->way[l++]->path_list[j]);
-				if (l == nbr )
-					l = 0;
-				printf ("\nk%%nbr: %i k/nbr: %i\n", k % nbr, k / nbr);
-				if (k / nbr == t)
-				{
-					j--;
-					t++;
-				}
-			}
-			printf ("\n");
-			k = 0;
-			tmp += nbr;
-			j++;
-		}
 }
 
 void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant)

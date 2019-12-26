@@ -27,7 +27,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
+				// printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
 				did_change = 1;
 			}
 		}
@@ -35,6 +35,23 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 	}
 	return (did_change == 0) ? 666 : 1;
 }
+
+double 		cost_path(t_lemin *arg, int nbr)
+{
+	int 	tmp;
+	double 	turns;
+
+	tmp = arg->ants + arg->total_weight - 1;
+	// printf(" suce %i\n", tmp);
+	// printf("hahahaha %i\n", nbr);
+	// printf ("TURNS %f, TMP %i\n", turns, tmp);
+	turns = ((double)tmp / (double)nbr) - 1.0;
+	arg->nbr_round = turns;
+	// printf("total_weight: %d\nmax_path: %i\nants :%i\n", arg->total_weight, arg->max_path, arg->ants);
+	// printf(" ici ici %f\n", turns);
+	return (turns);
+}
+
 
 int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
 {

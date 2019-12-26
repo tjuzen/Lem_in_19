@@ -28,19 +28,19 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 	return (NULL);
 }
 
-// t_linkstab *lookuplinknode(t_node *a, t_node *b)
-// {
-// 	t_linkstab *find;
-//
-// 	find = a->to;
-// 	while (find->nexto)
-// 	{
-// 		if (find->rooma == a && find->roomb == b)
-// 			return (find);
-// 		find = find->nexto;
-// 	}
-// 	return (NULL);
-// }
+t_linkstab *lookuplinknode(t_node *a, t_node *b)
+{
+	t_linkstab *find;
+
+	find = a->to;
+	while (find->nexto)
+	{
+		if (find->rooma == a && find->roomb == b)
+			return (find);
+		find = find->nexto;
+	}
+	return (NULL);
+}
 
 t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 {

@@ -57,8 +57,10 @@ struct			s_node
 	t_node			*hash_next; // pour lookup
 	t_node			*out;		 // lien vers Xo
 	t_node			*in;  		// lien vers Xi
-	t_linkstab		*paths;
+	t_linkstab		*paths;		// ??????
 	int				duplicated; // ma room a été dupliquée
+	int				just_dup;   // je viens de dup ma room // ????
+	t_linkstab		*to;
 };
 
 struct			s_linkstab
@@ -70,10 +72,11 @@ struct			s_linkstab
 	int				isactive; // en avons nous réellement besoin ?
 	int				inversed; // Ci->Co deviens Co->Ci, etc
 	int				selected; // mon chemin passe par la
-	int				imintern;
+	int				imintern; // ok cool
 	t_linkstab		*reversed; // Stoque l'opposé (A->B contient B->A)
 	t_linkstab		*next; // liste de TOUS mes links
-	t_linkstab		*nextpath; // lol
+	t_linkstab		*nextpath; // ???
+	t_linkstab		*nexto;
 };
 
 struct	s_lemin
@@ -126,6 +129,7 @@ unsigned long 	hashCode(char *room);
 
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
 t_linkstab 		*lookuplink(t_data_map *map, t_node *a, t_node *b);
+t_linkstab 		*lookuplinknode(t_node *a, t_node *b);
 
 /*
 ** STUPID_TOOLS.C
@@ -161,7 +165,6 @@ int 			get_infos(char *line, t_data_map **map, t_lemin *arg);
 
 int 			add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
 int 			get_number_of_ants(char *line, t_lemin *arg);
-int				max_path(t_lemin *arg, t_data_map **map);
 int				check_links(t_data_map *map, t_node *a, t_node *b);
 int				valid_end_start(int i, t_lemin *arg, char s);
 
@@ -192,6 +195,8 @@ int				main(void);
 int 	bellwhile_ford(t_linkstab *link, t_lemin *arg);
 void 	reset_a(t_node *a);
 void 	reset_b(t_node *b);
+
+double 	cost_path(t_lemin *arg, int nbr);
 int 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
 
 
@@ -202,9 +207,9 @@ int 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
 int		find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
 int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room);
 int 	bellman_peugeot(t_data_map **map, t_lemin *arg);
-void 	out_infos(t_data_map *map, t_lemin *arg, t_linkstab *link, t_node *out);
-int 	intern_infos(t_data_map *map, t_lemin *arg, t_linkstab *link, t_node *out);
-int 	new_duplicate(t_data_map *map, t_lemin *arg, t_linkstab *link);
+void 	out_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out);
+int 	intern_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out);
+t_node 	*new_duplicate(t_data_map *map, t_lemin *arg, t_node *room);
 void    update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 int 	duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room);
 void 	inverse_links(t_data_map *map, t_lemin *arg, t_node *room);
@@ -241,6 +246,7 @@ int 	get_number_of_ants(char *line, t_lemin *arg);
 int		valid_end_start(int i, t_lemin *arg, char s);
 int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
 int		gives_order(t_lemin *arg, t_path **way, int path);
+int		count_ja(t_lemin *arg, t_path **way, int path);
 
 
 /*

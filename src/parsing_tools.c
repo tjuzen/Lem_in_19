@@ -57,38 +57,11 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 	return (0);
 }
 
-int		max_path(t_lemin *arg, t_data_map **map)
-{
-	t_linkstab *links;
-	int			end;
-	int			tmp;
-	double		turns;
-
-	links = (*map)->links;
-	tmp = 0;
-	end = 0;
-	while (links->next)
-	{
-		if (arg->start->room == links->rooma->room)
-			tmp++;
-		if (arg->end->room == links->rooma->room)
-			end++;
-		links = links->next;
-	}
-	printf ("START %i, END %i\n", tmp ,end);
-	arg->max_path = ((tmp > end) ? end : tmp);
-	tmp = arg->ants + arg->total_weight;
-	printf ("TURNS %f, TMP %i\n", turns, tmp);
-	turns = ((double)tmp / (double)arg->max_path) - (double)1;
-	arg->nbr_round = (arg->max_path > 12) ? turns : (double)arg->max_path;
-	printf("total_weight: %d\nmax_path: %i\nants :%i\nNBR_ROUND %f\n", arg->total_weight, arg->max_path, arg->ants, arg->nbr_round);
-	return (0);
-}
-
 int 	assign_ants(t_lemin *arg, int i, t_path *way)
 {
 	t_ants *walker;
 
+	printf("ants: %i weight: %i\n", i, way->weight);
 	if (!(walker = ft_memalloc(sizeof(t_ants))))
 		return (-1);
 	walker->nbr = i;
@@ -105,6 +78,46 @@ int 	assign_ants(t_lemin *arg, int i, t_path *way)
 	return (0);
 }
 
+int 	is_army_empty(t_lemin *arg)
+{
+	t_ants *list;
+
+	list = arg->army;
+	while (list)
+	{
+		if (list->nrj > 0)
+			return (0);
+		list = list->next;
+	}
+	return (1);
+}
+
+int 	find_short(t_path **way, t_lemin *arg, int path, int i)
+{
+	int j;
+	int l;
+	int k;
+	t_ants *list;
+
+	list = arg->army;
+	j = 0;
+	l = INFINITE;
+	while (way[j])
+	{
+		if (way[j]->weight < l)
+		{
+			printf("_________________%i____________%i\n", way[j]->weight, l);
+			l = way[j]->weight;
+			k = j;
+		}
+		// if (arg->ants - i + way[j]->weight < way[j + 1]->weight)
+		// 	return (0);
+		j++;
+	}
+	printf("_________________  ____________%i\n", k);
+	return (k);
+}
+
 int		gives_order(t_lemin *arg, t_path **way, int path)
 {
 	int i;
@@ -119,55 +132,44 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	round = 0;
 	while (i > 0)
 	{
-		if ((assign_ants(arg, i--, way[j % path])) == -1)
-			return (-1);
+		if ((i / path) + way[j % path]->weight < (int)arg->nbr_round + 1)
+		{
+			if ((assign_ants(arg, i--, way[j % path])) == -1)
+				return (-1);
+		}
 		j++;
 	}
 	j = 0;
-	while (1)
+	i = 0;
+	while (is_army_empty(arg) == 0)
 	{
 		list = arg->army;
-		i = 0;
-		printf ("[LINE]: %i ", l++);
+		if (l > 0)
+			printf ("[LINE]: %i ", l);
+		 l++;
 		while (j < path * round)
 		{
-			if (list->nrj >= 0 && list->nbr <= path * round)
+			// printf("koukou: j: %i    path: %i     round : %i\n", j, path, round);
+			if (list->nrj > 0/* && list->nbr / path*/)
 			{
-				j++;
 				list->nrj--;
 				printf ("L%i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
 			}
 			if (list->nbr == arg->ants)
+			{
+				// printf("koukou: derniere fourmis\n");
 				break ;
+			}
+			j++;
 			list = list->next;
 		}
+		// if (is_army_empty(arg) == 1)
+		// 	break;
 		printf ("\n");
 		j = 0;
 		round -= -1;
-		if (list->nbr == arg->ants && list->nrj == -1)
-			return (0);
+		// if (list->nbr == arg->ants && list->nrj == 0)
+		// 	return (l);
 	}
-
 	return (0);
-}
-
-
-
-int		check_links(t_data_map *map, t_node *a, t_node *b)
-{
-	t_linkstab *find;
-
-	// find = a->to;
-	// if (a->to != NULL)
-	// {
-	// 	while (find->nexto)
-	// 	{
-	// 		if (find->rooma->room == a->room && find->roomb->room == b->room)
-	// 			return (0);
-	// 		if (find->rooma->room == b->room && find->roomb->room == a->room)
-	// 			return (0);
-	// 		find = find->nexto;
-	// 	}
-	// }
-	return (1);
 }

@@ -102,7 +102,5 @@ int		is_link(char *line, t_data_map **map, t_lemin *arg)
 	if (!(room_b))
 		return (-1);
 	ft_freetab_str(splitted);
-	if (check_links((*map), room_a, room_b) != 1)
-		return (0);
 	return (1);
 }

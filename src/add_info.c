@@ -42,6 +42,36 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	link->inversed = -1;
 	link->selected = 0;
 	link->imintern = 0;
+	if (!(a->to))
+			a->to = link;
+	else
+	{
+		link->nexto = a->to;
+		a->to = link;
+	}
+	// if (a->to == NULL && directed == 1)
+	// {
+	// 	a->to = b;
+	// 	printf("%s%c est to de %s%c\n", a->to->room, a->to->type, a->room, a->type);
+	// }
+	// else if (directed == 1)
+	// {
+	// 	b->nexto = a->to;
+	// 	a->to = b;
+	// 	printf("%s%c est to de %s%c\n", a->to->room, a->to->type, a->room, a->type);
+	// }
+	// if (b->to == NULL && directed == 1)
+	// {
+	// 	b->to = a;
+	// 	printf("%s%c est to de %s%c\n", b->to->room, b->to->type, b->room, b->type);
+	// }
+	// else if (directed == 1)
+	// {
+	// 	a->nexto = b->to;
+	// 	b->to = a;
+	// 	printf("%s%c est to de %s%c\n", b->to->room, b->to->type, b->room, b->type);
+	// }
+	// printf("\n");
 	return (link);
 }
 
@@ -82,6 +112,7 @@ int 	add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new)
 	new->out = NULL;
 	new->parent = NULL;
 	new->paths = NULL;
+	new->just_dup = 0;
 	if (stat == 'I')
 	{
 		new->weight= 0;

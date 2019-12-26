@@ -38,11 +38,16 @@ int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
 		{
 			if (ft_strcmp((*map)->way[i]->path_list[j], tmp->room) == 0)
 			{
-				printf("____[CHECK_WAY]-[%s]-[%s]\n", tmp->room, (*map)->way[i]->path_list[0]);
+				// printf("____[CHECK_WAY]-[%s]-[%s]\n", tmp->room, (*map)->way[i]->path_list[0]);
 				return (1);
 			}
+			if (j > arg->nbr_round)
+				return (1);
+			// printf("oui\n");
 			j++;
 		}
+		printf("TTTTTTT %i | %f\n", j, arg->nbr_round);
+
 		i++;
 	}
 	return (0);

@@ -107,7 +107,7 @@ int intern_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out)
 	// intern->roomb->out = intern->rooma;
 	intern->roomb->parent = intern->rooma;
 	// intern->rooma = out;
-	printf("\n\n				%s%c parent de %s%c\n", intern->roomb->parent->room, intern->roomb->parent->type, intern->roomb->room, intern->roomb->type);
+	// printf("\n\n				%s%c parent de %s%c\n", intern->roomb->parent->room, intern->roomb->parent->type, intern->roomb->room, intern->roomb->type);
 	add_it(arg, &map, intern);
 	return (1);
 }
@@ -165,7 +165,7 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 	// print_all_links(map, arg, map->links);
 	while (room && room != arg->start)
 	{
-		printf("Je suis room %s%c\n", room->room, room->type);
+		// printf("Je suis room %s%c\n", room->room, room->type);
 		// if (room->parent)
 		// printf("avec %s%c\n", room->parent->room, room->parent->type);
 		// if (room->status == 'X' && room->duplicated != 1)
@@ -179,7 +179,7 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 		}
 		room = room->parent;
 	}
-	printf("je suis sorti\n");
+	// printf("je suis sorti\n");
 	// update_links(map, arg, map->links);
 	return (1);
 }
@@ -259,7 +259,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 
 
 
-	augmented = 7;
+	augmented = 5;
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
@@ -267,9 +267,8 @@ int find_path(t_data_map **map, t_lemin *arg)
 	new = cost_path(arg, 1);
 	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
 		return (-1);
-	while (augmented--)
+	while (new < old)
 	{
-		printf("\n\n\nSalut lesamis %f\n", new);
 		// print_all_links(*map, arg, (*map)->links);
 		printf("debut boucle\n");
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
@@ -286,9 +285,10 @@ int find_path(t_data_map **map, t_lemin *arg)
 		// printf("Salut lesamis %f\n", old);
 		if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
 			return (-1);
+		printf("\n\n\nSalut lesamis %f | %f\n", new, old);
 		old = new;
-		new = cost_path(arg, nbr);
-		printf("\n\n\nSalut lesamis %f\n", new);
+		new = cost_path(arg, nbr) + 1.0;
+		printf("\n\n\nSalut lesputes %i | %f\n", (int)new, old);
 		// print_all_links(*map, arg, (*map)->links);
 		printf("fin boucle\n");
 		// max_path(arg, map);

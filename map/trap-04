@@ -1,12 +1,12 @@
 50
 ##start
-start 0 0
+a 0 0
 c 0 0
 f 0 0
 j 0 0
 o 0 0
 ##end
-end 0 0
+z 0 0
 b 0 0
 e 0 0
 i 0 0
@@ -22,17 +22,17 @@ g 0 0
 k 0 0
 p 0 0
 q 0 0
-start-b
+a-b
 b-e
 e-i
 i-n
 n-o
-start-c
+a-c
 c-f
 f-j
 j-o
-o-end
-start-d
+o-z
+a-d
 d-h
 h-m
 m-f
@@ -40,9 +40,9 @@ c-g
 g-k
 k-p
 p-q
-q-end
+q-z
 j-r
 r-s
 s-t
 t-u
-u-end
+u-z

@@ -111,6 +111,7 @@ struct s_ants
 	int				room;
 	int				nrj;
 	int				path;
+	int 			spotted;
 	t_ants			*next;
 };
 

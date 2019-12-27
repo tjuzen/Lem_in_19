@@ -19,25 +19,32 @@ t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp)
 	links = (*map)->links;
 	if (new->path_list[0] == NULL)
 		return (tmp);
-	while (links->next)
+	// printf("oui______________1\n");
+	while (links)
 	{
 		if (links->selected == 1)
 		{
 			if ((ft_strcmp(links->rooma->room, tmp->room) == 0)
 				&& check_follow(new, arg, links->roomb) == 0)
 			{
+				// printf("oui______________2\n");
+				printf ("1111111______[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
+
 					return (tmp = links->roomb);
-					// printf ("1111111______[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 			}
 			if ((ft_strcmp(links->roomb->room, tmp->room) == 0)
 				&& (check_follow(new, arg, links->rooma) == 0))
 			{
+				// printf("oui______________3\n");
+				printf ("22222________[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
+
 					return (tmp = links->rooma);
-					// printf ("22222________[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 			}
 		}
 		links = links->next;
 	}
+	// printf("oui______________4\n");
+
 	return (tmp);
 }
 
@@ -60,7 +67,7 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 			free(new);
 			return (-1);
 		}
-		ft_printf(" [%s]", new->path_list[i-1]);
+		// ft_printf(" [%s]", new->path_list[i-1]);
 	}
 	printf("_____weight: %i\n", i);
 	// printf("_____new: %s\n", new->path_list[i]);

@@ -112,6 +112,7 @@ struct s_ants
 	int				nrj;
 	int				path;
 	int 			spotted;
+	int 			turn;
 	t_ants			*next;
 };
 
@@ -205,7 +206,6 @@ int 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
 ** ALGO.C
 */
 
-int		find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
 int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room);
 int 	bellman_peugeot(t_data_map **map, t_lemin *arg);
 void 	out_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out);
@@ -235,7 +235,7 @@ int 		check_follow(t_path *new, t_lemin *arg, t_node *links);
 
 t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp);
 int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
-int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links);
+int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found);
 // void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant);
 void 		send_ant(t_data_map **map, t_lemin *arg, int nbr);
 

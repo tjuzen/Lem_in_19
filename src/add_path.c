@@ -28,7 +28,7 @@ t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp)
 				&& check_follow(new, arg, links->roomb) == 0)
 			{
 				// printf("oui______________2\n");
-				printf ("1111111______[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
+				// printf ("1111111______[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 
 					return (tmp = links->roomb);
 			}
@@ -36,16 +36,16 @@ t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp)
 				&& (check_follow(new, arg, links->rooma) == 0))
 			{
 				// printf("oui______________3\n");
-				printf ("22222________[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
+				// printf ("22222________[%s]-[%s]________\n", links->rooma->room, links->roomb->room);
 
 					return (tmp = links->rooma);
 			}
 		}
 		links = links->next;
 	}
-	// printf("oui______________4\n");
+	printf("____________________________________________________________________________________________________oui______________4\n");
 
-	return (tmp);
+	return (NULL);
 }
 
 int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
@@ -56,32 +56,34 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 
 	i = 0;
 	tmp = switch_room(links, arg);
+	if (!tmp)
+		return (-1);
 	if (!(new = ft_memalloc(sizeof(t_path))))
 		return (-1);
-	if (!(new->path_list = ft_memalloc(sizeof(char**) * 5000)))
+	if (!(new->path_list = ft_memalloc(sizeof(char**) * 500)))
 		return (-1);
-	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end)
+	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end && tmp)
 	{
 		if (!(new->path_list[i++] = ft_strdup(tmp->room)))
 		{
 			free(new);
 			return (-1);
 		}
-		// ft_printf(" [%s]", new->path_list[i-1]);
+
 	}
-	printf("_____weight: %i\n", i);
+	// printf("_____weight: %i\n", i);
 	// printf("_____new: %s\n", new->path_list[i]);
 	new->weight = i + 1;
 	arg->sum_path += i;
 	new->path = way;
 	new->path_list[i] = arg->end->room;
-	ft_printf(" [%s]", new->path_list[i]);
+	// ft_printf(" [%s]", new->path_list[i]);
 	// printf("_____new: %s\n", new->path_list[i]);
 	(*map)->way[way] = new;
 	return (0);
 }
 
-int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
+int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found)
 {
 	int path;
 
@@ -96,15 +98,20 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links)
 				// printf("[CHECK1]-");
 				// printf ("[%s]-[%s]\n", links->rooma->room, links->roomb->room);
 				if (check_way(arg, map, links, path) == 0)
-					if (stock_path(map, arg, links, path++) == -1)
+				{
+					if (stock_path(map, arg, links, path) == -1)
 						return (-1);
-					printf(":i %i\n", path - 1);
+					path++;
+				}
+				if (path == found)
+					return (path);
+					// printf(":i %i\n", path - 1);
 			}
 		}
 		links = links->next;
 	}
 	// printf ("YOOOOOOOOOWWWWWWWWW\nYOOOOOOOOOOOOOOOWWWWOWOWOWOWWWWWWW");
-	printf ("OOOOOwwww: %i\n", path);
+	// printf ("OOOOOwwww: %i\n", path);
 	return (path);
 }
 

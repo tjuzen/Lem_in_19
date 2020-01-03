@@ -16,6 +16,7 @@
 
 int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 {
+	int weight = 0;
 	t_linkstab *tmp;
 
 	while (room)
@@ -24,14 +25,31 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 		if (tmp)
 		{
 			// print_colors(tmp);
-			arg->total_weight -= -1;
-			tmp->selected++;
+			printf("/%s/\n", room->room);
+			if (tmp->selected == 1)
+				printf("pute\n");
+			if (tmp->imintern != 1)
+			{
+				arg->total_weight -= -1;
+				tmp->selected++;
+				weight++;
+			}
 			if (tmp->reversed)
 				tmp->reversed->selected++;
 		}
+		if (room == arg->start)
+		{
+			printf("\n\n+++++++++++++++++++Mon weight %i\n", weight);
+			return 0;
+
+		}
+		// if ((ft_strcmp(room->room, arg->start->room) == 1))
+		// 	return 1;
 		room = room->parent;
 	}
-	return (1);
+	printf("\n\n--------------------------+Mon weight %i\n", weight);
+
+	return (-1);
 }
 
 
@@ -191,12 +209,12 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 
 	while (room)
 	{
-		printf("ici %s%c\n", room->room, room->type);
+		// printf("ici %s%c\n", room->room, room->type);
 
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
-			print_colors(tmp);
+			// print_colors(tmp);
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
@@ -224,10 +242,13 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 			if (tmp->imintern == 1)
 				tmp->weight = 0;
 			else
+			{
+				arg->total_weight--;
 				tmp->weight = 1;
-			arg->total_weight -= 1;
+			}
 			tmp->selected = 0;
-			// print_colors(tmp);
+			print_colors(tmp);
+
 
 		}
 		// if (tmp->reversed && tmp->reversed->selected > 1)
@@ -255,61 +276,58 @@ int find_path(t_data_map **map, t_lemin *arg)
 	double old;
 	int augmented;
 	t_node *penis;
+	int found = 1;
 
 
 
 
-	augmented = 5;
+	augmented = 11;
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
 	old = INFINITE;
 	new = cost_path(arg, 1);
-	if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
-		return (-1);
-	while (new < old)
+	// if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
+	// 	return (-1);
+	printf("MMMMMMAAAAAAXXXXXX: %i\n", arg->max_path);
+	while (old > new)
 	{
 		// print_all_links(*map, arg, (*map)->links);
-		printf("debut boucle\n");
+		// printf("debut boucle\n");
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
 		inverse_links((*map), arg, arg->end);
 		reset(map, arg, (*map)->links);
 		// print_all_links(*map, arg, (*map)->links);
-		printf("avant bellman\n");
+		// printf("avant bellman\n");
 		bellman_peugeot(map, arg);
 		if (add_found_path((*map), arg, arg->end) == -1)
-			return (-1);
+		{
+			printf("\nje break\n");
+			break ;
+		}
+		found++;
 	 	check_inversed((*map), arg, (*map)->links);
 		// printf("Salut new %f\n", new);
 		// printf("Salut lesamis %f\n", old);
-		if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
-			return (-1);
-		printf("\n\n\nSalut lesamis %f | %f\n", new, old);
+
+		printf("-_________-________________-______check %i found %i\n", nbr, found);
+		// printf("\n\n\nSalut lesamis %f | %f\n", new, old);
 		old = new;
-		new = cost_path(arg, nbr) + 1.0;
-		printf("\n\n\nSalut lesputes %i | %f\n", (int)new, old);
-		// print_all_links(*map, arg, (*map)->links);
-		printf("fin boucle\n");
+		new = cost_path(arg, found);
+		printf("\n\n\nSalut lesputes %f | %f\n", new, old);
+		// if (found == arg->max_path)
+			// break;
+
 		// max_path(arg, map);
 	}
-	if (gives_order(arg, (*map)->way, nbr) == -1)
-		return (-1);
+	printf("fin boucle\n");
+	// print_all_links(*map, arg, (*map)->links);
 
-
-		// penis = lookup(*map, hashCode("END"), "END");
-		//
-		// printf("hahahaha %s\n", penis->to->roomb->room);
-		//
-		//
-		// printf("\n----------------\nLiaisons partant de %s-%c\n----------------\n", penis->room, penis->type);
-		// while (penis->to)
-		// {
-		// 	// if (penis->to->isactive)
-		// 	printf("%s-%c ", penis->to->roomb->room, penis->to->roomb->type);
-		// 	penis->to = penis->to->nexto;
-		// }
-		// printf("\n");
+	// if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
+	// 	return (-1);
+	// if (gives_order(arg, (*map)->way, found) == -1)
+	// 	return (-1);
 
 	return (1);
 }

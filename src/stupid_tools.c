@@ -29,7 +29,7 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->malloc_error = 0;
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
-	arg->total_weight = 1;
+	arg->total_weight = 0;
 	arg->nbr_round = 0.0;
 	arg->in = 0;
 	arg->out = 0;

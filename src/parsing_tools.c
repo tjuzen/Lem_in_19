@@ -60,7 +60,7 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 int 	assign_ants(t_lemin *arg, int i, t_path *way, int j)
 {
 	t_ants *walker;
-	printf("ants: %02i weight: %02i path: %02i  actif %2i\n", i, way->weight, way->path, j);
+	// printf("ants: %02i weight: %02i path: %02i  actif %2i\n", i, way->weight, way->path, j);
 
 	if (j == 1)
 	{
@@ -144,7 +144,7 @@ int 	find_short(t_path **way, t_lemin *arg, int path, int i)
 	{
 		if (way[j]->weight < l)
 		{
-			printf("_________________%i____________%i\n", way[j]->weight, l);
+			// printf("_________________%i____________%i\n", way[j]->weight, l);
 			l = way[j]->weight;
 			k = j;
 		}
@@ -152,7 +152,7 @@ int 	find_short(t_path **way, t_lemin *arg, int path, int i)
 		// 	return (0);
 		j++;
 	}
-	printf("_________________  ____________%i\n", k);
+	// printf("_________________  ____________%i\n", k);
 	return (k);
 }
 
@@ -176,57 +176,71 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	int i;
 	int j;
 	int l;
+	int turn = 0;
+	int antscount = 0;
+	int modif = 1;
 	int k = 0;
 	int round;
 	t_ants *list;
 
-	i = arg->ants;
-	j = 0;
+	i = 1;
 	l = 1;
 	round = 1;
-	while (i > 0)
+	printf ("path %i\n", path);
+	while (i <= arg->ants)
 	{
-		if ((i / path) + way[j % path]->weight < arg->nbr_round + 1)
+		j = 0;
+		while (j < path)
 		{
-			if ((assign_ants(arg, i--, way[j % path], 0)) == -1)
-				return (-1);
+			if (turn + way[j]->weight < (int)arg->nbr_round + 1)
+			{
+				if ((assign_ants(arg, i++, way[j], 0)) == -1)
+					return (-1);
+				arg->army->turn = turn + 1;
+				antscount++;
+				// printf ("antscount %i turn %i path %i\n", antscount, turn, way[j]->weight);
+
+				turn += (antscount % path == 0) ? 1 : 0;
+
+			}
+			// else
+			// {
+			// 	if ((assign_ants(arg, i, way[j % path], 1)) == -1)
+			// 		return (-1);
+			// }
+			j++;
 		}
-		else
-		{
-			if ((assign_ants(arg, i, way[j % path], 1)) == -1)
-				return (-1);
-		}
-		j++;
 	}
 	j = 0;
 	i = 0;
-	while (is_army_empty(arg) == 0)
+	while (modif == 1)
 	{
 		list = arg->army;
+		modif = 0;
 		if (l > 0)
 			printf ("[LINE]: %02i ", l);
-		 l++;
 		// int oui = ilyadesfourmisapush(list);
-		while (j < path * round)
+		while (list)
 		{
 			// printf("koukou: j: %i    path: %i     round : %i\n", j, path, round);
-			if (list->nrj > 0 /*&& (check_stack(stack, list) == 0)*/)
+			if (list->nrj > 0 && list->turn <= l)
 			{
 				list->nrj--;
-				if (list->nbr != -1)
-					printf ("L%02i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
+				printf ("L%02i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
+				modif = 1;
 			}
 			j++;
-			if (list->nbr == arg->ants)
-			{
-				break ;
-			}
+			// if (list->nbr == arg->ants)
+			// {
+			// 	break ;
+			// }
 			list = list->next;
 		}
 		k = 0;
 		printf ("\n");
 		j = 0;
 		round -= -1;
+		 l++;
 		// if (list->nbr == arg->ants && list->nrj == 0)
 		// 	return (l);
 	}

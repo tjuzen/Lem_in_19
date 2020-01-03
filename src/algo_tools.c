@@ -15,6 +15,7 @@
 int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 {
 	int did_change;
+	int finished = 0;
 
 	did_change = 0;
 	while (link->next)
@@ -25,6 +26,8 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 				&& link->rooma->weight + link->weight < link->roomb->weight
 				&& link->roomb != arg->start && link->isactive == 1)
 			{
+				if (link->rooma || link->roomb == arg->end)
+					finished = 1;
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
 				// printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
@@ -33,7 +36,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 		}
 		link = link->next;
 	}
-	return (did_change == 0) ? 666 : 1;
+	return (did_change == 0 && finished == 1) ? 666 : 1;
 }
 
 double 		cost_path(t_lemin *arg, int nbr)
@@ -41,13 +44,13 @@ double 		cost_path(t_lemin *arg, int nbr)
 	int 	tmp;
 	double 	turns;
 
-	tmp = arg->ants + arg->total_weight - 1;
+	tmp = arg->ants + arg->total_weight;
 	// printf(" suce %i\n", tmp);
-	// printf("hahahaha %i\n", nbr);
+	printf("hahahaha %i\n", nbr);
 	// printf ("TURNS %f, TMP %i\n", turns, tmp);
 	turns = ((double)tmp / (double)nbr) - 1.0;
 	arg->nbr_round = turns;
-	// printf("total_weight: %d\nmax_path: %i\nants :%i\n", arg->total_weight, arg->max_path, arg->ants);
+	printf("total_weight: %d\nmax_path: %i\nants :%i\n", arg->total_weight, arg->max_path, arg->ants);
 	// printf(" ici ici %f\n", turns);
 	return (turns);
 }

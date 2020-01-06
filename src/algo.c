@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/06 13:50:16 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/06 17:40:49 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,9 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 				tmp->reversed->selected++;
 		}
 		if (room == arg->start)
-		{
-			printf("\n\n+++++++++++++++++++Mon weight %i\n", weight);
 			return 0;
-
-		}
-		// if ((ft_strcmp(room->room, arg->start->room) == 1))
-		// 	return 1;
 		room = room->parent;
 	}
-	printf("\n\n--------------------------+Mon weight %i\n", weight);
-
 	return (-1);
 }
 
@@ -281,7 +273,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 
 
 
-	augmented = 11;
+	augmented = 5;
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
@@ -290,7 +282,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 	// if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
 	// 	return (-1);
 	printf("MMMMMMAAAAAAXXXXXX: %i\n", arg->max_path);
-	while (old > new)
+	while (new < old)
 	{
 		// print_all_links(*map, arg, (*map)->links);
 		// printf("debut boucle\n");

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 02:47:09 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/06 14:16:23 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,78 +99,6 @@ int 	assign_ants(t_lemin *arg, int i, t_path *way, int j)
 	return (0);
 }
 
-int 	is_army_empty(t_lemin *arg)
-{
-	t_ants *list;
-
-	list = arg->army;
-	while (list)
-	{
-		if (list->nrj > 0)
-			return (0);
-		list = list->next;
-	}
-	return (1);
-}
-
-int 	check_stack(int *stack, t_ants *list)
-{
-	int i;
-
-	i = 0;
-	while (list && stack[i] != 0)
-	{
-		if (stack[i] == list->path)
-		{
-			// printf("\n\n________________________%i_____%i\n", stack[i], list->path);
-			return (-1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int 	find_short(t_path **way, t_lemin *arg, int path, int i)
-{
-	int j;
-	int l;
-	int k;
-	t_ants *list;
-
-	list = arg->army;
-	j = 0;
-	l = INFINITE;
-	while (way[j])
-	{
-		if (way[j]->weight < l)
-		{
-			// printf("_________________%i____________%i\n", way[j]->weight, l);
-			l = way[j]->weight;
-			k = j;
-		}
-		// if (arg->ants - i + way[j]->weight < way[j + 1]->weight)
-		// 	return (0);
-		j++;
-	}
-	// printf("_________________  ____________%i\n", k);
-	return (k);
-}
-
-// int ilyadesfourmisapush()
-// {
-// 	int count;
-//
-// 	count = 0;
-// 	while (list)
-// 	{
-// 		if (list->nbr == 0)
-// 		{
-//
-// 		}
-// 		list = list->next;
-// 	}
-// }
-
 int		gives_order(t_lemin *arg, t_path **way, int path)
 {
 	int i;
@@ -187,6 +115,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	l = 1;
 	round = 1;
 	printf ("path %i\n", path);
+
 	while (i <= arg->ants)
 	{
 		j = 0;
@@ -198,7 +127,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 					return (-1);
 				arg->army->turn = turn + 1;
 				antscount++;
-				// printf ("antscount %i turn %i path %i\n", antscount, turn, way[j]->weight);
+				printf ("antscount %i turn %i path[%i] %i\n", antscount, turn, way[j]->path, way[j]->weight);
 
 				turn += (antscount % path == 0) ? 1 : 0;
 

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 15:50:10 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 05:04:00 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/06 14:35:18 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,12 @@ int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
 	tmp = switch_room(links, arg);
 	while (i < way && (*map)->way[i]->path_list[0] != NULL)
 	{
-		j = 0;
-		while ((*map)->way[i]->path_list[j] != NULL)
+		printf("____[CHECK_WAY]-[%s]-[%s]\n", tmp->room, (*map)->way[i]->path_list[0]);
+		if (ft_strcmp((*map)->way[i]->path_list[0], tmp->room) == 0)
 		{
-			if (ft_strcmp((*map)->way[i]->path_list[j], tmp->room) == 0)
-			{
-				// printf("____[CHECK_WAY]-[%s]-[%s]\n", tmp->room, (*map)->way[i]->path_list[0]);
-				return (1);
-			}
-			if (j > (int)arg->nbr_round + 1)
-				return (1);
-			// printf("oui\n");
-			j++;
+			return (1);
 		}
+		// }
 		// printf("TTTTTTT %i | %f\n", j, arg->nbr_round);
 
 		i++;

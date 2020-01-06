@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 06:41:55 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/06 13:50:16 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,10 +324,10 @@ int find_path(t_data_map **map, t_lemin *arg)
 	printf("fin boucle\n");
 	// print_all_links(*map, arg, (*map)->links);
 
-	// if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
-	// 	return (-1);
-	// if (gives_order(arg, (*map)->way, found) == -1)
-	// 	return (-1);
+	if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
+		return (-1);
+	if (gives_order(arg, (*map)->way, found) == -1)
+		return (-1);
 
 	return (1);
 }

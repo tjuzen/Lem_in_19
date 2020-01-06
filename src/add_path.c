@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 06:11:02 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/06 14:25:11 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp)
 		}
 		links = links->next;
 	}
-	printf("____________________________________________________________________________________________________oui______________4\n");
+	printf("___________________________________________________________oui______________4\n");
 
 	return (NULL);
 }
@@ -69,7 +69,7 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 			free(new);
 			return (-1);
 		}
-
+		printf("_____new: %s\n", new->path_list[i - 1]);
 	}
 	// printf("_____weight: %i\n", i);
 	// printf("_____new: %s\n", new->path_list[i]);
@@ -96,16 +96,18 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found)
 				|| arg->start->room == links->roomb->room)
 			{
 				// printf("[CHECK1]-");
-				// printf ("[%s]-[%s]\n", links->rooma->room, links->roomb->room);
+				printf ("[%s]-[%s]\n", links->rooma->room, links->roomb->room);
 				if (check_way(arg, map, links, path) == 0)
 				{
+					// printf("[CHECK1]-");
+					// printf ("[%s]-[%s]\n", links->rooma->room, links->roomb->room);
 					if (stock_path(map, arg, links, path) == -1)
 						return (-1);
 					path++;
 				}
 				if (path == found)
 					return (path);
-					// printf(":i %i\n", path - 1);
+				printf(":i %i\n", path - 1);
 			}
 		}
 		links = links->next;

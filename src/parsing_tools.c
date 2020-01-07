@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_tools.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/07 15:35:06 by tjuzen           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
@@ -105,7 +94,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	int a;
 	int j;
 	int l;
-	int turn = 0;
+	int turn = 1;
 	int antscount = 0;
 	int modif = 1;
 	int k = 0;
@@ -123,31 +112,32 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 		j = 0;
 		while (j < path && i <= arg->ants)
 		{
-			if (turn + way[j]->weight < (int)arg->nbr_round + 1)
+			if (turn - 1 + way[j]->weight <= (int)arg->nbr_round + 1)
 			{
 				if ((assign_ants(arg, i++, way[j], 0)) == -1)
 					return (-1);
-				arg->army->turn = turn + 1;
+				arg->army->turn = turn;
 				antscount++;
 				a = j;
 				printf ("  antscount %i turn %i path[%i] %i  NBR_ROUND: %i\n", antscount, turn, way[j]->path, way[j]->weight, (int)arg->nbr_round);
 			}
+			else
+				printf ("__antscount %i turn %i path[%i] %i  NBR_ROUND: %i\n", antscount, turn, way[j]->path, way[j]->weight, (int)arg->nbr_round);
 			j++;
 		}
+		printf("ca tourne\n");
 		turn++;
 	}
 	j = 0;
 	i = 0;
-	while (modif == 1)
+	while (l < 200)
 	{
 		list = arg->army;
 		modif = 0;
 		if (l > 0)
 			printf ("[LINE]: %02i ", l);
-		// int oui = ilyadesfourmisapush(list);
 		while (list)
 		{
-			// printf("koukou: j: %i    path: %i     round : %i\n", j, path, round);
 			if (list->nrj > 0 && list->turn <= l)
 			{
 				list->nrj--;
@@ -155,10 +145,6 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 				modif = 1;
 			}
 			j++;
-			// if (list->nbr == arg->ants)
-			// {
-			// 	break ;
-			// }
 			list = list->next;
 		}
 		k = 0;
@@ -166,8 +152,6 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 		j = 0;
 		round -= -1;
 		 l++;
-		// if (list->nbr == arg->ants && list->nrj == 0)
-		// 	return (l);
 	}
 	return (0);
 }

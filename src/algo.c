@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/07 15:27:00 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/07 18:53:13 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,7 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
 
 */
+
 
 int find_path(t_data_map **map, t_lemin *arg)
 {

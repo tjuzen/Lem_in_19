@@ -6,13 +6,62 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/06 17:40:49 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/07 15:27:00 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
 // Augmente de 1 la valeur de selected pour A-B (== tmp) et B-A (== reversed)
+
+int checkeverything(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+{
+	t_node		*tmproom;
+	int tmpweight = arg->total_weight;
+	int oui = 0;
+	tmproom = arg->end;
+
+	while (tmproom)
+	{
+		tmp = lookuplink(map, tmproom->parent, tmproom);
+		if (tmp)
+		{
+			if (tmp->imintern != 1)
+			{
+				arg->total_weight -= -1;
+				tmp->fakeselected++;
+			}
+			if (tmp->reversed)
+				tmp->reversed->fakeselected++;
+		}
+		if (tmproom->parent == arg->start)
+			oui = 1;
+		tmproom = tmproom->parent;
+	}
+
+if (oui)
+{
+	tmp = (*map).links;
+
+	while (tmp->next)
+	{
+		if (tmp->fakeselected > 1)
+		{
+			if (tmp->imintern != 1)
+				arg->total_weight--;
+			tmp->fakeselected = 0;
+		}
+		tmp = tmp->next;
+	}
+}
+else
+{
+	printf("\nhahaha\n");
+	arg->total_weight = tmpweight;
+	return (-1);
+}
+return (1);
+}
 
 int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 {
@@ -24,13 +73,9 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
-			// print_colors(tmp);
-			printf("/%s/\n", room->room);
-			if (tmp->selected == 1)
-				printf("pute\n");
 			if (tmp->imintern != 1)
 			{
-				arg->total_weight -= -1;
+				// arg->total_weight -= -1;
 				tmp->selected++;
 				weight++;
 			}
@@ -58,7 +103,6 @@ int bellman_peugeot(t_data_map **map, t_lemin *arg)
 		if (bellwhile_ford(link, arg) == 666)
 			break;
 	}
-	// print_all_links(*map, arg, link);
 	return (1);
 }
 
@@ -70,7 +114,6 @@ t_linkstab *change_type(t_node *a)
 	while (find)
 	{
 		find->rooma = find->rooma->out;
-		// printf("je change le lien %s%c - %s%c\n", find->rooma->room, find->rooma->type, find->roomb->room, find->roomb->type);
 		find = find->nexto;
 	}
 	return (NULL);
@@ -113,11 +156,7 @@ int intern_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out)
 	intern->isactive = 1;
 	intern->imintern = 1;
 	intern->selected = 1;
-	// intern->rooma->in = intern->roomb;
-	// intern->roomb->out = intern->rooma;
 	intern->roomb->parent = intern->rooma;
-	// intern->rooma = out;
-	// printf("\n\n				%s%c parent de %s%c\n", intern->roomb->parent->room, intern->roomb->parent->type, intern->roomb->room, intern->roomb->type);
 	add_it(arg, &map, intern);
 	return (1);
 }
@@ -126,8 +165,6 @@ t_node *new_duplicate(t_data_map *map, t_lemin *arg, t_node *room)
 {
 	t_node *out;
 
-	// if (room == arg->end)
-	// 	return (room->parent);
 	if (!(out = ft_memalloc(sizeof(t_node))))
 	{
 		arg->malloc_error = 1;
@@ -143,14 +180,6 @@ t_node *new_duplicate(t_data_map *map, t_lemin *arg, t_node *room)
 	out_infos(map, arg, room, out);
 	if (intern_infos(map, arg, room, out) == -1)
 		return (NULL);
-	// = lookuplinknode()
-	// room->parent = out;
-	// print_colors(link);
-	// link->reversed->rooma = out;
-	// link->roomb = link->;
-	// printf("\n\n				%s%c parent de %s%c\n", room->parent->room, room->parent->type, room->room, room->type);
-
-	// print_colors(link);
 	return (out);
 }
 
@@ -172,16 +201,8 @@ void        update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 
 int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 {
-	// print_all_links(map, arg, map->links);
 	while (room && room != arg->start)
 	{
-		// printf("Je suis room %s%c\n", room->room, room->type);
-		// if (room->parent)
-		// printf("avec %s%c\n", room->parent->room, room->parent->type);
-		// if (room->status == 'X' && room->duplicated != 1)
-		// 	if (new_duplicate(map, arg, room) == -1)
-		// 		return (-1);
-
 		if (room->parent->duplicated != 1 && room->parent && room->parent != arg->start)
 		{
 			new_duplicate(map, arg, room->parent);
@@ -189,8 +210,6 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 		}
 		room = room->parent;
 	}
-	// printf("je suis sorti\n");
-	// update_links(map, arg, map->links);
 	return (1);
 }
 
@@ -201,12 +220,9 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 
 	while (room)
 	{
-		// printf("ici %s%c\n", room->room, room->type);
-
 		tmp = lookuplink(map, room->parent, room);
 		if (tmp)
 		{
-			// print_colors(tmp);
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
@@ -224,27 +240,19 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 	{
 		if (tmp->selected > 1)
 		{
-			// print_colors(tmp);
-
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
-
 			tmp->inversed = 0;
 			if (tmp->imintern == 1)
 				tmp->weight = 0;
 			else
 			{
-				arg->total_weight--;
+				// arg->total_weight--;
 				tmp->weight = 1;
 			}
 			tmp->selected = 0;
-			print_colors(tmp);
-
-
 		}
-		// if (tmp->reversed && tmp->reversed->selected > 1)
-		// 	tmp->reversed->selected = 0;
 		tmp = tmp->next;
 	}
 }
@@ -271,55 +279,49 @@ int find_path(t_data_map **map, t_lemin *arg)
 	int found = 1;
 
 
-
-
-	augmented = 5;
 	bellman_peugeot(map, arg);
 	if (add_found_path((*map), arg, arg->end) == -1)
 		return (-1);
+
+	checkeverything((*map), arg, (*map)->links);
+
 	old = INFINITE;
 	new = cost_path(arg, 1);
-	// if ((nbr = find_nbr_way(map, arg, (*map)->links)) == -1)
-	// 	return (-1);
-	printf("MMMMMMAAAAAAXXXXXX: %i\n", arg->max_path);
+	printf("\n\n\nSalut lesputes %f | %f\n", new, old);
+
 	while (new < old)
 	{
-		// print_all_links(*map, arg, (*map)->links);
-		// printf("debut boucle\n");
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
 		inverse_links((*map), arg, arg->end);
 		reset(map, arg, (*map)->links);
-		// print_all_links(*map, arg, (*map)->links);
-		// printf("avant bellman\n");
 		bellman_peugeot(map, arg);
-		if (add_found_path((*map), arg, arg->end) == -1)
-		{
-			printf("\nje break\n");
-			break ;
-		}
-		found++;
-	 	check_inversed((*map), arg, (*map)->links);
-		// printf("Salut new %f\n", new);
-		// printf("Salut lesamis %f\n", old);
 
-		printf("-_________-________________-______check %i found %i\n", nbr, found);
-		// printf("\n\n\nSalut lesamis %f | %f\n", new, old);
+		if (checkeverything((*map), arg, (*map)->links) == -1)
+			break ;
+
+		found++;
 		old = new;
 		new = cost_path(arg, found);
 		printf("\n\n\nSalut lesputes %f | %f\n", new, old);
-		// if (found == arg->max_path)
-			// break;
 
-		// max_path(arg, map);
+		if (new < old)
+		{
+			if (add_found_path((*map), arg, arg->end) == -1)
+			{
+				printf("\nje break\n");
+				found--;
+				break ;
+			}
+		 	check_inversed((*map), arg, (*map)->links);
+		}
+		else
+			found--;
+
 	}
-	printf("fin boucle\n");
-	// print_all_links(*map, arg, (*map)->links);
-
 	if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
 		return (-1);
 	if (gives_order(arg, (*map)->way, found) == -1)
 		return (-1);
-
 	return (1);
 }

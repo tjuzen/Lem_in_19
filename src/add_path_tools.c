@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 15:50:10 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/06 14:35:18 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/07 13:08:48 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,8 @@ int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
 	tmp = switch_room(links, arg);
 	while (i < way && (*map)->way[i]->path_list[0] != NULL)
 	{
-		printf("____[CHECK_WAY]-[%s]-[%s]\n", tmp->room, (*map)->way[i]->path_list[0]);
 		if (ft_strcmp((*map)->way[i]->path_list[0], tmp->room) == 0)
-		{
 			return (1);
-		}
-		// }
-		// printf("TTTTTTT %i | %f\n", j, arg->nbr_round);
-
 		i++;
 	}
 	return (0);
@@ -55,8 +49,6 @@ int 		check_follow(t_path *new, t_lemin *arg, t_node *links)
 		return (1);
 	while (new->path_list[i] != NULL)
 	{
-		// printf ("*******{%s}\n", new->path_list[i]);
-		// printf ("X*******{%s}\n", links->room);
 		if (ft_strcmp(new->path_list[i], links->room) == 0)
 			return (1);
 		i++;

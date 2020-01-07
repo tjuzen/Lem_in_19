@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/12/20 03:29:05 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/07 14:45:05 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	link->isactive = 1;
 	link->inversed = -1;
 	link->selected = 0;
+	link->fakeselected = 0;
 	link->imintern = 0;
 	if (!(a->to))
 			a->to = link;
@@ -49,29 +50,6 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 		link->nexto = a->to;
 		a->to = link;
 	}
-	// if (a->to == NULL && directed == 1)
-	// {
-	// 	a->to = b;
-	// 	printf("%s%c est to de %s%c\n", a->to->room, a->to->type, a->room, a->type);
-	// }
-	// else if (directed == 1)
-	// {
-	// 	b->nexto = a->to;
-	// 	a->to = b;
-	// 	printf("%s%c est to de %s%c\n", a->to->room, a->to->type, a->room, a->type);
-	// }
-	// if (b->to == NULL && directed == 1)
-	// {
-	// 	b->to = a;
-	// 	printf("%s%c est to de %s%c\n", b->to->room, b->to->type, b->room, b->type);
-	// }
-	// else if (directed == 1)
-	// {
-	// 	a->nexto = b->to;
-	// 	b->to = a;
-	// 	printf("%s%c est to de %s%c\n", b->to->room, b->to->type, b->room, b->type);
-	// }
-	// printf("\n");
 	return (link);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 13:25:55 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:13:01 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,7 @@ int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way)
 	if (!(new->path_list = ft_memalloc(sizeof(char**) * 500)))
 		return (-1);
 	while ((tmp = follow_path(new, arg, map, tmp)) != arg->end && tmp)
-	{
-		if (!(new->path_list[i++] = ft_strdup(tmp->room)))
-		{
-			free(new);
-			return (-1);
-		}
-	}
+		new->path_list[i++] = tmp->room;
 	new->weight = i + 1;
 	arg->sum_path += i;
 	new->path = way;

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:18:56 by bsuarez-          #+#    #+#             */
-/*   Updated: 2019/11/25 14:37:57 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:51:56 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ int 	read_file(t_lemin *arg, t_data_map **map)
 	while ((ret = get_next_line(0, &line, 1)) > 0)
 	{
 		if (!(line) || (get_infos(line, map, arg) == -1) || ret == 0)
+		{
+			ft_strdel(&line);
 			return (-1);
+		}
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);

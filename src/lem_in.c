@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/06 13:49:44 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:57:24 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int				main(void)
 
 	if (!(map = init_arg(&arg)))
 		return (exit_free(&arg, map));
-	if (read_file(&arg, &map) == -1)
+	if (read_file(&arg, &map) == -1 && arg.malloc_error != 0)
 		return (exit_free(&arg, map));
-    if (arg.in != 1 || arg.out != 1 || map->links == NULL || arg.ants == -1)
+    if (arg.in != 1 || arg.out != 1 || map->links == NULL || arg.ants == -1 || !arg.end || !arg.start)
         return (exit_free(&arg, map));
 	if (find_path(&map, &arg) == -1)
 	   return (exit_free(&arg, map));

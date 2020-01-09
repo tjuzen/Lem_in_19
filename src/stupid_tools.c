@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/08 18:20:29 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:13:46 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ void free_node(t_node* node)
 void free_map(t_data_map* map)
 {
 	unsigned long	i;
+	int prout;
 	t_node			*tmp;
 	t_linkstab		*tmp2;
 
+	prout = 0;
 	i = 0;
 	while (i < map->size)
 	{
@@ -76,7 +78,15 @@ void free_map(t_data_map* map)
 		free(map->links);
 		map->links = tmp2;
 	}
+	while (map->way[prout])
+	{
+		free(map->way[prout]->path_list);
+		free(map->way[prout]);
+		prout++;
+	}
     free(map->list);
+	free(map->way);
+	free(map->links);
     free(map);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/09 14:37:29 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:08:42 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,16 @@ int checkeverything(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 				tmp->reversed->fakeselected++;
 		}
 		if (tmproom->parent == arg->start)
+		{
 			oui = 1;
+			break;
+		}
 		printf("[%s] ", tmproom->room);
 		tmproom = tmproom->parent;
 	}
+
 	printf("OH!\n");
+
 	if (oui)
 	{
 		tmp = (*map).links;
@@ -281,6 +286,30 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 
 */
 
+int neg(t_data_map **map, t_lemin *arg)
+{
+	t_linkstab	*link;
+
+	link = (*map)->links;
+	while (link->next)
+	{
+		if (link->isactive == 1)
+		{
+			if (link->rooma->weight != INFINITE
+				&& link->rooma->weight + link->weight < link->roomb->weight
+				&& link->roomb != arg->start && link->isactive == 1
+				&& link->rooma != arg->end)
+			{
+				return (1);
+			}
+		}
+		link = link->next;
+	}
+	return (-1);
+}
+
+
+
 
 int find_path(t_data_map **map, t_lemin *arg)
 {
@@ -311,7 +340,8 @@ int find_path(t_data_map **map, t_lemin *arg)
 		inverse_links((*map), arg, arg->end);
 		reset(map, arg, (*map)->links);
 		bellman_peugeot(map, arg);
-
+		if (neg(map, arg) == 1)
+			break ;
 		if (checkeverything((*map), arg, (*map)->links) == -1)
 			break ;
 

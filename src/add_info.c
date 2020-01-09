@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/07 14:45:05 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 18:17:47 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink)
 {
 	if (newlink->rooma->status == 'I' && newlink->roomb->status == 'O')
 	{
-		arg->foundpath = 1;
+		arg->one = 1;
 		newlink->roomb->parent = newlink->rooma;
 	}
 	if (newlink->roomb->status == 'I' && newlink->rooma->status == 'O')
 	{
-		arg->foundpath = 1;
+		arg->one = 1;
 		newlink->rooma->parent = newlink->roomb;
 	}
 	if ((*map)->links == NULL)

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 12:19:26 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/09 18:17:04 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ struct	s_lemin
 	short			out;
 	t_ants			*army;
 	int				sum_path;
+	int				one;
 };
 
 struct s_path
@@ -249,6 +250,15 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s);
 int		gives_order(t_lemin *arg, t_path **way, int path);
 int		count_ja(t_lemin *arg, t_path **way, int path);
 
+/*
+**	GIVES_ORDERS.C
+*/
+
+int 	resolve_map(t_lemin *arg, t_data_map **map, int path);
+int		gives_order(t_lemin *arg, t_path **way, int path);
+int		send_ants(t_lemin *arg, t_path **way, t_ants *list, int l);
+int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path);
+int 	assign_ants(t_lemin *arg, int i, t_path *way, int turn);
 
 /*
 ** PRINT.C

@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:28:30 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 17:21:16 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 18:15:48 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,29 @@ int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 int		send_ants(t_lemin *arg, t_path **way, t_ants *list, int l)
 {
 	int modif;
+	int check;
 	t_ants tmp;
 
 	modif = 0;
+	check = 0;
 	while (list)
 	{
+
 		if (list->nrj > 0 && list->turn <= l)
 		{
+			if (check == 0)
+			{
+				printf ("[LINE]: %02i ", l);
+				check = 1;
+			}
 			list->nrj--;
 			printf ("L%i-%s ", list->nbr, way[list->path]->path_list[list->room++]);
 			modif = 1;
 		}
-		// if (list->nrj == 0)
-		// {
-		// 	list->next = arg->army;
-		// 	free(list);
-		// }
 		list = list->next;
 	}
+	if (check == 1)
+		printf ("\n");
 	return (modif);
 }
 
@@ -110,12 +115,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	{
 		list = arg->army;
 		modif = 0;
-		// if (l < arg->nbr_round + 1)
-			printf ("[LINE]: %02i ", l);
 		modif = send_ants(arg, way, list, l);
-		// if (l < arg->nbr_round + 1)
-			printf ("\n");
-			// printf ("\n");
 		l++;
 	}
 	tmp = arg->army;
@@ -126,6 +126,29 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 		tmp = arg->army->next;
 		free(arg->army);
 		arg->army = tmp;
+	}
+	return (0);
+}
+
+
+int 	resolve_map(t_lemin *arg, t_data_map **map, int path)
+{
+	int i;
+
+	i = 1;
+	if (arg->one == 1)
+	{
+		printf ("[LINE]01: ");
+		while (i++ <= arg->ants)
+			printf("L%i-%s ", i, arg->end->room);
+		printf("\n");
+	}
+	else
+	{
+		if (find_nbr_way(map, arg, (*map)->links, path) == -1)
+			return (-1);
+		if (gives_order(arg, (*map)->way, path) == -1)
+			return (-1);
 	}
 	return (0);
 }

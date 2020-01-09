@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/09 17:26:15 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 18:23:21 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,7 +333,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 	printf("\n\n\nSalut lesputes %f | %f\n", new, old);
 	// augmented = 9;
 
-	while (/*augmented--*/(int)new < (int)old)
+	while ((int)new < (int)old && arg->one == 0)
 	{
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
@@ -373,9 +373,8 @@ int find_path(t_data_map **map, t_lemin *arg)
 	printf("\nTA A ASSEZ TRAVAILLER ");
 	printf("PENDANT L'ESCLAVAGE ");
 	printf("SALOPE!\n");
-	if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
-		return (-1);
-	if (gives_order(arg, (*map)->way, found) == -1)
+	printf("PUTE %i\n", arg->one);
+	if (resolve_map(arg, map, found) == -1)
 		return (-1);
 	return (1);
 }

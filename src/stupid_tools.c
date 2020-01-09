@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/09 18:13:46 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 18:23:35 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->in = 0;
 	arg->out = 0;
 	arg->sum_path = 0;
+	arg->one = 0;
 	return (map);
 }
 

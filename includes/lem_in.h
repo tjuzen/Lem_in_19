@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/07 14:44:50 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 12:19:26 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ struct			s_linkstab
 	int				isactive; // en avons nous réellement besoin ?
 	int				inversed; // Ci->Co deviens Co->Ci, etc
 	int				selected; // mon chemin passe par la
-	int fakeselected;
+	int 			fakeselected;
 	int				imintern; // ok cool
 	t_linkstab		*reversed; // Stoque l'opposé (A->B contient B->A)
 	t_linkstab		*next; // liste de TOUS mes links
@@ -112,7 +112,6 @@ struct s_ants
 	int				room;
 	int				nrj;
 	int				path;
-	int 			spotted;
 	int 			turn;
 	t_ants			*next;
 };

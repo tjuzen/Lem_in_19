@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/11/22 13:59:09 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/08 14:55:00 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,12 @@ int		is_link(char *line, t_data_map **map, t_lemin *arg)
 		return (-1);
 	}
 	room_a = lookup((*map), hashCode(splitted[0]), splitted[0]);
-	if (!(room_a))
-		return (-1);
 	room_b = lookup((*map), hashCode(splitted[1]), splitted[1]);
-	if (!(room_b))
+	if (!(room_a) || !(room_b))
+	{
+		ft_freetab_str(splitted);
 		return (-1);
+	}
 	ft_freetab_str(splitted);
 	return (1);
 }

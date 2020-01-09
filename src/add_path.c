@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/15 16:29:06 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/07 13:10:20 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 13:25:55 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,11 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found)
 	int path;
 
 	path = 0;
-	while (links->next)
+	while (links)
 	{
+		// printf("\nON A ASSEZ TRAVAILLER ");
+		// printf("PENDANT L'ESCLAVAGE ");
+		// printf("SALOPE!\n");
 		if (links->selected == 1)
 		{
 			if (arg->start->room == links->rooma->room
@@ -90,20 +93,4 @@ int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found)
 		links = links->next;
 	}
 	return (path);
-}
-
-void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant)
-{
-	int i;
-	int j;
-
-	i = 0;
-	while (i < nbr)
-	{
-		j = 0;
-		while (j <= (*map)->way[i]->weight)
-			printf("[%s]", (*map)->way[i]->path_list[j++]);
-		i++;
-		printf("\n");
-	}
 }

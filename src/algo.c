@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/07 18:53:13 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 14:37:29 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,31 @@ int checkeverything(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 		}
 		if (tmproom->parent == arg->start)
 			oui = 1;
+		printf("[%s] ", tmproom->room);
 		tmproom = tmproom->parent;
 	}
-
-if (oui)
-{
-	tmp = (*map).links;
-
-	while (tmp->next)
+	printf("OH!\n");
+	if (oui)
 	{
-		if (tmp->fakeselected > 1)
+		tmp = (*map).links;
+
+		while (tmp)
 		{
-			if (tmp->imintern != 1)
-				arg->total_weight--;
-			tmp->fakeselected = 0;
+			if (tmp->fakeselected > 1)
+			{
+				if (tmp->imintern != 1)
+					arg->total_weight--;
+				tmp->fakeselected = 0;
+			}
+			tmp = tmp->next;
 		}
-		tmp = tmp->next;
 	}
-}
-else
-{
-	printf("\nhahaha\n");
-	arg->total_weight = tmpweight;
-	return (-1);
-}
+	else
+	{
+		printf("\nhahaha\n");
+		arg->total_weight = tmpweight;
+		return (-1);
+	}
 return (1);
 }
 
@@ -71,6 +72,7 @@ int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 	while (room)
 	{
 		tmp = lookuplink(map, room->parent, room);
+		printf("hello wolrd\n");
 		if (tmp)
 		{
 			if (tmp->imintern != 1)
@@ -102,7 +104,9 @@ int bellman_peugeot(t_data_map **map, t_lemin *arg)
 		link = (*map)->links;
 		if (bellwhile_ford(link, arg) == 666)
 			break;
+		printf("VROUM-vroum__");
 	}
+	printf("XXXX\n");
 	return (1);
 }
 
@@ -207,9 +211,11 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 		{
 			new_duplicate(map, arg, room->parent);
 			room->parent = room->parent->out;
+			printf("DUPLIQUE!!!!1 ");
 		}
 		room = room->parent;
 	}
+	printf("\n");
 	return (1);
 }
 
@@ -228,18 +234,22 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 			tmp->roomb = tmproom;
 			tmp->weight *= -1;
 			tmp->inversed = 1;
+			printf("{inverse} ");
 		}
 		room = room->parent;
 	}
+	printf("\n");
 }
 
 void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 {
 	t_node		*tmproom;
+
 	while (tmp->next)
 	{
 		if (tmp->selected > 1)
 		{
+			printf("hello my wolrd ");
 			tmproom = tmp->rooma;
 			tmp->rooma = tmp->roomb;
 			tmp->roomb = tmproom;
@@ -255,6 +265,9 @@ void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
 		}
 		tmp = tmp->next;
 	}
+	// printf("\nON A ASSEZ TRAVAILLER ");
+	// printf("PENDANT L'ESCLAVAGE ");
+	// printf("SALOPE!\n");
 }
 
 /*
@@ -289,8 +302,9 @@ int find_path(t_data_map **map, t_lemin *arg)
 	old = INFINITE;
 	new = cost_path(arg, 1);
 	printf("\n\n\nSalut lesputes %f | %f\n", new, old);
+	// augmented = 9;
 
-	while (new < old)
+	while (/*augmented--*/(int)new < (int)old)
 	{
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
@@ -318,8 +332,13 @@ int find_path(t_data_map **map, t_lemin *arg)
 		}
 		else
 			found--;
-
+		printf("\nON A ASSEZ TRAVAILLER ");
+		printf("PENDANT L'ESCLAVAGE ");
+		printf("SALOPE!\n");
 	}
+	printf("\nTA A ASSEZ TRAVAILLER ");
+	printf("PENDANT L'ESCLAVAGE ");
+	printf("SALOPE!\n");
 	if ((nbr = find_nbr_way(map, arg, (*map)->links, found)) == -1)
 		return (-1);
 	if (gives_order(arg, (*map)->way, found) == -1)

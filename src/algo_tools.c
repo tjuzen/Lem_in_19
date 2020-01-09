@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/07 19:44:00 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/09 14:04:04 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				// printf("%s%c a comme parent  %s%c\n", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
+				// printf("%s%c a comme parent  %s%c |", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
 				did_change = 1;
 			}
 		}
@@ -46,7 +46,8 @@ double 		cost_path(t_lemin *arg, int nbr)
 	tmp = arg->ants + arg->total_weight;
 	turns = ((double)tmp / (double)nbr) - 1.0;
 	printf("my turn %f\n", turns);
-	arg->nbr_round = turns;
+	if (turns < arg->nbr_round)
+		arg->nbr_round = turns;
 	return (turns);
 }
 

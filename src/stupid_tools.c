@@ -6,17 +6,11 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2019/12/20 00:13:37 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/08 18:20:29 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
-t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map)
-{
-	arg->malloc_error = value;
-	return (map);
-}
 
 t_data_map			*init_arg(t_lemin *arg)
 {
@@ -30,7 +24,7 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->totalrooms = 0;
 	arg->totalinks = 0;
 	arg->total_weight = 0;
-	arg->nbr_round = 0.0;
+	arg->nbr_round = INFINITE;
 	arg->in = 0;
 	arg->out = 0;
 	arg->sum_path = 0;

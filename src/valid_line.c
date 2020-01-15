@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/08 14:55:00 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:02:09 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,9 @@ int		is_room(char *line, t_lemin *arg)
 	if (!(splitted = ft_strsplit(line, ' ')))
 		return (-1);
 	if (!(splitted[0]) || !(splitted[1]) || !(splitted[2]) || splitted[3])
-	{
 		return (retfreetab_str(splitted, -1));
-	}
 	if (ft_strlen(splitted[1]) > 9 || ft_strlen(splitted[2]) > 9)
-	{
-		printf("PUTE\n\n\n\n");
 		return (-1);
-	}
 	while (splitted[1][++i])
 		if (ft_isdigit(splitted[1][i]) != 1)
 			return (retfreetab_str(splitted, -1));
@@ -82,11 +77,9 @@ int		is_room(char *line, t_lemin *arg)
 int		is_link(char *line, t_data_map **map, t_lemin *arg)
 {
 	char	**splitted;
-	int		i;
 	t_node	*room_a;
 	t_node	*room_b;
 
-	i = -1;
 	splitted = NULL;
 	if (!(splitted = ft_strsplit(line, '-')))
 		return (-1);

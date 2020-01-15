@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:28:30 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 18:15:48 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:04:34 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int		send_ants(t_lemin *arg, t_path **way, t_ants *list, int l)
 	check = 0;
 	while (list)
 	{
-
 		if (list->nrj > 0 && list->turn <= l)
 		{
 			if (check == 0)

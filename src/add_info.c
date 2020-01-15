@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 18:17:47 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/15 15:58:23 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	link->fakeselected = 0;
 	link->imintern = 0;
 	if (!(a->to))
-			a->to = link;
+		a->to = link;
 	else
 	{
 		link->nexto = a->to;

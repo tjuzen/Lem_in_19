@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/08 13:29:02 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/20 13:34:54 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 		get_next_line(0, &line, 1);
 		if (!line)
 			return (-1);
-		if (is_room(line, arg) == 1)
+		if (is_room(line) == 1)
 		{
 			i++;
 			add_room(map, line, s, arg);

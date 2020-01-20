@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/15 16:05:41 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 13:27:45 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ t_linkstab *change_type(t_node *a)
 	return (NULL);
 }
 
-void out_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out)
+void out_infos(t_data_map *map, t_node *room, t_node *out)
 {
 	out->duplicated = 1;
 	room->duplicated = 1;
@@ -179,13 +179,13 @@ t_node *new_duplicate(t_data_map *map, t_lemin *arg, t_node *room)
 		return (NULL);
 	}
 	room->just_dup = 1;
-	out_infos(map, arg, room, out);
+	out_infos(map, room, out);
 	if (intern_infos(map, arg, room, out) == -1)
 		return (NULL);
 	return (out);
 }
 
-void        update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void        update_links(t_linkstab *tmp)
 {
 	t_linkstab *link;
 
@@ -216,7 +216,7 @@ int duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room)
 	return (1);
 }
 
-void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
+void inverse_links(t_data_map *map, t_node *room)
 {
 	t_linkstab	*tmp;
 	t_node		*tmproom;
@@ -237,7 +237,7 @@ void inverse_links(t_data_map *map, t_lemin *arg, t_node *room)
 	printf("\n");
 }
 
-void check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp)
+void check_inversed(t_linkstab *tmp)
 {
 	t_node		*tmproom;
 
@@ -297,12 +297,8 @@ int neg(t_data_map **map, t_lemin *arg)
 
 int find_path(t_data_map **map, t_lemin *arg)
 {
-	t_node *tmp;
 	double new;
-	int nbr = 0;
 	double old;
-	int augmented;
-	t_node *penis;
 	int found = 1;
 
 
@@ -319,7 +315,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 	{
 		if (duplicate_nodes((*map), arg, arg->end) == -1)
 			return (-1);
-		inverse_links((*map), arg, arg->end);
+		inverse_links((*map), arg->end);
 		reset(map, arg, (*map)->links);
 		bellman_peugeot(map, arg);
 		if (neg(map, arg) == 1)
@@ -342,7 +338,7 @@ int find_path(t_data_map **map, t_lemin *arg)
 				found--;
 				break ;
 			}
-		 	check_inversed((*map), arg, (*map)->links);
+		 	check_inversed((*map)->links);
 		}
 		else
 			found--;

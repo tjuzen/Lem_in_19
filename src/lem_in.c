@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/15 16:04:15 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 13:19:23 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ unsigned long hashCode(char *room)
 
 t_data_map		*createMap(unsigned long size, t_data_map *map)
 {
-   t_data_map	*tmp;
    int			i;
 
    i = 0;

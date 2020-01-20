@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:28:30 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/15 16:04:34 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 13:19:08 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 			else
 			{
 				modif++;
-				if (modif == path)
-				{
+				// if (modif == path)
+				// {
 					if ((assign_ants(arg, i++, way[ind], turn + 1)) == -1)
 						return (-1);
 					printf ("_antscount %i turn %i path[%i] %i  NBR_ROUND: %i |  path: %i ind :%i\n", i, turn, way[ind]->path, way[ind]->weight, (int)arg->nbr_round + 1, path, ind);
-				}
+				// }
 			}
 			j++;
 		}
@@ -71,11 +71,10 @@ int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 	return (0);
 }
 
-int		send_ants(t_lemin *arg, t_path **way, t_ants *list, int l)
+int		send_ants(t_path **way, t_ants *list, int l)
 {
 	int modif;
 	int check;
-	t_ants tmp;
 
 	modif = 0;
 	check = 0;
@@ -114,7 +113,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	{
 		list = arg->army;
 		modif = 0;
-		modif = send_ants(arg, way, list, l);
+		modif = send_ants(way, list, l);
 		l++;
 	}
 	tmp = arg->army;

@@ -6,13 +6,13 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/17 15:50:10 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/07 13:08:48 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 12:33:36 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_node		*switch_room(t_linkstab *links, t_lemin *arg)
+t_node	*switch_room(t_linkstab *links, t_lemin *arg)
 {
 	t_node *room;
 
@@ -23,11 +23,10 @@ t_node		*switch_room(t_linkstab *links, t_lemin *arg)
 	return (room);
 }
 
-int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
+int		check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
 {
 	t_node	*tmp;
-	int i;
-	int j;
+	int		i;
 
 	i = 0;
 	tmp = switch_room(links, arg);
@@ -40,7 +39,7 @@ int			check_way(t_lemin *arg, t_data_map **map, t_linkstab *links, int way)
 	return (0);
 }
 
-int 		check_follow(t_path *new, t_lemin *arg, t_node *links)
+int		check_follow(t_path *new, t_lemin *arg, t_node *links)
 {
 	int i;
 

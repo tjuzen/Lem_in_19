@@ -6,13 +6,13 @@
 #    By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/07 16:28:36 by tjuzen            #+#    #+#              #
-#    Updated: 2019/11/04 13:28:17 by tjuzen           ###   ########.fr        #
+#    Updated: 2020/01/20 13:27:48 by tjuzen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = lem-in
 CC = gcc
-# FLAGS = -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -Wunused
 LIBFT = $(LIBDIR)libft.a
 SRCDIR = ./src/
 OBJDIR = ./obj/

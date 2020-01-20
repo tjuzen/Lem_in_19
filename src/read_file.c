@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:18:56 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 17:51:56 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 13:35:25 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ int 	get_infos(char *line, t_data_map **map, t_lemin *arg)
 		return (add_end_start(line, map, arg, s));
 	if ((s = is_command(line)) == 79 && arg->out == 0)
 		return (add_end_start(line, map, arg, s));
-	if (is_room(line, arg) == 1)
+	if (is_room(line) == 1)
 		return (add_room(map, line, 'X', arg));
-	if ((ret = is_link(line, map, arg)) == 1)
-		return (add_link(map, line, arg, 1));
-	if (is_comment(line, arg) == 1 || is_command(line) == 1 || ret == 0)
+	if ((ret = is_link(line, map)) == 1)
+		return (add_link(map, line, arg));
+	if (is_comment(line) == 1 || is_command(line) == 1 || ret == 0)
 		return (0);
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/15 16:02:09 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 13:35:54 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		is_ant(char *line, t_lemin *arg)
 	return (-1);
 }
 
-int		is_comment(char *line, t_lemin *arg)
+int		is_comment(char *line)
 {
 	if (ft_strlen(line) < 2)
 		return (-1);
@@ -48,7 +48,7 @@ int		is_command(char *line)
 	return (-1);
 }
 
-int		is_room(char *line, t_lemin *arg)
+int		is_room(char *line)
 {
 	char	**splitted;
 	int		i;
@@ -74,7 +74,7 @@ int		is_room(char *line, t_lemin *arg)
 	return (retfreetab_str(splitted, 1));
 }
 
-int		is_link(char *line, t_data_map **map, t_lemin *arg)
+int		is_link(char *line, t_data_map **map)
 {
 	char	**splitted;
 	t_node	*room_a;

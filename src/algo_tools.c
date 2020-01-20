@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 14:04:04 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/20 13:17:30 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 {
 	int did_change;
-	int finished = 0;
 
 	did_change = 0;
 	while (link->next)

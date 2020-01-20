@@ -6,13 +6,13 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:41:54 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/15 15:58:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 12:37:33 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void	add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink)
+void		add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink)
 {
 	if (newlink->rooma->status == 'I' && newlink->roomb->status == 'O')
 	{
@@ -33,7 +33,7 @@ void	add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink)
 	}
 }
 
-t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
+t_linkstab	*add_link_info(t_linkstab *link, t_node *a, t_node *b)
 {
 	link->rooma = a;
 	link->roomb = b;
@@ -53,8 +53,7 @@ t_linkstab 	*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed)
 	return (link);
 }
 
-
-int		add_link(t_data_map **map, char *line, t_lemin *arg, int directed)
+int			add_link(t_data_map **map, char *line, t_lemin *arg)
 {
 	char			**splitted;
 	t_linkstab		*newlink;
@@ -72,37 +71,33 @@ int		add_link(t_data_map **map, char *line, t_lemin *arg, int directed)
 		ft_freetab_str(splitted);
 		return (-1);
 	}
-	if (directed == 1) // si a<->b
-	{
-		add_it(arg, map, add_link_info(newlink, rooma, roomb, 1));
-		add_it(arg, map, add_link_info(otherlink, roomb, rooma, 2));
-		newlink->reversed = otherlink;
-		otherlink->reversed = newlink;
-	}
+	add_it(arg, map, add_link_info(newlink, rooma, roomb));
+	add_it(arg, map, add_link_info(otherlink, roomb, rooma));
+	newlink->reversed = otherlink;
+	otherlink->reversed = newlink;
 	arg->totalinks++;
 	ft_freetab_str(splitted);
 	return (0);
 }
 
-int 	add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new)
+int			add_room_info(t_data_map **map, char c, t_lemin *arg, t_node *new)
 {
 	new->in = NULL;
 	new->out = NULL;
 	new->parent = NULL;
 	new->paths = NULL;
 	new->just_dup = 0;
-	if (stat == 'I')
+	if (c == 'I')
 	{
-		new->weight= 0;
+		new->weight = 0;
 		arg->start = new;
 	}
 	else
 	{
-		if (stat == 'O')
+		if (c == 'O')
 			arg->end = new;
 		new->weight = INFINITE;
 	}
-
 	if ((*map)->list[new->key % (*map)->size] == NULL)
 		(*map)->list[new->key % (*map)->size] = new;
 	else
@@ -113,7 +108,7 @@ int 	add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new)
 	return (0);
 }
 
-int		add_room(t_data_map **map, char *str, char stat, t_lemin *arg)
+int			add_room(t_data_map **map, char *str, char stat, t_lemin *arg)
 {
 	t_node			*new;
 	char			**splitted;

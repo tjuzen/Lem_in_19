@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/09 18:17:04 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/20 13:34:24 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,9 @@ t_data_map		*return_delete(t_data_map *map, char *line);
 */
 
 int				add_room(t_data_map **map, char *str, char status, t_lemin *arg);
-int 			add_room_info(t_data_map **map, char stat, t_lemin *arg, t_node *new);
-int				add_link(t_data_map **map, char *line, t_lemin *arg, int directed);
-t_linkstab 		*add_link_info(t_linkstab *link, t_node *a, t_node *b, int directed);
+int 			add_room_info(t_data_map **map, char c, t_lemin *arg, t_node *new);
+int				add_link(t_data_map **map, char *line, t_lemin *arg);
+t_linkstab 		*add_link_info(t_linkstab *link, t_node *a, t_node *b);
 void			add_it(t_lemin *arg, t_data_map **map, t_linkstab *newlink);
 
 /*
@@ -176,10 +176,10 @@ int				valid_end_start(int i, t_lemin *arg, char s);
 */
 
 int				is_ant(char *line, t_lemin *arg);
-int 			is_room(char *line, t_lemin *arg);
-int 			is_comment(char *line, t_lemin *arg);
+int 			is_room(char *line);
+int 			is_comment(char *line);
 int				is_command(char *line);
-int				is_link(char *line, t_data_map **map, t_lemin *arg);
+int				is_link(char *line, t_data_map **map);
 
 
 /*
@@ -209,13 +209,13 @@ int 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
 
 int 	add_found_path(t_data_map *map, t_lemin *arg, t_node *room);
 int 	bellman_peugeot(t_data_map **map, t_lemin *arg);
-void 	out_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out);
+void 	out_infos(t_data_map *map, t_node *room, t_node *out);
 int 	intern_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out);
 t_node 	*new_duplicate(t_data_map *map, t_lemin *arg, t_node *room);
-void    update_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+void    update_links(t_linkstab *tmp);
 int 	duplicate_nodes(t_data_map *map, t_lemin *arg, t_node *room);
-void 	inverse_links(t_data_map *map, t_lemin *arg, t_node *room);
-void 	check_inversed(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+void 	inverse_links(t_data_map *map, t_node *room);
+void 	check_inversed(t_linkstab *tmp);
 int 	stock_room_path(t_data_map **map, t_linkstab *tmp, t_linkstab *path, int way, t_lemin *arg);
 int 	stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
 int 	find_path(t_data_map **map, t_lemin *arg);
@@ -256,16 +256,9 @@ int		count_ja(t_lemin *arg, t_path **way, int path);
 
 int 	resolve_map(t_lemin *arg, t_data_map **map, int path);
 int		gives_order(t_lemin *arg, t_path **way, int path);
-int		send_ants(t_lemin *arg, t_path **way, t_ants *list, int l);
+int		send_ants(t_path **way, t_ants *list, int l);
 int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path);
 int 	assign_ants(t_lemin *arg, int i, t_path *way, int turn);
-
-/*
-** PRINT.C
-*/
-
-void 	print_all_links(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
-void 	print_colors(t_linkstab *tmp);
 
 /*
 ** FREE_MAP.C

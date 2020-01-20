@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 16:17:12 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:10:11 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ struct			s_linkstab
 struct	s_lemin
 {
 	int				foundpath;
+	int				display_links;
+	int				display_score;
 	int 			found;
 	int				ants;
 	int				wrong_line;
@@ -122,7 +124,7 @@ struct s_ants
 ** LEM_IN.C
 */
 
-int				main(void);
+int				main(int argc, char **argv);
 t_data_map		*createMap(unsigned long size, t_data_map *map);
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
 unsigned long 	hashCode(char *room);
@@ -189,7 +191,6 @@ int				is_link(char *line, t_data_map **map);
 
 unsigned long	hashCode(char *room);
 t_data_map		*createMap(unsigned long size, t_data_map *map);
-int				main(void);
 
 
 /*
@@ -257,7 +258,7 @@ int		count_ja(t_lemin *arg, t_path **way, int path);
 
 int 	resolve_map(t_lemin *arg, t_data_map **map, int path);
 int		gives_order(t_lemin *arg, t_path **way, int path);
-int		send_ants(t_path **way, t_ants *list, int l);
+int		send_ants(t_path **way, t_ants *list, int l, t_lemin *arg);
 int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path);
 int 	assign_ants(t_lemin *arg, int i, t_path *way, int turn);
 
@@ -275,5 +276,6 @@ int		checkeverything(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
 int		count_select(t_data_map *map, t_lemin *arg, int ok);
 t_linkstab		*change_type(t_node *a);
 int		split(t_data_map **map, t_lemin *arg);
+void print_all_links(t_lemin *arg, t_linkstab *tmp);
 
 #endif

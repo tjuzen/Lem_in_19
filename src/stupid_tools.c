@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 15:48:35 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 17:57:23 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_data_map			*init_arg(t_lemin *arg)
 	arg->sum_path = 0;
 	arg->one = 0;
 	arg->found = 0;
+	arg->display_links = 0;
+	arg->display_score = 0;
 	return (map);
 }
 
@@ -99,4 +101,57 @@ int				exit_free(t_lemin *arg, t_data_map	*map)
 	printf("ERROR\n");
 	free_map(map);
 	return (-1);
+}
+
+void print_all_links(t_lemin *arg, t_linkstab *tmp)
+{
+	printf("\n\n");
+	printf(BLUE "OUT "DEFAULT_COLOR);
+	printf(RED " IN "DEFAULT_COLOR);
+	printf(GREY " START ET END \n\n"DEFAULT_COLOR);
+	while (tmp->next)
+	{
+		if (tmp->rooma == arg->end || tmp->rooma == arg->start)
+		{
+			printf(GREY" %-5s "DEFAULT_COLOR, tmp->rooma->room );
+		}
+		else
+		{
+			if (tmp->rooma->type == 0)
+				printf(DEFAULT_COLOR" %-5s " DEFAULT_COLOR, tmp->rooma->room);
+			else if (tmp->rooma->type == 'I')
+				printf(RED " %-5s "DEFAULT_COLOR, tmp->rooma->room);
+			else if (tmp->rooma->type == 'O')
+				printf(BLUE " %-5s " DEFAULT_COLOR, tmp->rooma->room);
+		}
+		printf(" ----   ");
+		if (tmp->roomb == arg->end || tmp->roomb == arg->start)
+		{
+			printf(GREY"  %-5s "DEFAULT_COLOR, tmp->roomb->room );
+		}
+		else
+		{
+			if (tmp->roomb->type == 0)
+				printf(DEFAULT_COLOR"  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+			else if (tmp->roomb->type == 'I')
+				printf(RED "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+			else if (tmp->roomb->type == 'O')
+				printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+		}
+
+		if (tmp->selected == 1)
+		printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
+		else
+		printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
+		if (tmp->inversed == 1)
+		printf(RED" inversed "DEFAULT_COLOR);
+		else
+		printf(BLUE" inversed "DEFAULT_COLOR);
+		if (tmp->isactive == 1)
+			printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
+		else
+			printf("\n");
+		tmp = tmp->next;
+	}
+	printf("\n_______________________________________________\n\n");
 }

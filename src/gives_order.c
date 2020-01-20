@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 13:28:30 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 13:19:08 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:17:18 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 				if ((assign_ants(arg, i++, way[j], turn + 1)) == -1)
 					return (-1);
 				ind = j;
-				printf ("  antscount %i turn %i path[%i] %i  NBR_ROUND: %i\n", i, turn, way[j]->path, way[j]->weight, (int)arg->nbr_round + 1);
+				// printf ("  antscount %i turn %i path[%i] %i  NBR_ROUND: %i\n", i, turn, way[j]->path, way[j]->weight, (int)arg->nbr_round + 1);
 			}
 			else
 			{
 				modif++;
-				// if (modif == path)
-				// {
+				if (modif == path)
+				{
 					if ((assign_ants(arg, i++, way[ind], turn + 1)) == -1)
 						return (-1);
-					printf ("_antscount %i turn %i path[%i] %i  NBR_ROUND: %i |  path: %i ind :%i\n", i, turn, way[ind]->path, way[ind]->weight, (int)arg->nbr_round + 1, path, ind);
-				// }
+					// printf ("_antscount %i turn %i path[%i] %i  NBR_ROUND: %i |  path: %i ind :%i\n", i, turn, way[ind]->path, way[ind]->weight, (int)arg->nbr_round + 1, path, ind);
+				}
 			}
 			j++;
 		}
@@ -71,7 +71,7 @@ int 	prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 	return (0);
 }
 
-int		send_ants(t_path **way, t_ants *list, int l)
+int		send_ants(t_path **way, t_ants *list, int l, t_lemin *arg)
 {
 	int modif;
 	int check;
@@ -84,7 +84,8 @@ int		send_ants(t_path **way, t_ants *list, int l)
 		{
 			if (check == 0)
 			{
-				printf ("[LINE]: %02i ", l);
+				if (arg->display_score == 1)
+					printf("[LINE]: %02i ", l);
 				check = 1;
 			}
 			list->nrj--;
@@ -113,7 +114,7 @@ int		gives_order(t_lemin *arg, t_path **way, int path)
 	{
 		list = arg->army;
 		modif = 0;
-		modif = send_ants(way, list, l);
+		modif = send_ants(way, list, l, arg);
 		l++;
 	}
 	tmp = arg->army;
@@ -133,11 +134,12 @@ int 	resolve_map(t_lemin *arg, t_data_map **map, int path)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	if (arg->one == 1)
 	{
-		printf ("[LINE]01: ");
-		while (i++ <= arg->ants)
+		if (arg->display_score == 1)
+			printf ("[LINE]: 01 ");
+		while (i++ < arg->ants)
 			printf("L%i-%s ", i, arg->end->room);
 		printf("\n");
 	}

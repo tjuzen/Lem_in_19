@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 16:28:27 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 13:19:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 17:54:43 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,24 @@ t_data_map		*createMap(unsigned long size, t_data_map *map)
    return (map);
 }
 
-int				main(void)
+
+void check_options(t_lemin *arg, char *options)
+{
+	if (ft_strcmp(options, "display-links") == 0)
+		arg->display_links = 1;
+	if (ft_strcmp(options, "display-score") == 0)
+		arg->display_score = 1;
+}
+
+int				main(int argc, char **argv)
 {
     t_lemin			arg;
 	t_data_map		*map;
 
 	if (!(map = init_arg(&arg)))
 		return (exit_free(&arg, map));
+	if (argc != 1)
+		check_options(&arg, argv[1]);
 	if (read_file(&arg, &map) == -1 && arg.malloc_error != 0)
 		return (exit_free(&arg, map));
     if (arg.in != 1 || arg.out != 1 || map->links == NULL || arg.ants == -1 || !arg.end || !arg.start)

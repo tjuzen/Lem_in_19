@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 16:16:41 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 17:47:50 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ int		bellman_peugeot(t_data_map **map, t_lemin *arg)
 ** 6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
 */
 
-int		neg(t_data_map **map, t_lemin *arg)
+int		negative_cycle(t_data_map **map, t_lemin *arg)
 {
 	t_linkstab	*link;
 
 	link = (*map)->links;
+	if (arg->display_links == 1)
+		print_all_links(arg, link);
 	while (link->next)
 	{
 		if (link->isactive == 1)
@@ -52,7 +54,10 @@ int		neg(t_data_map **map, t_lemin *arg)
 				&& link->rooma->weight + link->weight < link->roomb->weight
 				&& link->roomb != arg->start && link->isactive == 1
 				&& link->rooma != arg->end)
-				return (1);
+				{
+					arg->found--;
+					return (1);
+				}
 		}
 		link = link->next;
 	}
@@ -96,11 +101,8 @@ int		find_path(t_data_map **map, t_lemin *arg)
 	{
 		if (split(map, arg) == -1)
 			return (-1);
-		if (neg(map, arg) == 1)
-		{
-			arg->found--;
+		if (negative_cycle(map, arg) == 1)
 			break ;
-		}
 		if (checkeverything((*map), arg, (*map)->links) == -1)
 			break ;
 		old = new;

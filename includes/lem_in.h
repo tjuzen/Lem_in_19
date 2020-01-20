@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 13:34:24 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 16:17:12 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ struct			s_linkstab
 struct	s_lemin
 {
 	int				foundpath;
+	int 			found;
 	int				ants;
 	int				wrong_line;
 	int				malloc_error;
@@ -270,5 +271,9 @@ void 		free_node(t_node* node);
 t_data_map	*return_delete(t_data_map	*map, char *line);
 t_data_map	*init_arg(t_lemin *arg);
 t_data_map	*lstreturn_mallocerr(int value, t_lemin *arg, t_data_map *map);
+int		checkeverything(t_data_map *map, t_lemin *arg, t_linkstab *tmp);
+int		count_select(t_data_map *map, t_lemin *arg, int ok);
+t_linkstab		*change_type(t_node *a);
+int		split(t_data_map **map, t_lemin *arg);
 
 #endif

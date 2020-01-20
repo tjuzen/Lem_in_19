@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 13:17:30 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 16:06:38 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ double 		cost_path(t_lemin *arg, int nbr)
 	int 	tmp;
 	double 	turns;
 
+	arg->found++;
 	tmp = arg->ants + arg->total_weight;
 	turns = ((double)tmp / (double)nbr) - 1.0;
-	printf("my turn %f\n", turns);
 	if (turns < arg->nbr_round)
 		arg->nbr_round = turns;
 	return (turns);

@@ -6,17 +6,17 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 16:08:58 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 16:10:46 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:59:44 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void		out_infos(t_data_map *map, t_node *room, t_node *out)
+void	out_infos(t_data_map *map, t_node *room, t_node *out)
 {
 	out->duplicated = 1;
 	room->duplicated = 1;
-	out->key = hashCode(out->room);
+	out->key = hashcode(out->room);
 	out->paths = NULL;
 	out->status = 'X';
 	out->type = 'O';
@@ -54,7 +54,7 @@ int		intern_infos(t_data_map *map, t_lemin *arg, t_node *room, t_node *out)
 	return (1);
 }
 
-t_node		*new_duplicate(t_data_map *map, t_lemin *arg, t_node *room)
+t_node	*new_duplicate(t_data_map *map, t_lemin *arg, t_node *room)
 {
 	t_node *out;
 

@@ -6,12 +6,11 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 17:47:50 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:37:36 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
 
 int		bellman_peugeot(t_data_map **map, t_lemin *arg)
 {
@@ -28,7 +27,6 @@ int		bellman_peugeot(t_data_map **map, t_lemin *arg)
 	}
 	return (1);
 }
-
 
 /*
 ** 1: Find the shortest path P1 from node s to node t
@@ -54,10 +52,10 @@ int		negative_cycle(t_data_map **map, t_lemin *arg)
 				&& link->rooma->weight + link->weight < link->roomb->weight
 				&& link->roomb != arg->start && link->isactive == 1
 				&& link->rooma != arg->end)
-				{
-					arg->found--;
-					return (1);
-				}
+			{
+				arg->found--;
+				return (1);
+			}
 		}
 		link = link->next;
 	}

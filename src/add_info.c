@@ -63,8 +63,8 @@ int			add_link(t_data_map **map, char *line, t_lemin *arg)
 
 	if (!(splitted = ft_strsplit(line, '-')))
 		return (-1);
-	rooma = lookup(*map, hashCode(splitted[0]), splitted[0]);
-	roomb = lookup(*map, hashCode(splitted[1]), splitted[1]);
+	rooma = lookup(*map, hashcode(splitted[0]), splitted[0]);
+	roomb = lookup(*map, hashcode(splitted[1]), splitted[1]);
 	if (!(rooma) || !(roomb) || !(newlink = ft_memalloc(sizeof(t_linkstab)))
 		|| !(otherlink = ft_memalloc(sizeof(t_linkstab))))
 	{
@@ -128,7 +128,7 @@ int			add_room(t_data_map **map, char *str, char stat, t_lemin *arg)
 	}
 	arg->totalrooms++;
 	ft_freetab_str(splitted);
-	new->key = hashCode(new->room);
+	new->key = hashcode(new->room);
 	new->duplicated = 0;
 	new->status = stat;
 	new->type = 0;

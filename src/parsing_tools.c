@@ -6,13 +6,13 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:47:12 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 13:34:54 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 19:00:42 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-int 	get_number_of_ants(char *line, t_lemin *arg)
+int		get_number_of_ants(char *line, t_lemin *arg)
 {
 	if (arg->ants == -1)
 		arg->ants = ft_atoi(line);
@@ -36,7 +36,7 @@ int		valid_end_start(int i, t_lemin *arg, char s)
 	return (i);
 }
 
-int 	add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
+int		add_end_start(char *line, t_data_map **map, t_lemin *arg, char s)
 {
 	int i;
 

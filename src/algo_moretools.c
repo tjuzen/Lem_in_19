@@ -6,14 +6,13 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 16:15:07 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 16:16:46 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:47:17 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-
-int		add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
+int			add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 {
 	int			weight;
 	t_linkstab	*tmp;
@@ -39,8 +38,7 @@ int		add_found_path(t_data_map *map, t_lemin *arg, t_node *room)
 	return (-1);
 }
 
-
-t_linkstab		*change_type(t_node *a)
+t_linkstab	*change_type(t_node *a)
 {
 	t_linkstab *find;
 
@@ -53,7 +51,7 @@ t_linkstab		*change_type(t_node *a)
 	return (NULL);
 }
 
-void	inverse_links(t_data_map *map, t_node *room)
+void		inverse_links(t_data_map *map, t_node *room)
 {
 	t_linkstab	*tmp;
 	t_node		*tmproom;
@@ -73,7 +71,7 @@ void	inverse_links(t_data_map *map, t_node *room)
 	}
 }
 
-void	check_inversed(t_linkstab *tmp)
+void		check_inversed(t_linkstab *tmp)
 {
 	t_node		*tmproom;
 
@@ -95,12 +93,12 @@ void	check_inversed(t_linkstab *tmp)
 	}
 }
 
-int		split(t_data_map **map, t_lemin *arg)
+int			split(t_data_map **map, t_lemin *arg)
 {
 	if (duplicate_nodes((*map), arg, arg->end) == -1)
 		return (-1);
 	inverse_links((*map), arg->end);
-	reset(map, arg, (*map)->links);
+	reset(arg, (*map)->links);
 	bellman_peugeot(map, arg);
 	return (1);
 }

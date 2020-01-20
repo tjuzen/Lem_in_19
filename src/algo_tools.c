@@ -6,13 +6,13 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:07:02 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 16:06:38 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:47:41 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
+int		bellwhile_ford(t_linkstab *link, t_lemin *arg)
 {
 	int did_change;
 
@@ -28,7 +28,6 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 			{
 				link->roomb->weight = link->weight + link->rooma->weight;
 				link->roomb->parent = link->rooma;
-				// printf("%s%c a comme parent  %s%c |", link->roomb->room, link->roomb->type, link->roomb->parent->room, link->roomb->parent->type);
 				did_change = 1;
 			}
 		}
@@ -37,10 +36,10 @@ int 	bellwhile_ford(t_linkstab *link, t_lemin *arg)
 	return (did_change == 0) ? 666 : 1;
 }
 
-double 		cost_path(t_lemin *arg, int nbr)
+double	cost_path(t_lemin *arg, int nbr)
 {
-	int 	tmp;
-	double 	turns;
+	int		tmp;
+	double	turns;
 
 	arg->found++;
 	tmp = arg->ants + arg->total_weight;
@@ -50,46 +49,44 @@ double 		cost_path(t_lemin *arg, int nbr)
 	return (turns);
 }
 
-
-int reset(t_data_map **map, t_lemin *arg, t_linkstab *links)
+void	reset_a(t_node *a)
 {
-	t_node *a;
-	t_node *b;
+	a->weight = INFINITE;
+	a->parent = NULL;
+	if (a->in)
+	{
+		a->in->weight = INFINITE;
+		a->in->parent = NULL;
+	}
+	if (a->out)
+	{
+		a->out->weight = INFINITE;
+		a->out->parent = NULL;
+	}
+}
 
+void	reset_b(t_node *b)
+{
+	b->weight = INFINITE;
+	b->parent = NULL;
+	if (b->in)
+	{
+		b->in->weight = INFINITE;
+		b->in->parent = NULL;
+	}
+	if (b->out)
+	{
+		b->out->weight = INFINITE;
+		b->out->parent = NULL;
+	}
+}
+
+int		reset(t_lemin *arg, t_linkstab *links)
+{
 	while (links->next)
 	{
-		a = lookup((*map), links->rooma->key, links->rooma->room);
-		b = lookup((*map), links->roomb->key, links->roomb->room);
-		if (a)
-		{
-			a->weight = INFINITE;
-			a->parent = NULL;
-			if (a->in)
-			{
-				a->in->weight = INFINITE;
-				a->in->parent = NULL;
-			}
-			if (a->out)
-			{
-				a->out->weight = INFINITE;
-				a->out->parent = NULL;
-			}
-		}
-		if (b)
-		{
-			b->weight = INFINITE;
-			b->parent = NULL;
-			if (b->in)
-			{
-				b->in->weight = INFINITE;
-				b->in->parent = NULL;
-			}
-			if (b->out)
-			{
-				b->out->weight = INFINITE;
-				b->out->parent = NULL;
-			}
-		}
+		reset_a(links->rooma);
+		reset_b(links->roomb);
 		links = links->next;
 	}
 	arg->start->weight = 0;

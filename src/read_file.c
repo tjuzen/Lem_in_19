@@ -6,13 +6,13 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 11:18:56 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 13:35:25 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 19:02:15 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-int 	get_infos(char *line, t_data_map **map, t_lemin *arg)
+int		get_infos(char *line, t_data_map **map, t_lemin *arg)
 {
 	char	s;
 	int		ret;
@@ -33,9 +33,9 @@ int 	get_infos(char *line, t_data_map **map, t_lemin *arg)
 	return (-1);
 }
 
-int 	read_file(t_lemin *arg, t_data_map **map)
+int		read_file(t_lemin *arg, t_data_map **map)
 {
-	char 	*line;
+	char	*line;
 	int		ret;
 
 	line = NULL;

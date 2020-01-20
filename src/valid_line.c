@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 13:35:54 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:59:44 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int		is_link(char *line, t_data_map **map)
 		ft_freetab_str(splitted);
 		return (-1);
 	}
-	room_a = lookup((*map), hashCode(splitted[0]), splitted[0]);
-	room_b = lookup((*map), hashCode(splitted[1]), splitted[1]);
+	room_a = lookup((*map), hashcode(splitted[0]), splitted[0]);
+	room_b = lookup((*map), hashcode(splitted[1]), splitted[1]);
 	if (!(room_a) || !(room_b))
 	{
 		ft_freetab_str(splitted);

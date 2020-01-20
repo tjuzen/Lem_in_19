@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 18:10:11 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:59:44 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ struct s_ants
 */
 
 int				main(int argc, char **argv);
-t_data_map		*createMap(unsigned long size, t_data_map *map);
+t_data_map		*createmap(unsigned long size, t_data_map *map);
 t_node			*lookup(t_data_map *map, unsigned long key, char *room);
-unsigned long 	hashCode(char *room);
+unsigned long 	hashcode(char *room);
 
 /*
 ** LOOKUP.C
@@ -189,7 +189,7 @@ int				is_link(char *line, t_data_map **map);
 ** LEM_IN.C
 */
 
-unsigned long	hashCode(char *room);
+unsigned long	hashcode(char *room);
 t_data_map		*createMap(unsigned long size, t_data_map *map);
 
 
@@ -202,7 +202,7 @@ void 	reset_a(t_node *a);
 void 	reset_b(t_node *b);
 
 double 	cost_path(t_lemin *arg, int nbr);
-int 	reset(t_data_map **map, t_lemin *arg, t_linkstab *links);
+int 	reset(t_lemin *arg, t_linkstab *links);
 
 
 /*

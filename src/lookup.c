@@ -6,13 +6,13 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/22 11:30:57 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/15 16:03:46 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 18:58:56 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_node	*lookup(t_data_map *map, unsigned long key, char *room)
+t_node		*lookup(t_data_map *map, unsigned long key, char *room)
 {
 	t_node *tmp;
 
@@ -20,13 +20,13 @@ t_node	*lookup(t_data_map *map, unsigned long key, char *room)
 	while (tmp)
 	{
 		if (tmp->key == key && ft_strcmp(room, tmp->room) == 0)
-				return (tmp);
+			return (tmp);
 		tmp = tmp->hash_next;
 	}
 	return (NULL);
 }
 
-t_linkstab *lookuplinknode(t_node *a, t_node *b)
+t_linkstab	*lookuplinknode(t_node *a, t_node *b)
 {
 	t_linkstab *find;
 
@@ -40,7 +40,7 @@ t_linkstab *lookuplinknode(t_node *a, t_node *b)
 	return (NULL);
 }
 
-t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
+t_linkstab	*lookuplink(t_data_map *map, t_node *a, t_node *b)
 {
 	t_linkstab *find;
 
@@ -50,7 +50,8 @@ t_linkstab *lookuplink(t_data_map *map, t_node *a, t_node *b)
 	while (find->next)
 	{
 		if (find->rooma && find->roomb && a && b)
-			if (find->rooma->key == a->key && find->roomb->key == b->key && find->rooma->type == a->type && find->roomb->type == b->type)
+			if (find->rooma->key == a->key && find->roomb->key == b->key &&
+				find->rooma->type == a->type && find->roomb->type == b->type)
 				return (find);
 		find = find->next;
 	}

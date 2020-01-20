@@ -6,18 +6,18 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:24:31 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 17:57:23 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/20 19:05:56 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-t_data_map			*init_arg(t_lemin *arg)
+t_data_map		*init_arg(t_lemin *arg)
 {
 	t_data_map *map;
 
 	map = NULL;
-	if (!(map = createMap(500000, map)))
+	if (!(map = createmap(500000, map)))
 		return (NULL);
 	arg->ants = -1;
 	arg->wrong_line = 0;
@@ -36,13 +36,13 @@ t_data_map			*init_arg(t_lemin *arg)
 	return (map);
 }
 
-t_data_map	*return_delete(t_data_map	*map, char *line)
+t_data_map		*return_delete(t_data_map *map, char *line)
 {
 	ft_strdel(&line);
 	return (map);
 }
 
-void free_node(t_node* node)
+void			free_node(t_node *node)
 {
 	t_node	*tmp;
 
@@ -58,14 +58,14 @@ void free_node(t_node* node)
 	}
 }
 
-void free_map(t_data_map* map)
+void			free_map(t_data_map *map)
 {
 	unsigned long	i;
-	int prout;
+	int				j;
 	t_node			*tmp;
 	t_linkstab		*tmp2;
 
-	prout = 0;
+	j = 0;
 	i = 0;
 	while (i < map->size)
 	{
@@ -83,75 +83,75 @@ void free_map(t_data_map* map)
 		free(map->links);
 		map->links = tmp2;
 	}
-	while (map->way[prout])
+	while (map->way[j])
 	{
-		free(map->way[prout]->path_list);
-		free(map->way[prout]);
-		prout++;
+		free(map->way[j]->path_list);
+		free(map->way[j]);
+		j++;
 	}
-    free(map->list);
+	free(map->list);
 	free(map->way);
 	free(map->links);
-    free(map);
+	free(map);
 }
 
-int				exit_free(t_lemin *arg, t_data_map	*map)
+int				exit_free(t_lemin *arg, t_data_map *map)
 {
 	arg->one = 1;
-	printf("ERROR\n");
+	ft_printf("ERROR\n");
 	free_map(map);
 	return (-1);
 }
 
-void print_all_links(t_lemin *arg, t_linkstab *tmp)
+void			print_all_links(t_lemin *arg, t_linkstab *tmp)
 {
-	printf("\n\n");
-	printf(BLUE "OUT "DEFAULT_COLOR);
-	printf(RED " IN "DEFAULT_COLOR);
-	printf(GREY " START ET END \n\n"DEFAULT_COLOR);
+	ft_printf("\n\n");
+	ft_printf(BLUE "OUT "DEFAULT_COLOR);
+	ft_printf(RED " IN "DEFAULT_COLOR);
+	ft_printf(GREY " START ET END \n\n"DEFAULT_COLOR);
 	while (tmp->next)
 	{
 		if (tmp->rooma == arg->end || tmp->rooma == arg->start)
 		{
-			printf(GREY" %-5s "DEFAULT_COLOR, tmp->rooma->room );
+			ft_printf(GREY" %-5s "DEFAULT_COLOR, tmp->rooma->room );
 		}
 		else
 		{
 			if (tmp->rooma->type == 0)
-				printf(DEFAULT_COLOR" %-5s " DEFAULT_COLOR, tmp->rooma->room);
+				ft_printf(DEFAULT_COLOR" %-5s " DEFAULT_COLOR, tmp->rooma->room);
 			else if (tmp->rooma->type == 'I')
-				printf(RED " %-5s "DEFAULT_COLOR, tmp->rooma->room);
+				ft_printf(RED " %-5s "DEFAULT_COLOR, tmp->rooma->room);
 			else if (tmp->rooma->type == 'O')
-				printf(BLUE " %-5s " DEFAULT_COLOR, tmp->rooma->room);
+				ft_printf(BLUE " %-5s " DEFAULT_COLOR, tmp->rooma->room);
 		}
-		printf(" ----   ");
+		ft_printf(" ----   ");
 		if (tmp->roomb == arg->end || tmp->roomb == arg->start)
 		{
-			printf(GREY"  %-5s "DEFAULT_COLOR, tmp->roomb->room );
+			ft_printf(GREY"  %-5s "DEFAULT_COLOR, tmp->roomb->room );
 		}
 		else
 		{
 			if (tmp->roomb->type == 0)
-				printf(DEFAULT_COLOR"  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+				ft_printf(DEFAULT_COLOR"  %-5s " DEFAULT_COLOR, tmp->roomb->room);
 			else if (tmp->roomb->type == 'I')
-				printf(RED "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+				ft_printf(RED "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
 			else if (tmp->roomb->type == 'O')
-				printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+				ft_printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
 		}
 
 		if (tmp->selected == 1)
-		printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
+		ft_printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
 		else
-		printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
+		ft_printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
 		if (tmp->inversed == 1)
-		printf(RED" inversed "DEFAULT_COLOR);
+		ft_printf(RED" inversed "DEFAULT_COLOR);
 		else
-		printf(BLUE" inversed "DEFAULT_COLOR);
+		ft_printf(BLUE" inversed "DEFAULT_COLOR);
 		if (tmp->isactive == 1)
-			printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
+			ft_printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
 		else
-			printf("\n");
+			ft_printf("\n");
 		tmp = tmp->next;
 	}
-	printf("\n_______________________________________________\n\n");
+	ft_printf("\n_______________________________________________\n\n");
 }

@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 16:27:56 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/20 18:59:44 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/21 14:39:25 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		is_command(char *line)
 		return (73);
 	if (ft_strcmp(line, "##end") == 0)
 		return (79);
-	if (line [0] == '#' && line[1] =='#')
+	if (line[0] == '#' && line[1] == '#')
 		return (1);
 	return (-1);
 }

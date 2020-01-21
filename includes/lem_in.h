@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/20 18:59:44 by tjuzen           ###   ########.fr       */
+/*   Updated: 2020/01/21 13:54:50 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,10 @@ struct	s_lemin
 	t_ants			*army;
 	int				sum_path;
 	int				one;
+	int				turn;
+	int				modif;
+	int				best;
+	int				check;
 };
 
 struct s_path

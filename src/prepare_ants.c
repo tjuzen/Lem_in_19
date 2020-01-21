@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 14:36:58 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/21 14:41:26 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/21 15:17:40 by bsuarez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	check_best_path(t_lemin *arg, t_path **way, int path)
 int		last_ants(t_lemin *arg, int i, t_path **way, int j)
 {
 	arg->modif++;
-	if ((i >= (arg->ants / 10) * 6)
+	if ((i >= (arg->ants / 10) * 5)
 		&& ((arg->nbr_round) / 10 * 4 >= way[j]->weight)
 		&& ((arg->ants - i) >= way[j]->weight))
 	{
@@ -44,8 +44,7 @@ int		last_ants(t_lemin *arg, int i, t_path **way, int j)
 			return (-1);
 		arg->check++;
 	}
-	if ((i >= (arg->ants / 100) * 99)
-		&& (arg->modif == arg->max_path && arg->check == 0))
+	if (arg->modif == arg->max_path && arg->check == 0)
 	{
 		if ((assign_ants(arg, i++, way[arg->best], arg->turn + 1)) == -1)
 			return (-1);
@@ -58,7 +57,7 @@ int		prepare_ants(t_lemin *arg, int i, t_path **way, int path)
 	int j;
 
 	check_best_path(arg, way, path);
-	while (i < arg->ants)
+	while (i <= arg->ants)
 	{
 		j = 0;
 		arg->modif = 0;

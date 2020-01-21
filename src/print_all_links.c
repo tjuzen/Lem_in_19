@@ -12,6 +12,33 @@
 
 #include "../includes/lem_in.h"
 
+void			continue_print(t_lemin *arg, t_linkstab *tmp)
+{
+	if (tmp->roomb == arg->end || tmp->roomb == arg->start)
+		ft_printf(GREY"  %-5s "DEFAULT_COLOR, tmp->roomb->room );
+	else
+	{
+		if (tmp->roomb->type == 0)
+			ft_printf(DEFAULT_COLOR"  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+		else if (tmp->roomb->type == 'I')
+			ft_printf(RED "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+		else if (tmp->roomb->type == 'O')
+			ft_printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
+	}
+	if (tmp->selected == 1)
+		ft_printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
+	else
+		ft_printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
+	if (tmp->inversed == 1)
+		ft_printf(RED" inversed "DEFAULT_COLOR);
+	else
+		ft_printf(BLUE" inversed "DEFAULT_COLOR);
+	if (tmp->isactive == 1)
+		ft_printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
+	else
+		ft_printf("\n");
+}
+
 void			print_all_links(t_lemin *arg, t_linkstab *tmp)
 {
 	ft_printf("\n\n");
@@ -21,9 +48,7 @@ void			print_all_links(t_lemin *arg, t_linkstab *tmp)
 	while (tmp->next)
 	{
 		if (tmp->rooma == arg->end || tmp->rooma == arg->start)
-		{
 			ft_printf(GREY" %-5s "DEFAULT_COLOR, tmp->rooma->room );
-		}
 		else
 		{
 			if (tmp->rooma->type == 0)
@@ -34,32 +59,7 @@ void			print_all_links(t_lemin *arg, t_linkstab *tmp)
 				ft_printf(BLUE " %-5s " DEFAULT_COLOR, tmp->rooma->room);
 		}
 		ft_printf(" ----   ");
-		if (tmp->roomb == arg->end || tmp->roomb == arg->start)
-		{
-			ft_printf(GREY"  %-5s "DEFAULT_COLOR, tmp->roomb->room );
-		}
-		else
-		{
-			if (tmp->roomb->type == 0)
-				ft_printf(DEFAULT_COLOR"  %-5s " DEFAULT_COLOR, tmp->roomb->room);
-			else if (tmp->roomb->type == 'I')
-				ft_printf(RED "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
-			else if (tmp->roomb->type == 'O')
-				ft_printf(BLUE "  %-5s " DEFAULT_COLOR, tmp->roomb->room);
-		}
-
-		if (tmp->selected == 1)
-		ft_printf(RED" %3i "DEFAULT_COLOR, tmp->weight);
-		else
-		ft_printf(BLUE" %3i "DEFAULT_COLOR, tmp->weight);
-		if (tmp->inversed == 1)
-		ft_printf(RED" inversed "DEFAULT_COLOR);
-		else
-		ft_printf(BLUE" inversed "DEFAULT_COLOR);
-		if (tmp->isactive == 1)
-			ft_printf(DEFAULT_COLOR" XXXX\n"DEFAULT_COLOR);
-		else
-			ft_printf("\n");
+		continue_print(arg, tmp);
 		tmp = tmp->next;
 	}
 	ft_printf("\n_______________________________________________\n\n");

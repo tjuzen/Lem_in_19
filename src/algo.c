@@ -28,15 +28,6 @@ int		bellman_peugeot(t_data_map **map, t_lemin *arg)
 	return (1);
 }
 
-/*
-** 1: Find the shortest path P1 from node s to node t
-** 2: for i = 2,..., k
-** 3: For node-disjoint paths, split the intermediate nodes
-** 4: Replace each link of all Px where x < i with a reverse link
-** 5: Find the shortest path Pi from node s to node t
-** 6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
-*/
-
 int		negative_cycle(t_data_map **map, t_lemin *arg)
 {
 	t_linkstab	*link;
@@ -73,7 +64,7 @@ int		find_first(t_data_map **map, t_lemin *arg)
 
 int		find_more(double new, double old, t_data_map **map, t_lemin *arg)
 {
-	if (new < old)
+	if ((int)new < (int)old && arg->one == 0)
 	{
 		if (add_found_path((*map), arg, arg->end) == -1)
 		{
@@ -86,6 +77,15 @@ int		find_more(double new, double old, t_data_map **map, t_lemin *arg)
 		arg->found--;
 	return (1);
 }
+
+/*
+** 1: Find the shortest path P1 from node s to node t
+** 2: for i = 2,..., k
+** 3: For node-disjoint paths, split the intermediate nodes
+** 4: Replace each link of all Px where x < i with a reverse link
+** 5: Find the shortest path Pi from node s to node t
+** 6: Remove all overlapping links to get i disjoint paths Px where x ≤ i.
+*/
 
 int		find_path(t_data_map **map, t_lemin *arg)
 {

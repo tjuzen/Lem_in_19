@@ -6,7 +6,7 @@
 /*   By: bsuarez- <bsuarez-@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/21 17:35:51 by bsuarez-          #+#    #+#             */
-/*   Updated: 2020/01/21 13:54:50 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/22 10:09:35 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define PURPLE   "\033[1;35m"
 # define CYAN     "\033[1;36m"
 # define GREY     "\033[1;37m"
-# define DEFAULT_COLOR "\033[0;m"
+# define DEFAULT "\033[0;m"
 # define INFINITE INT_MAX - 10
 
 /*
@@ -47,19 +47,19 @@ struct s_data_map
 
 struct			s_node
 {
-	char			*room;		// nom
-	char			type;		// Room in ou room out?
+	char			*room;
+	char			type;
 	unsigned long	key;
 	unsigned long	pos;
-	char			status;		// Start, end, ou autre ?
-	int				weight;		// bellman
-	t_node 			*parent;	// bellman ford nous set des parents pour chaque room
-	t_node			*hash_next; // pour lookup
-	t_node			*out;		 // lien vers Xo
-	t_node			*in;  		// lien vers Xi
-	t_linkstab		*paths;		// ??????
-	int				duplicated; // ma room a été dupliquée
-	int				just_dup;   // je viens de dup ma room // ????
+	char			status;
+	int				weight;
+	t_node 			*parent;
+	t_node			*hash_next;
+	t_node			*out;
+	t_node			*in;
+	t_linkstab		*paths;
+	int				duplicated;
+	int				just_dup;
 	t_linkstab		*to;
 };
 
@@ -68,15 +68,15 @@ struct			s_linkstab
 	t_node			*rooma;
 	t_node			*roomb;
 
-	int 			weight; // poids du lien
-	int				isactive; // en avons nous réellement besoin ?
-	int				inversed; // Ci->Co deviens Co->Ci, etc
-	int				selected; // mon chemin passe par la
+	int 			weight;
+	int				isactive;
+	int				inversed;
+	int				selected;
 	int 			fakeselected;
-	int				imintern; // ok cool
-	t_linkstab		*reversed; // Stoque l'opposé (A->B contient B->A)
-	t_linkstab		*next; // liste de TOUS mes links
-	t_linkstab		*nextpath; // ???
+	int				imintern;
+	t_linkstab		*reversed;
+	t_linkstab		*next;
+	t_linkstab		*nextpath;
 	t_linkstab		*nexto;
 };
 
@@ -243,7 +243,6 @@ int 		check_follow(t_path *new, t_lemin *arg, t_node *links);
 t_node		*follow_path(t_path *new, t_lemin *arg, t_data_map **map, t_node *tmp);
 int 		stock_path(t_data_map **map, t_lemin *arg, t_linkstab *links, int way);
 int			find_nbr_way(t_data_map **map, t_lemin *arg, t_linkstab *links, int found);
-// void		print_way(t_data_map **map, t_lemin *arg, int nbr, int ant);
 void 		send_ant(t_data_map **map, t_lemin *arg, int nbr);
 
 /*

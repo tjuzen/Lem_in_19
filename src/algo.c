@@ -6,7 +6,7 @@
 /*   By: tjuzen <tjuzen@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:51:04 by tjuzen            #+#    #+#             */
-/*   Updated: 2020/01/21 12:13:43 by bsuarez-         ###   ########.fr       */
+/*   Updated: 2020/01/22 13:22:46 by tjuzen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int		find_path(t_data_map **map, t_lemin *arg)
 	double	new;
 	double	old;
 
-	find_first(map, arg);
+	if (find_first(map, arg) == -1)
+		return (-1);
 	old = INFINITE;
 	new = cost_path(arg, 1);
 	while ((int)new < (int)old && arg->one == 0)
